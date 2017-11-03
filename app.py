@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+from __future__ import print_function
+
 import argparse
 import logging
-import time
 
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
@@ -54,4 +55,4 @@ if __name__ == "__main__":
 
     except Exception as e:
         #logging.error(str(e), exc_info=True)
-        pass
+        print(str(e))
