@@ -18,9 +18,10 @@ dht22 = DHT22(gpio_dht22)
 menu = Menu.Menu()
 
 actions = [
-    Menu.MenuAction("exit program", exit, "exit"),
-    Menu.MenuAction("turn on display", display.turn_on, "display on"),
-    Menu.MenuAction("turn off display", display.turn_off, "display off"),
+    Menu.MenuAction("print help", "", menu.print_manual()),
+    Menu.MenuAction("turn on display", "display on", display.turn_on),
+    Menu.MenuAction("turn off display", "display off", display.turn_off),
+    Menu.MenuAction("exit program", "exit", exit),
 ]
 
 menu.add_item_list(actions)
