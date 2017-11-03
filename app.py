@@ -38,28 +38,11 @@ def main():
 
 def execute_action(action):
 
-    action = action[0]
-    action()
+    action_method = action[0]
+    action_method()
 
-    print(action[1])
-
-
-def init_argparse():
-
-    parser = argparse.ArgumentParser(description="Build RIOT OS")
-
-    parser.add_argument("--application",
-                        dest="application", action="store",
-                        type=int,
-                        required=True,
-                        help="modules to build in to the image")
-
-    parser.add_argument("--board",
-                        dest="board", action="store",
-                        required=True,
-                        help="the board for which the image should be made")
-
-    return parser
+    action_text = action[1]
+    print(action_text)
 
 
 if __name__ == "__main__":
