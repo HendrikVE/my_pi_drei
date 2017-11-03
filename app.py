@@ -15,8 +15,8 @@ gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
 menu = """display turnoff/turnon"""
-menu_actions = {0: display.turn_on(),
-                1: display.turn_off()}
+menu_actions = {0: display.turn_on,
+                1: display.turn_off}
 
 
 def main():
