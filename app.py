@@ -14,17 +14,34 @@ display = Display()
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
-menu = """display turnoff/turnon"""
-menu_actions = {0: display.turn_on,
-                1: display.turn_off}
+menu = """
+0  turn on display
+1  turn off display
+"""
+
+# key: (function_to_execute, output_string)
+menu_actions = {0: (display.turn_on, "display on"),
+                1: (display.turn_off, "display off")}
 
 
 def main():
 
+    print(menu)
+
     while True:
 
-        selected_action = int(input(menu))
-        menu_actions[selected_action]()
+        selected_action = int(input("> "))
+
+        action = menu_actions[selected_action]
+        execute_action(action)
+
+
+def execute_action(action):
+
+    action = action[0]
+    action()
+
+    print(action[1])
 
 
 def init_argparse():
