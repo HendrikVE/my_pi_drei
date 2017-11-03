@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+import time
+
+from Display import Display
+
+display = Display()
+display.init()
+
+display.turn_off()
+
+time.sleep(3)
+
+display.turn_on()
+
+
+def init_argparse():
+    parser = argparse.ArgumentParser(description="Build RIOT OS")
+
+    parser.add_argument("--application",
+                        dest="application", action="store",
+                        type=int,
+                        required=True,
+                        help="modules to build in to the image")
+    parser.add_argument("--board",
+                        dest="board", action="store",
+                        required=True,
+                        help="the board for which the image should be made")
