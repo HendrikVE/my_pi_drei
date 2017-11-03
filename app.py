@@ -34,6 +34,8 @@ def main():
     while True:
 
         selected_action = int(input("> "))
+        if type(selected_action) is not int:
+            continue
 
         action_count = menu.get_action_count()
         if (selected_action >= 0) and (selected_action < action_count):
