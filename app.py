@@ -6,6 +6,7 @@ from __future__ import print_function
 import argparse
 import logging
 
+import Menu
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 
@@ -14,14 +15,15 @@ display = Display()
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
-menu = """
-0  turn on display
-1  turn off display
-"""
+menu = Menu.Menu()
 
-# key: (function_to_execute, output_string)
-menu_actions = {0: (display.turn_on, "display on"),
-                1: (display.turn_off, "display off")}
+actions = [
+    Menu.MenuAction("exit program", exit, "exit"),
+    Menu.MenuAction("turn on display", display.turn_on, "display on"),
+    Menu.MenuAction("turn off display", display.turn_off, "display off"),
+]
+
+menu.add_item_list(actions)
 
 
 def main():
@@ -32,17 +34,12 @@ def main():
 
         selected_action = int(input("> "))
 
-        action = menu_actions[selected_action]
-        execute_action(action)
+        action_count = menu.get_action_count()
+        if (selected_action >= 0) and (selected_action < action_count):
+            menu.execute_action(selected_action)
 
-
-def execute_action(action):
-
-    action_method = action[0]
-    action_method()
-
-    action_text = action[1]
-    print(action_text)
+        else:
+            print("invalid action")
 
 
 if __name__ == "__main__":
