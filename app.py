@@ -1,22 +1,57 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import argparse
+import logging
 import time
 
 from drivers.adafruit_22_display.Display import Display
-from drivers.dht22 import DHT22
+from drivers.dht22.DHT22 import DHT22
 
 display = Display()
 
-while True:
-    display.turn_on()
-    time.sleep(1)
+gpio_dht22 = 4
+dht22 = DHT22(gpio_dht22)
 
-    display.turn_off()
-    time.sleep(1)
+menu = """display turnoff/turnon"""
+menu_actions = {0: display.turn_on(),
+                1: display.turn_off()}
 
-    display.set_intensity(600)
-    time.sleep(1)
 
-    display.set_intensity(200)
-    time.sleep(1)
+def main():
+
+    while True:
+
+        selected_action = int(input(menu))
+        menu_actions[selected_action]()
+
+
+def init_argparse():
+
+    parser = argparse.ArgumentParser(description="Build RIOT OS")
+
+    parser.add_argument("--application",
+                        dest="application", action="store",
+                        type=int,
+                        required=True,
+                        help="modules to build in to the image")
+
+    parser.add_argument("--board",
+                        dest="board", action="store",
+                        required=True,
+                        help="the board for which the image should be made")
+
+    return parser
+
+
+if __name__ == "__main__":
+
+    #logging.basicConfig(filename=LOGFILE, format=config.LOGGING_FORMAT,
+    #                    datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
+
+    try:
+        main()
+
+    except Exception as e:
+        #logging.error(str(e), exc_info=True)
+        pass

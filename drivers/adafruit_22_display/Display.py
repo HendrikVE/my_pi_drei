@@ -3,6 +3,7 @@
 
 from subprocess import Popen
 
+
 class Display(object):
 
     _intensity = 700
