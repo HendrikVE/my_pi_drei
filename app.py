@@ -7,7 +7,7 @@ import logging
 
 import os
 
-import Menu
+from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 
@@ -22,15 +22,26 @@ def print_manual():
     print(menu)
 
 
-menu = Menu.Menu()
+def exit_program():
+    password = "dummy"
+    user_input = raw_input("Enter password: ")
+
+    if user_input == password:
+        exit()
+
+    else:
+        print("Action denied")
+
+
+menu = Menu()
 
 actions = [
-    Menu.MenuAction("print help",        print_manual),
-    Menu.MenuAction("turn on display",   display.turn_on,    "display on"),
-    Menu.MenuAction("turn off display",  display.turn_off,   "display off"),
-    Menu.MenuAction("print temperature", None,               dht22.get_temperature()),
-    Menu.MenuAction("print humidity",    None,               dht22.get_humidity()),
-    Menu.MenuAction("exit program",      exit),
+    MenuAction("print help", print_manual),
+    MenuAction("turn on display", display.turn_on, "display on"),
+    MenuAction("turn off display", display.turn_off, "display off"),
+    MenuAction("print temperature", None, dht22.get_temperature()),
+    MenuAction("print humidity", None, dht22.get_humidity()),
+    MenuAction("exit program", exit),
 ]
 
 menu.add_item_list(actions)
