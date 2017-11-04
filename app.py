@@ -41,7 +41,7 @@ actions = [
     MenuAction("turn off display", display.turn_off, "display off"),
     MenuAction("print temperature", None, dht22.get_temperature()),
     MenuAction("print humidity", None, dht22.get_humidity()),
-    MenuAction("exit program", exit),
+    MenuAction("exit program", exit_program),
 ]
 
 menu.add_item_list(actions)
@@ -67,7 +67,7 @@ def main():
 
         except ValueError:
             if user_input == "exit":
-                exit()
+                exit_program()
 
             elif user_input == "help":
                 print_manual()
