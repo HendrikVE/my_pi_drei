@@ -1,7 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
-
-from __future__ import print_function
 
 import argparse
 import logging
@@ -33,16 +31,16 @@ def main():
 
     while True:
 
-        input = raw_input("> ")
+        user_input = input("> ")
 
         try:
-            selected_action = int(input)
+            selected_action = int(user_input)
 
         except ValueError:
-            if input == "exit":
+            if user_input == "exit":
                 exit()
 
-            elif input == "help":
+            elif user_input == "help":
                 print(menu)
 
             else:
