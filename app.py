@@ -46,7 +46,8 @@ def main():
                 exit()
 
             elif user_input == "help":
-                os.system("clear")
+                for i in range(0, 5):
+                    print()
                 print(menu)
 
             else:
