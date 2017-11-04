@@ -34,7 +34,7 @@ def main():
     while True:
 
         try:
-            selected_action = int(input("> "))
+            selected_action = int(raw_input("> "))
 
         except ValueError:
             # could not cast to int
