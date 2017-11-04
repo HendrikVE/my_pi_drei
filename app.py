@@ -6,6 +6,7 @@ from __future__ import print_function
 import logging
 
 import os
+from getpass import getpass
 
 from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
@@ -24,7 +25,7 @@ def print_manual():
 
 def exit_program():
     password = "dummy"
-    user_input = raw_input("Enter password: ")
+    user_input = getpass("Enter password")
 
     if user_input == password:
         exit()
