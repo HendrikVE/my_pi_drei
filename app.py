@@ -33,8 +33,11 @@ def main():
 
     while True:
 
-        selected_action = int(input("> "))
-        if type(selected_action) is not int:
+        try:
+            selected_action = int(input("> "))
+
+        except ValueError:
+            # could not cast to int
             continue
 
         action_count = menu.get_action_count()
