@@ -85,7 +85,9 @@ def main():
 
 
 def signal_handler(signal, frame):
-    exit_program()
+    signal.
+    # ignore
+    pass
 
 
 if __name__ == "__main__":
