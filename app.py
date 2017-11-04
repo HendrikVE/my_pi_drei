@@ -41,6 +41,13 @@ def main():
         try:
             selected_action = int(user_input)
 
+            action_count = menu.get_action_count()
+            if (selected_action >= 0) and (selected_action < action_count):
+                menu.execute_action(selected_action)
+
+            else:
+                print("invalid action")
+
         except ValueError:
             if user_input == "exit":
                 exit()
@@ -52,13 +59,6 @@ def main():
             else:
                 print("invalid action")
                 continue
-
-        action_count = menu.get_action_count()
-        if (selected_action >= 0) and (selected_action < action_count):
-            menu.execute_action(selected_action)
-
-        else:
-            print("invalid action")
 
 
 if __name__ == "__main__":
