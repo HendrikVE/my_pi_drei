@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import argparse
+from __future__ import print_function
+
 import logging
 
 import Menu
@@ -16,10 +17,12 @@ dht22 = DHT22(gpio_dht22)
 menu = Menu.Menu()
 
 actions = [
-    Menu.MenuAction("print help", "", menu.print_manual),
-    Menu.MenuAction("turn on display", "display on", display.turn_on),
-    Menu.MenuAction("turn off display", "display off", display.turn_off),
-    Menu.MenuAction("exit program", "exit", exit),
+    Menu.MenuAction("print help",        menu.print_manual),
+    Menu.MenuAction("turn on display",   display.turn_on,    "display on"),
+    Menu.MenuAction("turn off display",  display.turn_off,   "display off"),
+    Menu.MenuAction("print temperature", None,               dht22.get_temperature()),
+    Menu.MenuAction("print humidity",    None,               dht22.get_humidity()),
+    Menu.MenuAction("exit program",      exit),
 ]
 
 menu.add_item_list(actions)
@@ -31,7 +34,7 @@ def main():
 
     while True:
 
-        user_input = input("> ")
+        user_input = raw_input("> ")
 
         try:
             selected_action = int(user_input)

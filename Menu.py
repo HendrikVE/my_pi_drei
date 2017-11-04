@@ -52,7 +52,7 @@ class MenuAction(object):
     _output_string = None
     _method = None
 
-    def __init__(self, action_name, output_string, method):
+    def __init__(self, action_name, method, output_string=None):
 
         self._action_name = action_name
         self._output_string = output_string
@@ -62,7 +62,9 @@ class MenuAction(object):
         return self._action_name
 
     def execute(self, print_output=True):
-        self._method()
 
-        if print_output:
+        if self._method is not None:
+            self._method()
+
+        if print_output and (self._output_string is not None):
             print(self._output_string)
