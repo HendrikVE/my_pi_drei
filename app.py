@@ -33,14 +33,16 @@ def main():
 
     while True:
 
+        input = raw_input("> ")
+
         try:
-            selected_action = int(raw_input("> "))
+            selected_action = int(input)
 
         except ValueError:
-            if selected_action == "exit":
+            if input == "exit":
                 exit()
 
-            elif selected_action == "help":
+            elif input == "help":
                 print(menu)
 
             else:
