@@ -8,6 +8,10 @@ import logging
 import os
 from getpass import getpass
 
+import signal
+
+import sys
+
 from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
@@ -25,10 +29,10 @@ def print_manual():
 
 def exit_program():
     password = "dummy"
-    user_input = getpass("Enter password")
+    user_input = getpass("Enter password: ")
 
     if user_input == password:
-        exit()
+        sys.exit()
 
     else:
         print("Action denied")
@@ -49,6 +53,8 @@ menu.add_item_list(actions)
 
 
 def main():
+
+    signal.signal(signal.SIGINT, signal_handler)
 
     print(menu)
 
@@ -76,6 +82,10 @@ def main():
             else:
                 print("invalid action")
                 continue
+
+
+def signal_handler(signal, frame):
+    exit_program()
 
 
 if __name__ == "__main__":
