@@ -29,9 +29,6 @@ class Menu(object):
     def get_action_count(self):
         return len(self._menu_actions)
 
-    def print_manual(self):
-        print(self)
-
     def __str__(self):
 
         menu_manual = []

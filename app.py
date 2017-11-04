@@ -16,10 +16,16 @@ display = Display()
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
+
+def print_manual():
+    os.system("clear")
+    print(menu)
+
+
 menu = Menu.Menu()
 
 actions = [
-    Menu.MenuAction("print help",        menu.print_manual),
+    Menu.MenuAction("print help",        print_manual),
     Menu.MenuAction("turn on display",   display.turn_on,    "display on"),
     Menu.MenuAction("turn off display",  display.turn_off,   "display off"),
     Menu.MenuAction("print temperature", None,               dht22.get_temperature()),
@@ -53,8 +59,7 @@ def main():
                 exit()
 
             elif user_input == "help":
-                os.system("clear")
-                print(menu)
+                print_manual()
 
             else:
                 print("invalid action")
