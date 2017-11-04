@@ -5,6 +5,8 @@ from __future__ import print_function
 
 import logging
 
+import os
+
 import Menu
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
@@ -44,6 +46,7 @@ def main():
                 exit()
 
             elif user_input == "help":
+                os.system("clear")
                 print(menu)
 
             else:
