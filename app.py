@@ -37,8 +37,15 @@ def main():
             selected_action = int(raw_input("> "))
 
         except ValueError:
-            # could not cast to int
-            continue
+            if selected_action == "exit":
+                exit()
+
+            elif selected_action == "help":
+                print(menu)
+
+            else:
+                print("invalid action")
+                continue
 
         action_count = menu.get_action_count()
         if (selected_action >= 0) and (selected_action < action_count):
