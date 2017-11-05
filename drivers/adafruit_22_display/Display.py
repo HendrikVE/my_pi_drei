@@ -10,7 +10,7 @@ class Display(object):
     _display_is_on = True
     _intensity = 700
 
-    _screensaver_timeout = 0
+    _screensaver_timeout = 0.0
     _screensaver_timer = None
 
     def __init__(self):

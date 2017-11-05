@@ -21,7 +21,7 @@ from drivers.dht22.DHT22 import DHT22
 SCREENSAVER_TIMEOUT = 5.0
 
 display = Display()
-display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
+#display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
