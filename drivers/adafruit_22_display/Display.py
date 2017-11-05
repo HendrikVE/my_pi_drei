@@ -7,7 +7,6 @@ from threading import Timer
 
 class Display(object):
 
-    _display_is_on = True
     _intensity = 700
 
     _screensaver_timeout = 0.0
@@ -21,16 +20,11 @@ class Display(object):
         old_intensity = self._intensity
         self.set_intensity(0)
         self._intensity = old_intensity
-        self._display_is_on = False
 
     def turn_on(self):
         self.set_intensity(self._intensity)
-        self._display_is_on = True
 
         self.start_screensaver_timer()
-
-    def is_display_on(self):
-        return self._display_is_on
 
     def set_intensity(self, intensity):
 

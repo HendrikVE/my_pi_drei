@@ -87,6 +87,11 @@ def exit_program():
     user_input = getpass("Enter password: ")
 
     if user_input == password:
+
+        # disable screensaver thread and turn on display
+        display.set_screensaver_timeout(0)
+        display.turn_on()
+        
         sys.exit()
 
     else:
