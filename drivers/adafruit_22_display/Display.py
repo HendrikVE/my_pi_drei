@@ -48,7 +48,7 @@ class Display(object):
             self._screensaver_timer.cancel()
 
         if self._screensaver_timeout > 0:
-            self._screensaver_timer = Timer(self._screensaver_timeout, self.turn_off())
+            self._screensaver_timer = Timer(self._screensaver_timeout, self.turn_off)
             self._screensaver_timer.start()
 
     def set_screensaver_timeout(self, timeout):
