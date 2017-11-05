@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 
+import curses
 import logging
 
 import os
@@ -17,6 +18,7 @@ from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 
 display = Display()
+display.set_screensaver_timeout(3)
 
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
@@ -112,12 +114,37 @@ def signal_handler(signal_number, frame):
     pass
 
 
+# https://stackoverflow.com/questions/24072790/detect-key-press-in-python
+def key_pressed(src):
+
+    src.nodelay(True)
+    key = ""
+    src.clear()
+    src.addstr("Detected key:")
+
+    while True:
+        try:
+            key = src.getkey()
+            src.clear()
+            src.addstr("Detected key:")
+            src.addstr(str(key))
+
+            display.restart_screensaver_timer()
+
+            #if key == os.linesep:
+            #    break
+        except Exception as e:
+            # No input
+            pass
+
+
 if __name__ == "__main__":
 
     #logging.basicConfig(filename=LOGFILE, format=config.LOGGING_FORMAT,
     #                    datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
 
     try:
+        curses.wrapper(key_pressed)
         main()
 
     except Exception as e:
