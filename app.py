@@ -80,7 +80,12 @@ def main():
 
             action_count = menu.get_action_count()
             if (selected_action >= 0) and (selected_action < action_count):
-                menu.execute_action(selected_action)
+
+                try:
+                    menu.execute_action(selected_action)
+
+                except Exception as e:
+                    print(str(e))
 
             else:
                 print("invalid action")

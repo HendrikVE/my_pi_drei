@@ -21,6 +21,10 @@ class Display(object):
         self.set_intensity(self._intensity)
 
     def set_intensity(self, intensity):
+
+        if intensity < 0 or intensity > 1023:
+            raise ValueError("intensity needs to be between 0 and 1023")
+
         self._intensity = intensity
         process = Popen(["gpio", "-g", "pwm", "18", str(intensity)])
         # wait for it to finish
