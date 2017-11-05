@@ -49,6 +49,7 @@ def set_display_intensity():
     except ValueError:
         print("not a valid intensity")
 
+
 menu = Menu()
 
 actions = [
@@ -68,7 +69,7 @@ def main():
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    print(menu)
+    print_manual()
 
     while True:
 
