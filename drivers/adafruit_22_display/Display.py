@@ -8,7 +8,7 @@ class Display(object):
 
     _intensity = 700
 
-    def init(self):
+    def __init__(self):
         Popen(["gpio", "-g", "mode", "18", "pwm"])
         self.set_intensity(self._intensity)
 
