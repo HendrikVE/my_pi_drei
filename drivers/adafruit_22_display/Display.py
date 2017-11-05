@@ -22,4 +22,6 @@ class Display(object):
 
     def set_intensity(self, intensity):
         self._intensity = intensity
-        Popen(["gpio", "-g", "pwm", "18", str(intensity)])
+        process = Popen(["gpio", "-g", "pwm", "18", str(intensity)])
+        # wait for it to finish
+        process.communicate()

@@ -84,7 +84,7 @@ def main():
                 continue
 
 
-def signal_handler(signal, frame):
+def signal_handler(signal_number, frame):
     # ignore
     pass
 
