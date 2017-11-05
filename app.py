@@ -12,67 +12,26 @@ from getpass import getpass
 import signal
 
 import sys
+from threading import Timer
 
 from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 
+SCREENSAVER_TIMEOUT = 5
+
 display = Display()
-display.set_screensaver_timeout(3)
+display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
 
-def print_manual():
-    os.system("clear")
-    print(menu)
+class TimeoutException(Exception):
+    pass
 
 
-def exit_program():
-    password = "dummy"
-    user_input = getpass("Enter password: ")
-
-    if user_input == password:
-        sys.exit()
-
-    else:
-        print("Action denied")
-
-
-def set_display_intensity():
-
-    user_input = raw_input("Enter intensity (0-1023): ")
-
-    try:
-        intensity = int(user_input)
-
-        try:
-            display.set_intensity(intensity)
-
-        except Exception as e:
-            print(str(e))
-
-    except ValueError:
-        print("not a valid number")
-
-
-menu = Menu()
-
-actions = [
-    MenuAction("print help", print_manual),
-    MenuAction("turn on display", display.turn_on),
-    MenuAction("turn off display", display.turn_off),
-    MenuAction("set display intensity", set_display_intensity),
-    MenuAction("print temperature", None, dht22.get_temperature()),
-    MenuAction("print humidity", None, dht22.get_humidity()),
-    MenuAction("exit program", exit_program),
-]
-
-menu.add_item_list(actions)
-
-
-def main():
+def main(menu):
 
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -80,7 +39,11 @@ def main():
 
     while True:
 
-        user_input = raw_input("> ")
+        try:
+            user_input = get_user_input("> ")
+
+        except TimeoutException as e:
+            pass
 
         try:
             selected_action = int(user_input)
@@ -114,29 +77,49 @@ def signal_handler(signal_number, frame):
     pass
 
 
-# https://stackoverflow.com/questions/24072790/detect-key-press-in-python
-def key_pressed(src):
+def print_manual():
+    os.system("clear")
+    print(menu)
 
-    src.nodelay(True)
-    key = ""
-    src.clear()
-    src.addstr("Detected key:")
 
-    while True:
+def exit_program():
+    password = "dummy"
+    user_input = getpass("Enter password: ")
+
+    if user_input == password:
+        sys.exit()
+
+    else:
+        print("Action denied")
+
+
+def set_display_intensity():
+
+    user_input = get_user_input("Enter intensity (0-1023): ")
+
+    try:
+        intensity = int(user_input)
+
         try:
-            key = src.getkey()
-            src.clear()
-            src.addstr("Detected key:")
-            src.addstr(str(key))
+            display.set_intensity(intensity)
 
-            display.restart_screensaver_timer()
-
-            #if key == os.linesep:
-            #    break
         except Exception as e:
-            # No input
-            pass
+            print(str(e))
 
+    except ValueError:
+        print("not a valid number")
+
+
+def get_user_input(prompt=""):
+
+    #def raise_timeout():
+    #    raise TimeoutException("user input timed out")
+
+    #timer = Timer(3, raise_timeout)
+
+    user_input = raw_input(prompt)
+
+    return user_input
 
 if __name__ == "__main__":
 
@@ -144,8 +127,21 @@ if __name__ == "__main__":
     #                    datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
 
     try:
-        curses.wrapper(key_pressed)
-        main()
+        menu = Menu()
+
+        actions = [
+            MenuAction("print help", print_manual),
+            MenuAction("turn on display", display.turn_on),
+            MenuAction("turn off display", display.turn_off),
+            MenuAction("set display intensity", set_display_intensity),
+            MenuAction("print temperature", None, dht22.get_temperature()),
+            MenuAction("print humidity", None, dht22.get_humidity()),
+            MenuAction("exit program", exit_program),
+        ]
+
+        menu.add_item_list(actions)
+
+        main(menu)
 
     except Exception as e:
         #logging.error(str(e), exc_info=True)
