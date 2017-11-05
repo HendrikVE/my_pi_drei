@@ -55,7 +55,7 @@ actions = [
     MenuAction("print help", print_manual),
     MenuAction("turn on display", display.turn_on),
     MenuAction("turn off display", display.turn_off),
-    MenuAction("set display intensity", display.set_intensity),
+    MenuAction("set display intensity", set_display_intensity),
     MenuAction("print temperature", None, dht22.get_temperature()),
     MenuAction("print humidity", None, dht22.get_humidity()),
     MenuAction("exit program", exit_program),
