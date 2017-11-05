@@ -38,12 +38,24 @@ def exit_program():
         print("Action denied")
 
 
+def set_display_intensity():
+
+    user_input = raw_input("Enter intensity (0-1023): ")
+
+    try:
+        intensity = int(user_input)
+        display.set_intensity(intensity)
+
+    except ValueError:
+        print("not a valid intensity")
+
 menu = Menu()
 
 actions = [
     MenuAction("print help", print_manual),
-    MenuAction("turn on display", display.turn_on, "display on"),
-    MenuAction("turn off display", display.turn_off, "display off"),
+    MenuAction("turn on display", display.turn_on),
+    MenuAction("turn off display", display.turn_off),
+    MenuAction("set display intensity", display.set_intensity),
     MenuAction("print temperature", None, dht22.get_temperature()),
     MenuAction("print humidity", None, dht22.get_humidity()),
     MenuAction("exit program", exit_program),
