@@ -47,12 +47,12 @@ def set_display_intensity():
 
         try:
             display.set_intensity(intensity)
-            
+
         except Exception as e:
             print(str(e))
 
     except ValueError:
-        print("not a valid intensity")
+        print("not a valid number")
 
 
 menu = Menu()
