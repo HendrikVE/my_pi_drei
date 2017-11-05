@@ -27,6 +27,8 @@ class Display(object):
         self.set_intensity(self._intensity)
         self._display_is_on = True
 
+        self.start_screensaver_timer()
+
     def is_display_on(self):
         return self._display_is_on
 
@@ -40,6 +42,14 @@ class Display(object):
         # wait for it to finish
         process.communicate()
 
+    def start_screensaver_timer(self):
+
+        if self._screensaver_timer is not None:
+            self._screensaver_timer.cancel()
+
+        if self._screensaver_timeout > 0:
+            self._screensaver_timer = Timer(self._screensaver_timeout, self.turn_off())
+
     def set_screensaver_timeout(self, timeout):
 
         self._screensaver_timeout = timeout
@@ -47,8 +57,7 @@ class Display(object):
         if self._screensaver_timer is not None:
             self._screensaver_timer.cancel()
 
-        if timeout > 0:
-            self._screensaver_timer = Timer(timeout, self.turn_off())
+        self.start_screensaver_timer()
 
     def restart_screensaver_timer(self):
         self.set_screensaver_timeout(self._screensaver_timeout)
