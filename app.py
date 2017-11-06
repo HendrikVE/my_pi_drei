@@ -91,7 +91,7 @@ def exit_program():
         # disable screensaver thread and turn on display
         display.set_screensaver_timeout(0)
         display.turn_on()
-        
+
         sys.exit()
 
     else:
