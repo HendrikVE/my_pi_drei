@@ -3,7 +3,6 @@
 
 from __future__ import print_function
 
-import curses
 import logging
 
 import os
@@ -40,7 +39,7 @@ def main(menu):
     while True:
 
         try:
-            user_input = get_user_input("> ")
+            user_input = get_user_input(display.turn_off, display.turn_on, "> ")
 
         except TimeoutException as e:
             pass
@@ -100,7 +99,7 @@ def exit_program():
 
 def set_display_intensity():
 
-    user_input = get_user_input("Enter intensity (0-1023): ")
+    user_input = get_user_input(display.turn_off, display.turn_on, "Enter intensity (0-1023): ")
 
     try:
         intensity = int(user_input)
@@ -115,16 +114,27 @@ def set_display_intensity():
         print("not a valid number")
 
 
-def get_user_input(prompt=""):
+def get_user_input(on_timeout_func, on_key_type_func, prompt="", timeout=5.0):
 
-    #def raise_timeout():
-    #    raise TimeoutException("user input timed out")
+    sys.stdout.write(prompt)
 
-    #timer = Timer(3, raise_timeout)
+    user_input = []
+    input_char = None
 
-    user_input = raw_input(prompt)
+    while input_char != "\n":
 
-    return user_input
+        timer = Timer(timeout, on_timeout_func)
+        timer.start()
+
+        input_char = sys.stdin.read(1)
+
+        timer.cancel()
+        on_key_type_func()
+
+        user_input.append(input_char)
+
+    return "".join(user_input).strip()
+
 
 if __name__ == "__main__":
 
