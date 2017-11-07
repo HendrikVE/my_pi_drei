@@ -15,7 +15,7 @@ from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
 
-SCREENSAVER_TIMEOUT = 5.0
+SCREENSAVER_TIMEOUT = 20.0
 
 display = Display()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
@@ -76,11 +76,6 @@ def exit_program():
     user_input = getpass("Enter password: ")
 
     if user_input == password:
-
-        # disable screensaver thread and turn on display
-        display.set_screensaver_timeout(0)
-        display.turn_on()
-
         sys.exit()
 
     else:

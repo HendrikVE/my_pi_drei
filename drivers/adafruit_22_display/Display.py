@@ -16,6 +16,12 @@ class Display(object):
         Popen(["gpio", "-g", "mode", "18", "pwm"])
         self.set_intensity(self._intensity)
 
+    def __del__(self):
+
+        # disable screensaver thread and turn on display
+        self.set_screensaver_timeout(0)
+        self.turn_on()
+
     def turn_off(self):
         old_intensity = self._intensity
         self.set_intensity(0)
