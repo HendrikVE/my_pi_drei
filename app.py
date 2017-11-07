@@ -26,10 +26,6 @@ gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
 
 
-class TimeoutException(Exception):
-    pass
-
-
 def main(menu):
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -38,7 +34,7 @@ def main(menu):
 
     while True:
 
-        user_input = get_user_input(display.turn_off, display.turn_on, "> ")
+        user_input = get_user_input(display.restart_screensaver_timer, "> ")
 
         try:
             selected_action = int(user_input)
@@ -95,7 +91,7 @@ def exit_program():
 
 def set_display_intensity():
 
-    user_input = get_user_input(display.turn_off, display.turn_on, "Enter intensity (0-1023): ")
+    user_input = get_user_input(display.restart_screensaver_timer, "Enter intensity (0-1023): ")
 
     try:
         intensity = int(user_input)
@@ -110,7 +106,7 @@ def set_display_intensity():
         print("not a valid number")
 
 
-def get_user_input(on_timeout_func, on_key_type_func, prompt="", timeout=5.0):
+def get_user_input(after_input_func, prompt=""):
 
     sys.stdout.write(prompt)
 
@@ -119,13 +115,8 @@ def get_user_input(on_timeout_func, on_key_type_func, prompt="", timeout=5.0):
 
     while input_char != "\n":
 
-        #timer = Timer(timeout, on_timeout_func)
-        #timer.start()
-
         input_char = sys.stdin.read(1)
-
-        #timer.cancel()
-        on_key_type_func()
+        after_input_func()
 
         user_input.append(input_char)
 
