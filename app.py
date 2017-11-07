@@ -6,12 +6,15 @@ from __future__ import print_function
 import logging
 
 import os
+import tty
 from getpass import getpass
 
 import signal
 
 import sys
 from threading import Timer
+
+import termios
 
 from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
@@ -115,7 +118,16 @@ def get_user_input(after_input_func, prompt=""):
 
     while input_char != "\n":
 
-        input_char = sys.stdin.read(1)
+        # get single char, without the need to press enter for newline
+        # http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            input_char = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
         after_input_func()
 
         user_input.append(input_char)
