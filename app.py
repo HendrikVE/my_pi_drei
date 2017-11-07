@@ -119,12 +119,12 @@ def get_user_input(on_timeout_func, on_key_type_func, prompt="", timeout=5.0):
 
     while input_char != "\n":
 
-        timer = Timer(timeout, on_timeout_func)
-        timer.start()
+        #timer = Timer(timeout, on_timeout_func)
+        #timer.start()
 
         input_char = sys.stdin.read(1)
 
-        timer.cancel()
+        #timer.cancel()
         on_key_type_func()
 
         user_input.append(input_char)
