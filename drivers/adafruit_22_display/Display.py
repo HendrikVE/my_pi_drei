@@ -55,4 +55,5 @@ class Display(object):
         self.start_screensaver_timer()
 
     def restart_screensaver_timer(self):
+        self.turn_on()
         self.set_screensaver_timeout(self._screensaver_timeout)
