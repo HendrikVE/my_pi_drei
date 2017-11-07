@@ -31,7 +31,7 @@ dht22 = DHT22(gpio_dht22)
 
 def main(menu):
 
-    signal.signal(signal.SIGINT, signal_handler)
+    #signal.signal(signal.SIGINT, signal_handler)
 
     print_manual()
 
