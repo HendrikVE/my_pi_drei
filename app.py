@@ -125,6 +125,7 @@ def get_user_input(after_input_func, prompt=""):
         try:
             tty.setraw(sys.stdin.fileno())
             input_char = sys.stdin.read(1)
+            sys.stdout.write(input_char)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
