@@ -127,7 +127,9 @@ def get_user_input(after_input_func, prompt=""):
 
         if ord(input_char) == ord("\r"):
             # print a newline on enter
-            input_char = "\n"
+            sys.stdout.write("\n\r")
+        else:
+            sys.stdout.write(input_char)
 
         sys.stdout.write(input_char)
         sys.stdout.flush()
