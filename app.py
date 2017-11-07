@@ -125,6 +125,10 @@ def get_user_input(after_input_func, prompt=""):
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
+        if ord(input_char) == ord("\r"):
+            # print a newline on enter
+            input_char = "\n"
+
         sys.stdout.write(input_char)
         sys.stdout.flush()
 
