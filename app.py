@@ -32,16 +32,13 @@ class TimeoutException(Exception):
 
 def main(menu):
 
-    def printi():
-        print("hallo")
-
     signal.signal(signal.SIGINT, signal_handler)
 
     print_manual()
 
     while True:
 
-        user_input = get_user_input(display.turn_off, printi, "> ")
+        user_input = get_user_input(display.turn_off, display.turn_on, "> ")
 
         try:
             selected_action = int(user_input)
