@@ -116,7 +116,8 @@ def get_user_input(after_input_func, prompt=""):
     user_input = []
     input_char = None
 
-    while input_char != "\n":
+    # enter has keycode 10
+    while ord(input_char) != 10:
 
         # get single char, without the need to press enter for newline
         # http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
