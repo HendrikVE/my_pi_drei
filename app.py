@@ -131,7 +131,6 @@ def get_user_input(after_input_func, prompt=""):
         else:
             sys.stdout.write(input_char)
 
-        sys.stdout.write(input_char)
         sys.stdout.flush()
 
         after_input_func()
