@@ -114,7 +114,7 @@ def get_user_input(after_input_func, prompt=""):
     sys.stdout.write(prompt)
 
     user_input = []
-    input_char = ""
+    input_char = "X"
 
     # enter has keycode 10
     while ord(input_char) != 10:
