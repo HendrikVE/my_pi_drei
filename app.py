@@ -18,6 +18,7 @@ from menu import Menu, MenuAction
 SCREENSAVER_TIMEOUT = 20.0
 
 display = Display()
+display.open()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 gpio_dht22 = 4
@@ -76,6 +77,7 @@ def exit_program():
     user_input = getpass("Enter password: ")
 
     if user_input == password:
+        display.close()
         sys.exit()
 
     else:
