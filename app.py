@@ -3,22 +3,17 @@
 
 from __future__ import print_function
 
-import logging
-
 import os
+import sys
+import termios
 import tty
 from getpass import getpass
 
 import signal
 
-import sys
-from threading import Timer
-
-import termios
-
-from menu import Menu, MenuAction
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
+from menu import Menu, MenuAction
 
 SCREENSAVER_TIMEOUT = 5.0
 
@@ -31,7 +26,7 @@ dht22 = DHT22(gpio_dht22)
 
 def main(menu):
 
-    #signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
 
     print_manual()
 
@@ -116,8 +111,8 @@ def get_user_input(after_input_func, prompt=""):
     user_input = []
     input_char = "X"
 
-    # enter has keycode 10
-    while ord(input_char) != 10:
+    # enter has keycode 13
+    while ord(input_char) != 13:
 
         # get single char, without the need to press enter for newline
         # http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
@@ -131,6 +126,7 @@ def get_user_input(after_input_func, prompt=""):
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
         sys.stdout.write(input_char)
+        sys.stdout.flush()
 
         after_input_func()
 
