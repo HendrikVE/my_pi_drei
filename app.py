@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 
+import logging
 import os
 import sys
 import termios
@@ -16,6 +17,11 @@ from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
 
 SCREENSAVER_TIMEOUT = 20.0
+
+LOGFILE = "app.log"
+LOGGING_FORMAT = "[%(levelname)s]: %(asctime)s\n"\
+                 + "in %(filename)s in %(funcName)s on line %(lineno)d\n"\
+                 + "%(message)s\n"
 
 display = Display()
 display.open()
@@ -149,8 +155,8 @@ def get_user_input(after_input_func, prompt=""):
 
 if __name__ == "__main__":
 
-    #logging.basicConfig(filename=LOGFILE, format=config.LOGGING_FORMAT,
-    #                    datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
+    logging.basicConfig(filename=LOGFILE, format=LOGGING_FORMAT,
+                        datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
 
     try:
         menu = Menu()
@@ -170,5 +176,5 @@ if __name__ == "__main__":
         main(menu)
 
     except Exception as e:
-        #logging.error(str(e), exc_info=True)
+        logging.error(str(e), exc_info=True)
         print(str(e))
