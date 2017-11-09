@@ -110,11 +110,12 @@ def set_display_intensity():
 def get_user_input(after_input_func, prompt=""):
 
     allowed_keycodes = []
-    allowed_keycodes.extend(range(ord("0"), ord("9")+1))   # numbers
-    allowed_keycodes.extend(range(ord("A"), ord("Z")))     # uppercase letters
-    allowed_keycodes.extend(range(ord("a"), ord("z")))     # lowercase letters
-    allowed_keycodes.append(127)                             # backspace
-    allowed_keycodes.append(13)                            # enter
+    allowed_keycodes.extend(range(ord("0"), ord("9")+1))    # numbers
+    allowed_keycodes.extend(range(ord("A"), ord("Z")))      # uppercase letters
+    allowed_keycodes.extend(range(ord("a"), ord("z")))      # lowercase letters
+    allowed_keycodes.append(" ")  # space
+    allowed_keycodes.append(127)                            # backspace
+    allowed_keycodes.append(13)                             # enter
 
     sys.stdout.write(prompt)
 
