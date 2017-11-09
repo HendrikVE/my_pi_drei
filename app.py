@@ -139,7 +139,7 @@ def get_user_input(after_input_func, prompt=""):
         if keycode in allowed_keycodes:
 
             if keycode == 8:
-                sys.stdout.write("\b\b")
+                sys.stdout.write("BACKSPACE")
 
             elif keycode == 13:
                 # print a newline on enter
