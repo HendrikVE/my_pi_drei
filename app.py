@@ -141,16 +141,20 @@ def get_user_input(after_input_func, prompt=""):
             if keycode == 13:
                 # print a newline on enter
                 sys.stdout.write("\n\r")
+                user_input.append(input_char)
 
             elif keycode == 127:
-                sys.stdout.write("\b\b ")  # space behind "\b" important to replace char with "empty" one on terminal
+
+                # dont be able to remove prompt
+                if len(user_input) > 0:
+                    sys.stdout.write("\b ")  # space behind "\b" important to replace char with "empty" one on terminal
+                    user_input.pop()
 
             else:
                 sys.stdout.write(input_char)
+                user_input.append(input_char)
 
             sys.stdout.flush()
-
-            user_input.append(input_char)
 
         after_input_func()
 
