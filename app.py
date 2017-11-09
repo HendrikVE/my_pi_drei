@@ -147,7 +147,7 @@ def get_user_input(after_input_func, prompt=""):
 
                 # dont be able to remove prompt
                 if len(user_input) > 0:
-                    sys.stdout.write("\b ")  # space behind "\b" important to replace char with "empty" one on terminal
+                    sys.stdout.write("\b \b")  # space behind "\b" important to replace char with "empty" one on terminal
                     user_input.pop()
 
             else:
