@@ -80,6 +80,6 @@ class Display(object):
 
         if self._last_display_action == DisplayAction.MANUAL_OFF:
             return
-        
+
         self.turn_on()
         self.set_screensaver_timeout(self._screensaver_timeout)

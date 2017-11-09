@@ -103,6 +103,13 @@ def set_display_intensity():
 
 def get_user_input(after_input_func, prompt=""):
 
+    allowed_keycodes = []
+    allowed_keycodes.extend(range(ord("0"), ord("9")+1))   # numbers
+    allowed_keycodes.extend(range(ord("A"), ord("Z")))     # uppercase letters
+    allowed_keycodes.extend(range(ord("a"), ord("z")))     # lowercase letters
+    #allowed_keycodes.extend(8)                             # backspace
+    allowed_keycodes.extend(13)                            # enter
+
     sys.stdout.write(prompt)
 
     user_input = []
@@ -122,17 +129,20 @@ def get_user_input(after_input_func, prompt=""):
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
-        if ord(input_char) == ord("\r"):
-            # print a newline on enter
-            sys.stdout.write("\n\r")
-        else:
-            sys.stdout.write(input_char)
+        keycode = ord(input_char)
+        if keycode in allowed_keycodes:
 
-        sys.stdout.flush()
+            if keycode == 13:
+                # print a newline on enter
+                sys.stdout.write("\n\r")
+            else:
+                sys.stdout.write(input_char)
+
+            sys.stdout.flush()
+
+            user_input.append(input_char)
 
         after_input_func()
-
-        user_input.append(input_char)
 
     return "".join(user_input).strip()
 
