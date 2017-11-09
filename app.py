@@ -143,7 +143,7 @@ def get_user_input(after_input_func, prompt=""):
                 sys.stdout.write("\n\r")
 
             elif keycode == 127:
-                sys.stdout.write("\b ")  # space behind "\b" important to replace char with "empty" one on terminal
+                sys.stdout.write("\b\b ")  # space behind "\b" important to replace char with "empty" one on terminal
 
             else:
                 sys.stdout.write(input_char)
