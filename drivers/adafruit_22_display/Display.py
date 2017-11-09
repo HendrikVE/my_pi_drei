@@ -5,9 +5,14 @@ from subprocess import Popen
 from threading import Timer
 
 
+class DisplayAction:
+    NONE, MANUAL_ON, MANUAL_OFF, SCREENSAVER_OFF = range(4)
+
+
 class Display(object):
 
     _intensity = 700
+    _last_display_action = DisplayAction.NONE
 
     _screensaver_timeout = 0.0
     _screensaver_timer = None
@@ -23,14 +28,25 @@ class Display(object):
         self.turn_on()
 
     def turn_off(self):
+
         old_intensity = self._intensity
         self.set_intensity(0)
         self._intensity = old_intensity
+        self._last_display_action = DisplayAction.MANUAL_OFF
+
+    def _turn_off_by_screensaver(self):
+
+        if self._last_display_action == DisplayAction.MANUAL_OFF:
+            return
+
+        self.turn_off()
+        self._last_display_action = DisplayAction.SCREENSAVER_OFF
 
     def turn_on(self):
-        self.set_intensity(self._intensity)
 
+        self.set_intensity(self._intensity)
         self.start_screensaver_timer()
+        self._last_display_action = DisplayAction.MANUAL_ON
 
     def set_intensity(self, intensity):
 
@@ -48,7 +64,7 @@ class Display(object):
             self._screensaver_timer.cancel()
 
         if self._screensaver_timeout > 0:
-            self._screensaver_timer = Timer(self._screensaver_timeout, self.turn_off)
+            self._screensaver_timer = Timer(self._screensaver_timeout, self._turn_off_by_screensaver)
             self._screensaver_timer.start()
 
     def set_screensaver_timeout(self, timeout):
@@ -61,5 +77,9 @@ class Display(object):
         self.start_screensaver_timer()
 
     def restart_screensaver_timer(self):
+
+        if self._last_display_action == DisplayAction.MANUAL_OFF:
+            return
+        
         self.turn_on()
         self.set_screensaver_timeout(self._screensaver_timeout)
