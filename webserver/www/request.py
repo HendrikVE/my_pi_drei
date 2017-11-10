@@ -32,7 +32,7 @@ pi_results = {
 
 def main():
 
-    request_body = sys.stdin.read()
+    request_body = "test"
     pi_results['temperature'] = request_body
 
     submitted_signature = None
