@@ -8,14 +8,9 @@ import hashlib
 import hmac
 import json
 import logging
-
-import sys
-
 import os
+import sys
 import tempfile
-
-import time
-import uuid
 
 from Display import Display
 
@@ -43,12 +38,16 @@ def main():
 
     if is_valid:
 
+        print('EINS')
+
         # stdin already read out, so assign fp to FieldStorage
         tmpfile = tempfile.TemporaryFile()
         tmpfile.write(request_body)
         tmpfile.seek(0)
         form = cgi.FieldStorage(fp=tmpfile)
         tmpfile.close()
+
+        print('ZWEI')
 
         action = form.getfirst('action')
 
