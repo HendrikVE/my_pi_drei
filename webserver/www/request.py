@@ -7,9 +7,9 @@ import cgi
 
 form = cgi.FieldStorage()
 
-action = int(form.getfirst('action'))
+action = form.getfirst('action')
 
 print ('Content-Type: text/html')
 print ('\n\r')
 
-print(str(action))
+print('action = ' + action)
