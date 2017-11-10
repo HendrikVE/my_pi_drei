@@ -34,9 +34,19 @@ def main():
 
     request_body = sys.stdin.read()
     pi_results['temperature'] = request_body
-    is_valid = is_valid_signature(os.environ['HTTP_MESSAGE_SIGNATURE'], SECRET_KEY, request_body)
+
+    submitted_signature = None
+    try:
+        submitted_signature = os.environ['HTTP_MESSAGE_SIGNATURE']
+    except KeyError:
+        print_error()
+
+    is_valid = is_valid_signature(submitted_signature, SECRET_KEY, request_body)
 
     if is_valid:
+
+        print('Content-Type: text/html')
+        print('\n\r')
 
         print('EINS')
 
@@ -83,6 +93,7 @@ def print_error():
 
     print ('Status: 403 Forbidden')
     print ('\n\r')
+    sys.exit()
 
 
 if __name__ == '__main__':
