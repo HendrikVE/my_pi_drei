@@ -18,10 +18,10 @@ from menu import Menu, MenuAction
 
 SCREENSAVER_TIMEOUT = 20.0
 
-LOGFILE = "app.log"
-LOGGING_FORMAT = "[%(levelname)s]: %(asctime)s\n"\
-                 + "in %(filename)s in %(funcName)s on line %(lineno)d\n"\
-                 + "%(message)s\n"
+LOGFILE = 'app.log'
+LOGGING_FORMAT = '[%(levelname)s]: %(asctime)s\n'\
+                 + 'in %(filename)s in %(funcName)s on line %(lineno)d\n'\
+                 + '%(message)s\n'
 
 display = Display()
 display.open()
@@ -39,7 +39,7 @@ def main(menu):
 
     while True:
 
-        user_input = get_user_input(display.restart_screensaver_timer, "> ")
+        user_input = get_user_input(display.restart_screensaver_timer, '> ')
 
         try:
             selected_action = int(user_input)
@@ -54,17 +54,17 @@ def main(menu):
                     print(str(e))
 
             else:
-                print("invalid action")
+                print('invalid action')
 
         except ValueError:
-            if user_input == "exit":
+            if user_input == 'exit':
                 exit_program()
 
-            elif user_input == "help":
+            elif user_input == 'help':
                 print_manual()
 
             else:
-                print("invalid action")
+                print('invalid action')
                 continue
 
 
@@ -74,25 +74,25 @@ def signal_handler(signal_number, frame):
 
 
 def print_manual():
-    os.system("clear")
+    os.system('clear')
     print(menu)
 
 
 def exit_program():
-    password = "dummy"
-    user_input = getpass("Enter password: ")
+    password = 'dummy'
+    user_input = getpass('Enter password: ')
 
     if user_input == password:
         display.close()
         sys.exit()
 
     else:
-        print("Action denied")
+        print('Action denied')
 
 
 def set_display_intensity():
 
-    user_input = get_user_input(display.restart_screensaver_timer, "Enter intensity (0-1023): ")
+    user_input = get_user_input(display.restart_screensaver_timer, 'Enter intensity (0-1023): ')
 
     try:
         intensity = int(user_input)
@@ -104,16 +104,16 @@ def set_display_intensity():
             print(str(e))
 
     except ValueError:
-        print("not a valid number")
+        print('not a valid number')
 
 
-def get_user_input(after_input_func, prompt=""):
+def get_user_input(after_input_func, prompt=''):
 
     allowed_keycodes = []
-    allowed_keycodes.extend(range(ord("0"), ord("9")+1))    # numbers
-    allowed_keycodes.extend(range(ord("A"), ord("Z")))      # uppercase letters
-    allowed_keycodes.extend(range(ord("a"), ord("z")))      # lowercase letters
-    allowed_keycodes.append(ord(" "))  # space
+    allowed_keycodes.extend(range(ord('0'), ord('9')+1))    # numbers
+    allowed_keycodes.extend(range(ord('A'), ord('Z')))      # uppercase letters
+    allowed_keycodes.extend(range(ord('a'), ord('z')))      # lowercase letters
+    allowed_keycodes.append(ord(' '))  # space
     allowed_keycodes.append(127)                            # backspace
     allowed_keycodes.append(13)                             # enter
 

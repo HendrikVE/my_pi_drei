@@ -35,12 +35,12 @@ class Menu(object):
         index = 0
         for action in self._menu_actions:
 
-            menu_manual.append(str(index) + " ")
-            menu_manual.append(action.get_name() + "\n")
+            menu_manual.append(str(index) + ' ')
+            menu_manual.append(action.get_name() + '\n')
 
             index += 1
 
-        return "".join(menu_manual)
+        return ''.join(menu_manual)
 
 
 class MenuAction(object):
