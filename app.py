@@ -120,7 +120,7 @@ def get_user_input(after_input_func, prompt=""):
     sys.stdout.write(prompt)
 
     user_input = []
-    input_char = "X"
+    input_char = 'X'
 
     # enter has keycode 13
     while ord(input_char) != 13:
@@ -141,14 +141,14 @@ def get_user_input(after_input_func, prompt=""):
 
             if keycode == 13:
                 # print a newline on enter
-                sys.stdout.write("\n\r")
+                sys.stdout.write('\n\r')
                 user_input.append(input_char)
 
             elif keycode == 127:
 
                 # dont be able to remove prompt
                 if len(user_input) > 0:
-                    sys.stdout.write("\b \b")  # space behind "\b" important to replace char with "empty" one on terminal
+                    sys.stdout.write('\b \b')  # space behind '\b' important to replace char with 'empty' one on terminal
                     user_input.pop()
 
             else:
@@ -159,25 +159,25 @@ def get_user_input(after_input_func, prompt=""):
 
         after_input_func()
 
-    return "".join(user_input).strip()
+    return ''.join(user_input).strip()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     logging.basicConfig(filename=LOGFILE, format=LOGGING_FORMAT,
-                        datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
+                        datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
     try:
         menu = Menu()
 
         actions = [
-            MenuAction("print help", print_manual),
-            MenuAction("turn on display", display.turn_on),
-            MenuAction("turn off display", display.turn_off),
-            MenuAction("set display intensity", set_display_intensity),
-            MenuAction("print temperature", None, dht22.get_temperature()),
-            MenuAction("print humidity", None, dht22.get_humidity()),
-            MenuAction("exit program", exit_program),
+            MenuAction('print help', print_manual),
+            MenuAction('turn on display', display.turn_on),
+            MenuAction('turn off display', display.turn_off),
+            MenuAction('set display intensity', set_display_intensity),
+            MenuAction('print temperature', None, dht22.get_temperature()),
+            MenuAction('print humidity', None, dht22.get_humidity()),
+            MenuAction('exit program', exit_program),
         ]
 
         menu.add_item_list(actions)

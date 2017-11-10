@@ -11,7 +11,7 @@ class Menu(object):
     def add_item(self, action):
 
         if type(action) is not MenuAction:
-            raise TypeError("action needs to be of type MenuAction")
+            raise TypeError('action needs to be of type MenuAction')
 
         self._menu_actions.append(action)
 
