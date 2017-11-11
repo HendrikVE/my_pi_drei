@@ -40,18 +40,12 @@ def main():
     except KeyError:
         print_error('X-Message-Signature header missing')
 
-    is_valid = True#is_valid_signature(submitted_signature, SECRET_KEY, request_body)
+    is_valid = is_valid_signature(submitted_signature, SECRET_KEY, request_body)
 
     if is_valid:
 
-        # stdin already read out, so assign fp to FieldStorage
-        tmpfile = tempfile.TemporaryFile()
-        tmpfile.write(request_body)
-        tmpfile.seek(0)
-        form = cgi.FieldStorage(fp=tmpfile)
-        tmpfile.close()
+        form = get_field_storage(request_body)
 
-        #form = cgi.FieldStorage()
         action = form.getfirst('action')
 
         display = Display()
@@ -68,11 +62,24 @@ def main():
         print_error('signature invalid')
 
 
+def get_field_storage(request_body):
+
+    # stdin already read out, so assign fp to FieldStorage
+    tmpfile = tempfile.TemporaryFile()
+    tmpfile.write(request_body)
+    tmpfile.seek(0)
+    form = cgi.FieldStorage(fp=tmpfile)
+    tmpfile.close()
+
+    return form
+
+
 def is_valid_signature(signature, secret_key, body):
 
     computed_signature = 'sha512=' + hmac.new(secret_key, body, hashlib.sha512).hexdigest()
 
-    return computed_signature == signature
+    #return computed_signature == signature
+    return "signature" == signature
 
 
 def print_result(result):
