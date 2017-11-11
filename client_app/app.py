@@ -5,12 +5,18 @@ from __future__ import print_function
 
 import logging
 import os
+import signal
 import sys
 import termios
 import tty
 from getpass import getpass
 
-import signal
+# append root of the python code tree to sys.apth so that imports are working
+#   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
+#   which could be forget
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
+sys.path.append(PROJECT_ROOT_DIR)
 
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
