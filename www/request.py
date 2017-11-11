@@ -37,9 +37,10 @@ def main():
 
     submitted_signature = None
     try:
+        print(os.environ)
         submitted_signature = os.environ['HTTP-X-MESSAGE-SIGNATURE']
     except KeyError:
-        print_error('x-message-signature missing')
+        print_error('X-Message-Signature header missing')
 
     is_valid = True#is_valid_signature(submitted_signature, SECRET_KEY, request_body)
 
