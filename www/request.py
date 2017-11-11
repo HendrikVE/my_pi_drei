@@ -33,14 +33,9 @@ pi_results = {
 def main():
 
     request_body = sys.stdin.read()
-    pi_results['temperature'] = request_body
 
     submitted_signature = None
     try:
-        print('Content-Type: text/html')
-        print('\n\r')
-        print(os.environ)
-
         submitted_signature = os.environ['HTTP_X_MESSAGE_SIGNATURE']
     except KeyError:
         print_error('X-Message-Signature header missing')
@@ -50,13 +45,13 @@ def main():
     if is_valid:
 
         # stdin already read out, so assign fp to FieldStorage
-        #tmpfile = tempfile.TemporaryFile()
-        #tmpfile.write(request_body)
-        #tmpfile.seek(0)
-        #form = cgi.FieldStorage(fp=tmpfile)
-        #tmpfile.close()
+        tmpfile = tempfile.TemporaryFile()
+        tmpfile.write(request_body)
+        tmpfile.seek(0)
+        form = cgi.FieldStorage(fp=tmpfile)
+        tmpfile.close()
 
-        form = cgi.FieldStorage()
+        #form = cgi.FieldStorage()
         action = form.getfirst('action')
 
         display = Display()
