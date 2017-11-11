@@ -15,7 +15,7 @@ DISPLAY
 
 APACHE
 
-sudo a2enmod userdir
+sudo a2enmod cgi
 
 /etc/apache2/sites-available/mypidrei.com.conf
 ####################################

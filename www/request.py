@@ -39,7 +39,7 @@ def main():
     try:
         submitted_signature = os.environ['HTTP-X-MESSAGE-SIGNATURE']
     except KeyError:
-        print_error()
+        print_error('x-message-signature missing')
 
     is_valid = True#is_valid_signature(submitted_signature, SECRET_KEY, request_body)
 
@@ -66,7 +66,7 @@ def main():
         print_result(json.dumps(pi_results))
 
     else:
-        print_error()
+        print_error('signature invalid')
 
 
 def is_valid_signature(signature, secret_key, body):
@@ -83,11 +83,11 @@ def print_result(result):
     print(result)
 
 
-def print_error():
+def print_error(error_message):
 
     print('Status: 403 Forbidden')
     print('\n\r')
-    print('Forbidden')
+    print(error_message)
     sys.exit()
 
 
