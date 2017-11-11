@@ -37,7 +37,10 @@ def main():
 
     submitted_signature = None
     try:
+        print('Content-Type: text/html')
+        print('\n\r')
         print(os.environ)
+        
         submitted_signature = os.environ['HTTP-X-MESSAGE-SIGNATURE']
     except KeyError:
         print_error('X-Message-Signature header missing')
