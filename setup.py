@@ -13,6 +13,14 @@ sudo python setup.py install
 DISPLAY
 
 
+FINGERPRINT
+wget -O - http://apt.pm-codeworks.de/pm-codeworks.de.gpg | apt-key add -
+wget http://apt.pm-codeworks.de/pm-codeworks.list -P /etc/apt/sources.list.d/
+
+apt-get update
+apt-get install python-fingerprint --yes
+
+
 APACHE
 
 sudo a2enmod cgi

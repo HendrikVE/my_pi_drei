@@ -20,13 +20,9 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from drivers.adafruit_22_display.Display import Display
+from webserver.config import config
 
 LOGFILE = 'request.log'
-LOGGING_FORMAT = '[%(levelname)s]: %(asctime)s\n'\
-                 + 'in %(filename)s in %(funcName)s on line %(lineno)d\n'\
-                 + '%(message)s\n'
-
-SECRET_KEY = 'meinkey'
 
 pi_results = {
     'displayState': None,  # on or off
@@ -47,7 +43,7 @@ def main():
     except KeyError:
         print_error('X-Message-Signature header missing')
 
-    is_valid = is_valid_signature(submitted_signature, SECRET_KEY, request_body)
+    is_valid = is_valid_signature(submitted_signature, config.SECRET_KEY, request_body)
 
     if is_valid:
 
@@ -106,7 +102,7 @@ def print_error(error_message):
 
 if __name__ == '__main__':
 
-    logging.basicConfig(filename=LOGFILE, format=LOGGING_FORMAT,
+    logging.basicConfig(filename=LOGFILE, format=config.LOGGING_FORMAT,
                         datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
     try:
