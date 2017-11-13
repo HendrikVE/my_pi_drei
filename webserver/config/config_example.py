@@ -5,4 +5,4 @@ LOGGING_FORMAT = '[%(levelname)s]: %(asctime)s\n'\
                  + 'in %(filename)s in %(funcName)s on line %(lineno)d\n'\
                  + '%(message)s\n'
 
-SECRET_KEY = 'meinkey'
+SECRET_KEY = 'YOUR_SECRET_KEY'

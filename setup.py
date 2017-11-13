@@ -52,4 +52,9 @@ add in /etc/hosts
 ####################################
 
 
+CONFIG
+copy config_example and rename the copy to config.py
+    - replace all placeholder in the file
+
+
 """
