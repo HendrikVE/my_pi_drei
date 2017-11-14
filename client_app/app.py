@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# needs to be run as sudo to enable reboot and shutdown commands
+
 from __future__ import print_function
 
 import logging

@@ -2,6 +2,17 @@
 # -*- coding: UTF-8 -*-
 
 """
+BASIC SYSTEM
+enable SSH
+change line in /etc/ssh/sshd_config
+####################################################
+PermitRootLogin no
+####################################################
+
+banning ips trying to login with wrong credentials
+sudo apt-get install fail2ban
+
+
 DHT22
 sudo apt-get update
 sudo apt-get install build-essential python-dev python-openssl git
@@ -78,6 +89,24 @@ sudo a2enmod cgi
 </VirtualHost>
 ####################################
 sudo a2ensite mypidrei.com.conf
+
+disable indexing in /etc/apache2/apache2.conf
+####################################
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+</Directory>
+####################################
+to
+####################################
+<Directory /var/www/>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+</Directory>
+####################################
+
 sudo service apache2 restart
 
 
