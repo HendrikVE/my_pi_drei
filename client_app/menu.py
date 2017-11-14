@@ -35,7 +35,8 @@ class Menu(object):
         index = 0
         for action in self._menu_actions:
 
-            menu_manual.append(str(index) + ' ')
+            # left align number and fixed width of 3
+            menu_manual.append('{0:<3}'.format(str(index)))
             menu_manual.append(action.get_name() + '\n')
 
             index += 1
