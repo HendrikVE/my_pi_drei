@@ -14,6 +14,8 @@ from getpass import getpass
 # append root of the python code tree to sys.apth so that imports are working
 #   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
 #   which could be forget
+from subprocess import Popen
+
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
@@ -92,6 +94,14 @@ def exit_program():
 
     else:
         print('Action denied')
+
+
+def reboot_system():
+    Popen(['reboot'])
+
+
+def shutdown_system():
+    Popen(['shutdown', '-h', '0'])
 
 
 def set_display_intensity():
@@ -185,8 +195,10 @@ if __name__ == '__main__':
             MenuAction('turn on display', display.turn_on),
             MenuAction('turn off display', display.turn_off),
             MenuAction('set display intensity', set_display_intensity),
-            MenuAction('print temperature', None, dht22.get_temperature()),
-            MenuAction('print humidity', None, dht22.get_humidity()),
+            MenuAction('print temperature', output_string=dht22.get_temperature()),
+            MenuAction('print humidity', output_string=dht22.get_humidity()),
+            MenuAction('shutdown', shutdown_system),
+            MenuAction('reboot', reboot_system),
             MenuAction('exit program', exit_program),
         ]
 

@@ -49,7 +49,7 @@ class MenuAction(object):
     _output_string = None
     _method = None
 
-    def __init__(self, action_name, method, output_string=None):
+    def __init__(self, action_name, method=None, output_string=None):
 
         self._action_name = action_name
         self._output_string = output_string

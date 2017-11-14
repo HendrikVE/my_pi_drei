@@ -86,10 +86,12 @@ add in /etc/hosts
 127.0.0.2       mypidrei.com
 ####################################
 
+You will need to forward port 80 (Webserver) and 22 (SSH, optional) in your router settings
+
 
 CONFIG
-copy config_example and rename the copy to config.py
-    - replace all placeholder in the file
+copy from webserver/config config_example and rename the copy to config.py
+    -> replace all placeholder in the file
 
 
 """
