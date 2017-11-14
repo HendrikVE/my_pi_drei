@@ -27,7 +27,7 @@ from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
 from config import config
 
-SCREENSAVER_TIMEOUT = 20.0
+SCREENSAVER_TIMEOUT = 120.0
 
 LOGFILE = 'app.log'
 
@@ -157,7 +157,7 @@ def get_user_input(after_input_func, prompt=''):
 
             if keycode == 13:
                 if len(user_input) == 0:
-                    # ignore empty input
+                    # ignore empty input, change input_char, so the loop continues
                     input_char = 'X'
                 else:
                     # print a newline on enter
