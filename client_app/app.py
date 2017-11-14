@@ -21,13 +21,11 @@ sys.path.append(PROJECT_ROOT_DIR)
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
+from webserver.config import config
 
 SCREENSAVER_TIMEOUT = 20.0
 
 LOGFILE = 'app.log'
-LOGGING_FORMAT = '[%(levelname)s]: %(asctime)s\n'\
-                 + 'in %(filename)s in %(funcName)s on line %(lineno)d\n'\
-                 + '%(message)s\n'
 
 display = Display()
 display.open()
@@ -146,9 +144,13 @@ def get_user_input(after_input_func, prompt=''):
         if keycode in allowed_keycodes:
 
             if keycode == 13:
-                # print a newline on enter
-                sys.stdout.write('\n\r')
-                user_input.append(input_char)
+                if len(user_input) == 0:
+                    # ignore empty input
+                    input_char = 'X'
+                else:
+                    # print a newline on enter
+                    sys.stdout.write('\n\r')
+                    user_input.append(input_char)
 
             elif keycode == 127:
 
@@ -172,7 +174,7 @@ def get_user_input(after_input_func, prompt=''):
 
 if __name__ == '__main__':
 
-    logging.basicConfig(filename=LOGFILE, format=LOGGING_FORMAT,
+    logging.basicConfig(filename=LOGFILE, format=config.LOGGING_FORMAT,
                         datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
     try:

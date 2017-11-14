@@ -21,6 +21,41 @@ apt-get update
 apt-get install python-fingerprint --yes
 
 
+Dynamic DNS client with NoIP.com
+(https://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client-on-ubuntu/)
+
+cd /usr/local/src/
+wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+tar xf noip-duc-linux.tar.gz
+cd noip-2.1.9-1/
+make install
+
+Autostart noip2 on boot
+
+sudo nano /etc/systemd/system/noip2.service
+
+script from https://gist.github.com/NathanGiesbrecht/da6560f21e55178bcea7fdd9ca2e39b5
+####################################################
+[Unit]
+Description=No-ip.com dynamic IP address updater
+After=network.target
+After=syslog.target
+
+[Install]
+WantedBy=multi-user.target
+Alias=noip.service
+
+[Service]
+# Start main service
+ExecStart=/usr/local/bin/noip2
+Restart=always
+Type=forking
+####################################################
+
+sudo systemctl enable noip2
+sudo systemctl start noip2
+
+
 APACHE
 
 sudo a2enmod cgi
