@@ -20,7 +20,8 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from drivers.adafruit_22_display.Display import Display
-from webserver.config import config
+from config import config
+from webserver.config import config as webserver_config
 
 LOGFILE = 'request.log'
 
@@ -43,7 +44,7 @@ def main():
     except KeyError:
         print_error('X-Message-Signature header missing')
 
-    is_valid = is_valid_signature(submitted_signature, config.SECRET_KEY, request_body)
+    is_valid = is_valid_signature(submitted_signature, webserver_config.SECRET_KEY, request_body)
 
     if is_valid:
 

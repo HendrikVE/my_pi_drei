@@ -21,7 +21,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
-from webserver.config import config
+from config import config
 
 SCREENSAVER_TIMEOUT = 20.0
 
