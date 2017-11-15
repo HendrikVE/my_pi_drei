@@ -71,24 +71,23 @@ APACHE
 
 sudo a2enmod cgi
 
-/etc/apache2/sites-available/mypidrei.com.conf
+/etc/apache2/sites-available/mypidrei.ddns.net.conf
 ####################################
-<VirtualHost 127.0.0.2:80>
+<VirtualHost *:80>
 
-        <Directory /var/www/my_pi_drei/www/>
+        <Directory /var/www/my_pi_drei/webserver/www/>
                 Options +ExecCGI
                 DirectoryIndex index.py
         </Directory>
         AddHandler cgi-script .py
 
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/my_pi_drei/www/
-        ServerName www.mypidrei.com
-        ServerAlias mypidrei.com
+        DocumentRoot /var/www/my_pi_drei/webserver/www/
+        ServerName mypidrei.ddns.net
 
 </VirtualHost>
 ####################################
-sudo a2ensite mypidrei.com.conf
+sudo a2ensite mypidrei.ddns.net.conf
 
 disable indexing in /etc/apache2/apache2.conf
 ####################################
@@ -116,6 +115,13 @@ add in /etc/hosts
 ####################################
 
 You will need to forward port 80 (Webserver) and 22 (SSH, optional) in your router settings
+
+
+SSL For Apache using Certbot
+You will need to forward port 443 (HTTPS) in your router settings
+
+sudo apt-get install python-certbot-apache
+sudo certbot --apache -d mypidrei.ddns.net (needs user input. Recommended option "Secure"(redirection of http to https))
 
 
 CONFIG
