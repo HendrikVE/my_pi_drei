@@ -53,9 +53,6 @@ def main():
         missing = '%s in json' % jk.REQUEST_KEY_ACTION_KEY
         action_key = json_request[jk.REQUEST_KEY_ACTION_KEY]
 
-        missing = '%s in json' % jk.REQUEST_KEY_ACTION_ARGUMENTS
-        action_arguments = json_request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
-
     except KeyError:
         json_result[jk.RESULT_KEY_ERROR] = '%s missing' % missing
         print_error(json_result)
@@ -72,8 +69,6 @@ def main():
         else:
             result = api_function(json_request)
             json_result[action_key] = result
-
-        print_result(json_result)
 
     else:
         json_result[jk.RESULT_KEY_ERROR] = 'signature invalid'
