@@ -19,7 +19,6 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from drivers.adafruit_22_display.Display import Display
 from config import config
 from webserver.config import config as webserver_config
 
@@ -29,10 +28,14 @@ import json_keys as jk
 LOGFILE = 'request.log'
 
 api_action_function_dict = {
-    jk.REQUEST_KEY_DISPLAY_STATE: api.get_display_state,
-    jk.REQUEST_KEY_DISPLAY_INTENSITY: api.get_display_intensity,
-    jk.REQUEST_KEY_TEMPERATURE: api.get_temperature,
-    jk.REQUEST_KEY_HUMIDITY: api.get_humidity,
+    jk.REQUEST_KEY_GET_DISPLAY_STATE: api.get_display_state,
+    jk.REQUEST_KEY_SET_DISPLAY_STATE: api.set_display_state,
+
+    jk.REQUEST_KEY_GET_DISPLAY_INTENSITY: api.get_display_intensity,
+    jk.REQUEST_KEY_SET_DISPLAY_INTENSITY: api.set_display_intensity,
+
+    jk.REQUEST_KEY_GET_TEMPERATURE: api.get_temperature,
+    jk.REQUEST_KEY_GET_HUMIDITY: api.get_humidity,
 }
 
 
@@ -47,11 +50,11 @@ def main():
     try:
         submitted_signature = os.environ['HTTP_X_MESSAGE_SIGNATURE']
 
-        missing = 'action_key in json'
-        action_key = json_request['action_key']
+        missing = '%s in json' % jk.REQUEST_KEY_ACTION_KEY
+        action_key = json_request[jk.REQUEST_KEY_ACTION_KEY]
 
-        missing = 'action_arguments in json'
-        action_arguments = json_request['action_arguments']
+        missing = '%s in json' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        action_arguments = json_request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
 
     except KeyError:
         json_result[jk.RESULT_KEY_ERROR] = '%s missing' % missing
@@ -99,7 +102,7 @@ def is_valid_signature(signature, secret_key, body):
     computed_signature = 'sha512=' + hmac.new(secret_key, body, hashlib.sha512).hexdigest()
 
     #return computed_signature == signature
-    return "signature" == signature
+    return 'signature' == signature
 
 
 def print_result(result_json):
