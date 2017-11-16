@@ -4,9 +4,10 @@
 """
 BASIC SYSTEM
 enable SSH
-change line in /etc/ssh/sshd_config
+change lines in /etc/ssh/sshd_config
 ####################################################
 PermitRootLogin no
+PasswordAuthentication no
 ####################################################
 
 banning ips trying to login with wrong credentials

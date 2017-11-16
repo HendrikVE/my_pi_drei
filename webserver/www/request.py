@@ -23,14 +23,18 @@ from drivers.adafruit_22_display.Display import Display
 from config import config
 from webserver.config import config as webserver_config
 
+import api_functions as api
+import json_keys as jk
+
 LOGFILE = 'request.log'
 
-pi_results = {
-    'displayState': None,  # on or off
-    'displayIntensity': None,  # 0-1023
-    'temperature': None,  # int
-    'humidity': None,  # int
-    'error': None,
+pi_results = {}
+
+api_action_function_dict = {
+    jk.REQUEST_KEY_DISPLAY_STATE: api.get_display_state,
+    jk.REQUEST_KEY_DISPLAY_INTENSITY: api.get_display_intensity,
+    jk.REQUEST_KEY_TEMPERATURE: api.get_temperature,
+    jk.REQUEST_KEY_HUMIDITY: api.get_humidity,
 }
 
 
@@ -50,15 +54,16 @@ def main():
 
         form = get_field_storage(request_body)
 
-        action = form.getfirst('action')
+        action_key = form.getfirst('action_key')
 
-        display = Display()
-        if action == '1':
-            display.turn_on()
-            pi_results['displayState'] = 'on'
-        elif action == '2':
-            display.turn_off()
-            pi_results['displayState'] = 'off'
+        api_function = api_action_function_dict.get(action_key, None)
+
+        if api_function is None:
+            pi_results[jk.RESULT_KEY_ERROR] = 'not a valid api call'
+
+        else:
+            result = api_function()
+            pi_results[action_key] = result
 
         print_result(json.dumps(pi_results))
 
@@ -111,6 +116,6 @@ if __name__ == '__main__':
 
     except Exception as e:
         logging.error(str(e), exc_info=True)
-        pi_results['error'] = str(e)
+        pi_results[jk.RESULT_KEY_ERROR] = str(e)
 
         print_result(json.dumps(pi_results))
