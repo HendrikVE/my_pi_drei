@@ -55,6 +55,7 @@ def main():
         form = get_field_storage(request_body)
 
         action_key = form.getfirst('action_key')
+        action_arguments = form.getfirst('action_arguments')
 
         api_function = api_action_function_dict.get(action_key, None)
 
@@ -62,7 +63,7 @@ def main():
             pi_results[jk.RESULT_KEY_ERROR] = 'not a valid api call'
 
         else:
-            result = api_function()
+            result = api_function(action_arguments)
             pi_results[action_key] = result
 
         print_result(json.dumps(pi_results))
