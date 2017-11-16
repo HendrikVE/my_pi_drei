@@ -70,7 +70,7 @@ def main():
             json_result[jk.RESULT_KEY_ERROR] = 'not a valid api call'
 
         else:
-            result = api_function(action_arguments)
+            result = api_function(json_request)
             json_result[action_key] = result
 
         print_result(json_result)
