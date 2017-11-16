@@ -41,22 +41,26 @@ api_action_function_dict = {
 def main():
 
     request_body = sys.stdin.read()
+    json_request = json.loads(request_body)
 
-    submitted_signature = None
+    missing = 'X-Message-Signature in HTTP header'
     try:
         submitted_signature = os.environ['HTTP_X_MESSAGE_SIGNATURE']
+
+        missing = 'action_key in json'
+        action_key = json_request['action_key']
+
+        missing = 'action_arguments in json'
+        action_arguments = json_request['action_arguments']
+
     except KeyError:
-        print_error('X-Message-Signature header missing')
+        pi_results[jk.RESULT_KEY_ERROR] = '%s missing' % missing
+        print_error(pi_results)
+        return
 
     is_valid = is_valid_signature(submitted_signature, webserver_config.SECRET_KEY, request_body)
 
     if is_valid:
-
-        form = get_field_storage(request_body)
-
-        action_key = form.getfirst('action_key')
-        action_arguments = form.getfirst('action_arguments')
-
         api_function = api_action_function_dict.get(action_key, None)
 
         if api_function is None:
@@ -66,10 +70,11 @@ def main():
             result = api_function(action_arguments)
             pi_results[action_key] = result
 
-        print_result(json.dumps(pi_results))
+        print_result(pi_results)
 
     else:
-        print_error('signature invalid')
+        pi_results[jk.RESULT_KEY_ERROR] = 'signature invalid'
+        print_error(pi_results)
 
 
 def get_field_storage(request_body):
@@ -92,18 +97,18 @@ def is_valid_signature(signature, secret_key, body):
     return "signature" == signature
 
 
-def print_result(result):
+def print_result(result_json):
 
     print('Content-Type: text/html')
     print('\n\r')
-    print(result)
+    print(json.dumps(result_json))
 
 
-def print_error(error_message):
+def print_error(result_json):
 
     print('Status: 403 Forbidden')
     print('\n\r')
-    print(error_message)
+    print(json.dumps(result_json))
     sys.exit()
 
 
@@ -119,4 +124,4 @@ if __name__ == '__main__':
         logging.error(str(e), exc_info=True)
         pi_results[jk.RESULT_KEY_ERROR] = str(e)
 
-        print_result(json.dumps(pi_results))
+        print_result(pi_results)
