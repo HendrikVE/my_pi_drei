@@ -28,8 +28,6 @@ import json_keys as jk
 
 LOGFILE = 'request.log'
 
-pi_results = {}
-
 api_action_function_dict = {
     jk.REQUEST_KEY_DISPLAY_STATE: api.get_display_state,
     jk.REQUEST_KEY_DISPLAY_INTENSITY: api.get_display_intensity,
@@ -39,6 +37,8 @@ api_action_function_dict = {
 
 
 def main():
+
+    json_result = {}
 
     request_body = sys.stdin.read()
     json_request = json.loads(request_body)
@@ -54,8 +54,8 @@ def main():
         action_arguments = json_request['action_arguments']
 
     except KeyError:
-        pi_results[jk.RESULT_KEY_ERROR] = '%s missing' % missing
-        print_error(pi_results)
+        json_result[jk.RESULT_KEY_ERROR] = '%s missing' % missing
+        print_error(json_result)
         return
 
     is_valid = is_valid_signature(submitted_signature, webserver_config.SECRET_KEY, request_body)
@@ -64,17 +64,22 @@ def main():
         api_function = api_action_function_dict.get(action_key, None)
 
         if api_function is None:
-            pi_results[jk.RESULT_KEY_ERROR] = 'not a valid api call'
+            json_result[jk.RESULT_KEY_ERROR] = 'not a valid api call'
 
         else:
             result = api_function(action_arguments)
-            pi_results[action_key] = result
+            json_result[action_key] = result
 
-        print_result(pi_results)
+        print_result(json_result)
 
     else:
-        pi_results[jk.RESULT_KEY_ERROR] = 'signature invalid'
-        print_error(pi_results)
+        json_result[jk.RESULT_KEY_ERROR] = 'signature invalid'
+
+    if jk.RESULT_KEY_ERROR in json_result:
+        print_error(json_result)
+
+    else:
+        print_result(json_result)
 
 
 def get_field_storage(request_body):
@@ -122,6 +127,7 @@ if __name__ == '__main__':
 
     except Exception as e:
         logging.error(str(e), exc_info=True)
-        pi_results[jk.RESULT_KEY_ERROR] = str(e)
 
-        print_result(pi_results)
+        json_result = {jk.RESULT_KEY_ERROR: str(e)}
+
+        print_error(json_result)
