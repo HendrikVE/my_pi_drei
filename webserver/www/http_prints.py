@@ -21,11 +21,6 @@ def print_unauthorized(result_json):
     sys.exit()
 
 
-def print_forbidden(result_json):
-    __print_with_http_status__(403, result_json)
-    sys.exit()
-
-
 def print_internal_server_error(result_json):
     __print_with_http_status__(500, result_json)
     sys.exit()
@@ -39,7 +34,7 @@ def __print_with_http_status__(status_code, result_json, skip_json_dump=False):
 
         except TypeError as e:
             __print_with_http_status__(500, str(e), skip_json_dump=True)
-            return
+            sys.exit()
 
     print('Content-Type: application/json')
 
@@ -51,9 +46,6 @@ def __print_with_http_status__(status_code, result_json, skip_json_dump=False):
 
     elif status_code == 401:
         print('Status: 401 Unauthorized')
-
-    elif status_code == 403:
-        print('Status: 403 Forbidden')
 
     elif status_code == 500:
         print('Status: 500 Internal Server Error')
