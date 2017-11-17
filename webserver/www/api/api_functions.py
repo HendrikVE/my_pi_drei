@@ -68,7 +68,7 @@ def set_display_state(request):
         arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
 
     except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
         return json_result
 
     if arguments == 'on':
@@ -100,7 +100,7 @@ def set_display_intensity(request):
         arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
 
     except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
         return json_result
 
     try:

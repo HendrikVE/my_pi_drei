@@ -22,8 +22,8 @@ sys.path.append(PROJECT_ROOT_DIR)
 from config import config
 from webserver.config import config as webserver_config
 
-import api_functions as api
-import json_keys as jk
+import api.api_functions as api
+import api.json_keys as jk
 
 LOGFILE = 'request.log'
 
