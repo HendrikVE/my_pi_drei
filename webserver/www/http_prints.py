@@ -7,33 +7,33 @@ import json
 import sys
 
 
-def print_result(result_json):
-    __print_with_http_status__(200, result_json)
+def print_result(json_dict):
+    __print_with_http_status__(200, json_dict)
 
 
-def print_bad_request(result_json):
-    __print_with_http_status__(400, result_json)
+def print_bad_request(json_dict):
+    __print_with_http_status__(400, json_dict)
     sys.exit()
 
 
-def print_unauthorized(result_json):
-    __print_with_http_status__(401, result_json)
+def print_unauthorized(json_dict):
+    __print_with_http_status__(401, json_dict)
     sys.exit()
 
 
-def print_internal_server_error(result_json):
-    __print_with_http_status__(500, result_json)
+def print_internal_server_error(json_dict):
+    __print_with_http_status__(500, json_dict)
     sys.exit()
 
 
-def __print_with_http_status__(status_code, result_json, skip_json_dump=False):
+def __print_with_http_status__(status_code, json_dict, output_string=None):
 
-    if not skip_json_dump:
+    if output_string is None:
         try:
-            result_json = json.dumps(result_json)
+            output_string = json.dumps(json_dict)
 
-        except TypeError as e:
-            __print_with_http_status__(500, str(e), skip_json_dump=True)
+        except Exception as e:
+            __print_with_http_status__(500, None, output_string=str(e))
             sys.exit()
 
     print('Content-Type: application/json')
@@ -51,4 +51,4 @@ def __print_with_http_status__(status_code, result_json, skip_json_dump=False):
         print('Status: 500 Internal Server Error')
 
     print('\n\r')
-    print(result_json)
+    print(output_string)
