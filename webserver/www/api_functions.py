@@ -35,6 +35,14 @@ def __json_result_template__():
 # def get_temperature(request):                                                                                        #
 #     json_result = __json_result_template__()                                                                         #
 #                                                                                                                      #
+#     # try-except-block only needed if REQUEST_KEY_ACTION_ARGUMENTS index is needed                                   #
+#     try:                                                                                                             #
+#         arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]                                                         #
+#                                                                                                                      #
+#     except KeyError:                                                                                                 #
+#         json_result[jk.RESULT_KEY_ERROR] = 'missing %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS                            #
+#         return json_result                                                                                           #
+#                                                                                                                      #
 #     # your code here                                                                                                 #
 #                                                                                                                      #
 #     return json_result                                                                                               #
@@ -55,7 +63,13 @@ def set_display_state(request):
     json_result = __json_result_template__()
 
     display = Display()
-    arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+
+    try:
+        arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+
+    except KeyError:
+        json_result[jk.RESULT_KEY_ERROR] = 'missing %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        return json_result
 
     if arguments == 'on':
         display.turn_on()
@@ -81,7 +95,13 @@ def set_display_intensity(request):
     json_result = __json_result_template__()
 
     display = Display()
-    arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+
+    try:
+        arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+
+    except KeyError:
+        json_result[jk.RESULT_KEY_ERROR] = 'missing %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        return json_result
 
     try:
         intensity = int(arguments)
