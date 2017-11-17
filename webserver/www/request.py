@@ -16,6 +16,8 @@ import tempfile
 #   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
 #   which could be forget
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
+WEBSERVER_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
+
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
@@ -23,9 +25,9 @@ from config import config
 from webserver.config import config as webserver_config
 
 import api.api_functions as api
-import api.json_keys as jk
+import api.api_json_keys as jk
 
-LOGFILE = 'request.log'
+LOGFILE = os.path.join(WEBSERVER_ROOT_DIR, 'log', 'request.log')
 
 api_action_function_dict = {
     jk.REQUEST_KEY_GET_DISPLAY_STATE: api.get_display_state,

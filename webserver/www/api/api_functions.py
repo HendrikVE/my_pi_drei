@@ -12,7 +12,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from drivers.adafruit_22_display.Display import Display
-import json_keys as jk
+import api_json_keys as jk
 
 
 def __json_result_template__():

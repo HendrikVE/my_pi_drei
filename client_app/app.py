@@ -12,13 +12,14 @@ import sys
 import termios
 import tty
 from getpass import getpass
+from subprocess import Popen
 
 # append root of the python code tree to sys.apth so that imports are working
 #   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
 #   which could be forget
-from subprocess import Popen
-
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
+CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
+
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
@@ -29,7 +30,7 @@ from config import config
 
 SCREENSAVER_TIMEOUT = 120.0
 
-LOGFILE = 'app.log'
+LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 
 display = Display()
 display.open()
