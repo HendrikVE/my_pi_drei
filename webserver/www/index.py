@@ -15,12 +15,12 @@ print (textwrap.dedent("""
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 
-                <title>RIOT OS App Market</title>
+                <title>MyPiDrei API</title>
             </head>
 
             <body>
                 
-                <p>Welcome on the MyPiDrei-API. See information about the project <a href="https://github.com/HendrikVE/my_pi_drei">on GitHub</a></p>
+                <p>Welcome on the MyPiDrei API. See information about the project <a href="https://github.com/HendrikVE/my_pi_drei">on GitHub</a></p>
 
             </body>
         </html>

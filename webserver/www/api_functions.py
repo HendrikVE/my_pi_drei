@@ -14,35 +14,71 @@ sys.path.append(PROJECT_ROOT_DIR)
 from drivers.adafruit_22_display.Display import Display
 import json_keys as jk
 
-# All API-functions need to accept json string request as argument and return a string as result
+
+def __json_result_template__():
+
+    # insert only mandatory attributes here
+    json_result = {
+        jk.RESULT_KEY_RESULT: None,
+        jk.RESULT_KEY_ERROR: None,
+    }
+
+    return json_result
+
+
+########################################################################################################################
+# All API-functions need to accept json string request as argument and return a string as result.                      #
+#                                                                                                                      #
+#                                                                                                                      #
+# Create a new api-function with the following template:                                                               #
+#                                                                                                                      #
+# def get_temperature(request):                                                                                        #
+#     json_result = __json_result_template__()                                                                         #
+#                                                                                                                      #
+#     # your code here                                                                                                 #
+#                                                                                                                      #
+#     return json_result                                                                                               #
+#                                                                                                                      #
+########################################################################################################################
 
 
 def get_display_state(request):
-    return 'display state'
+    json_result = __json_result_template__()
+
+    dummy_state = 'off'
+    json_result[jk.RESULT_KEY_RESULT] = dummy_state
+
+    return json_result
 
 
 def set_display_state(request):
+    json_result = __json_result_template__()
 
     display = Display()
     arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
 
     if arguments == 'on':
         display.turn_on()
-        return 'turned on display'
+        json_result[jk.RESULT_KEY_RESULT] = 'turned on display'
 
     elif arguments == 'off':
         display.turn_off()
-        return 'turned off display'
+        json_result[jk.RESULT_KEY_RESULT] = 'turned off display'
 
-    else:
-        return 'invalid display state'
+    return json_result
 
 
 def get_display_intensity(request):
-    return 'display intensity'
+    json_result = __json_result_template__()
+
+    dummy_intensity = 1000
+    json_result[jk.RESULT_KEY_RESULT] = dummy_intensity
+
+    return json_result
 
 
 def set_display_intensity(request):
+    json_result = __json_result_template__()
 
     display = Display()
     arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
@@ -50,18 +86,27 @@ def set_display_intensity(request):
     try:
         intensity = int(arguments)
         display.set_intensity(intensity)
-        return 'set display intensity to %d' % intensity
+        json_result[jk.RESULT_KEY_RESULT] = 'set display intensity to %d' % intensity
 
     except ValueError as e:
-        return str(e)
+        json_result[jk.RESULT_KEY_ERROR] = str(e)
+
+    return json_result
 
 
 def get_temperature(request):
-    return 'temperature'
+    json_result = __json_result_template__()
+
+    dummy_temperature = 42
+    json_result[jk.RESULT_KEY_RESULT] = dummy_temperature
+
+    return json_result
 
 
 def get_humidity(request):
-    return 'humidity'
+    json_result = __json_result_template__()
 
+    dummy_humidity = 25
+    json_result[jk.RESULT_KEY_RESULT] = dummy_humidity
 
-
+    return json_result
