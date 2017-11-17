@@ -10,7 +10,6 @@ import json
 import logging
 import os
 import sys
-import tempfile
 
 # append root of the python code tree to sys.apth so that imports are working
 #   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
@@ -23,6 +22,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 
 from config import config
 from webserver.config import config as webserver_config
+import http_prints
 
 import api.api_functions as api
 import api.api_json_keys as jk
@@ -48,18 +48,27 @@ def main():
     request_body = sys.stdin.read()
     json_request = json.loads(request_body)
 
-    missing = 'X-Message-Signature in HTTP header'
+    # check for existing signature
+    submitted_signature = None
     try:
         submitted_signature = os.environ['HTTP_X_MESSAGE_SIGNATURE']
 
-        missing = '%s in json' % jk.REQUEST_KEY_ACTION_KEY
+    except KeyError:
+        missing = 'X-Message-Signature in HTTP header'
+        json_result[jk.RESULT_KEY_ERROR] = '%s missing' % missing
+        http_prints.print_unauthorized(json_result)
+
+    # check for existing action_key
+    action_key = None
+    try:
         action_key = json_request[jk.REQUEST_KEY_ACTION_KEY]
 
     except KeyError:
+        missing = '%s in json' % jk.REQUEST_KEY_ACTION_KEY
         json_result[jk.RESULT_KEY_ERROR] = '%s missing' % missing
-        print_error(json_result)
-        return
+        http_prints.print_bad_request(json_result)
 
+    # continue if signature is valid
     is_valid = is_valid_signature(submitted_signature, webserver_config.SECRET_KEY, request_body)
 
     if is_valid:
@@ -67,6 +76,7 @@ def main():
 
         if api_function is None:
             json_result[jk.RESULT_KEY_ERROR] = 'not a valid api call'
+            http_prints.print_bad_request(json_result)
 
         else:
             result = api_function(json_request)
@@ -76,24 +86,10 @@ def main():
 
     else:
         json_result[jk.RESULT_KEY_ERROR] = 'signature invalid'
+        http_prints.print_unauthorized(json_result)
 
-    if jk.RESULT_KEY_ERROR in json_result:
-        print_error(json_result)
-
-    else:
-        print_result(json_result)
-
-
-def get_field_storage(request_body):
-
-    # stdin already read out, so assign fp to FieldStorage
-    tmpfile = tempfile.TemporaryFile()
-    tmpfile.write(request_body)
-    tmpfile.seek(0)
-    form = cgi.FieldStorage(fp=tmpfile)
-    tmpfile.close()
-
-    return form
+    # is only printed if no error occurred (script is aborted when calling one of the error functions of http_prints)
+    http_prints.print_result(json_result)
 
 
 def is_valid_signature(signature, secret_key, body):
@@ -102,21 +98,6 @@ def is_valid_signature(signature, secret_key, body):
 
     #return computed_signature == signature
     return 'signature' == signature
-
-
-def print_result(result_json):
-
-    print('Content-Type: text/html')
-    print('\n\r')
-    print(json.dumps(result_json))
-
-
-def print_error(result_json):
-
-    print('Status: 403 Forbidden')
-    print('\n\r')
-    print(json.dumps(result_json))
-    sys.exit()
 
 
 if __name__ == '__main__':
@@ -129,7 +110,5 @@ if __name__ == '__main__':
 
     except Exception as e:
         logging.error(str(e), exc_info=True)
-
         json_result = {jk.RESULT_KEY_ERROR: str(e)}
-
-        print_error(json_result)
+        http_prints.print_internal_server_error(json_result)
