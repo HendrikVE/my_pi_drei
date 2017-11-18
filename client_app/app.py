@@ -15,8 +15,6 @@ from getpass import getpass
 from subprocess import Popen
 
 # append root of the python code tree to sys.apth so that imports are working
-#   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
-#   which could be forget
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 
@@ -126,6 +124,47 @@ def set_display_intensity():
 
 def get_user_input(after_input_func, prompt=''):
 
+    def input_loop():
+
+        user_input = []
+        input_char = 'X'
+
+        # enter has keycode 13
+        while ord(input_char) != 13:
+
+            input_char = sys.stdin.read(1)
+
+            keycode = ord(input_char)
+            if keycode in allowed_keycodes:
+
+                if keycode == 13:
+                    if len(user_input) == 0:
+                        # ignore empty input, change input_char, so the loop continues
+                        input_char = 'X'
+                    else:
+                        # print a newline on enter
+                        sys.stdout.write('\n\r')
+                        user_input.append(input_char)
+
+                elif keycode == 127:
+
+                    # dont be able to remove prompt
+                    if len(user_input) > 0:
+                        # space behind '\b' important to replace char with 'empty' one on terminal
+                        # '\b' is moving cursor 1 step back
+                        sys.stdout.write('\b \b')
+                        user_input.pop()
+
+                else:
+                    sys.stdout.write(input_char)
+                    user_input.append(input_char)
+
+                sys.stdout.flush()
+
+            after_input_func()
+
+        return user_input
+
     allowed_keycodes = []
     allowed_keycodes.extend(range(ord('0'), ord('9')+1))    # numbers
     allowed_keycodes.extend(range(ord('A'), ord('Z')))      # uppercase letters
@@ -134,53 +173,16 @@ def get_user_input(after_input_func, prompt=''):
     allowed_keycodes.append(127)                            # backspace
     allowed_keycodes.append(13)                             # enter
 
-    sys.stdout.write(prompt)
+    # get single char, without the need to press enter for newline
+    # http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        user_input = input_loop()
 
-    user_input = []
-    input_char = 'X'
-
-    # enter has keycode 13
-    while ord(input_char) != 13:
-
-        # get single char, without the need to press enter for newline
-        # http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            input_char = sys.stdin.read(1)
-
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
-        keycode = ord(input_char)
-        if keycode in allowed_keycodes:
-
-            if keycode == 13:
-                if len(user_input) == 0:
-                    # ignore empty input, change input_char, so the loop continues
-                    input_char = 'X'
-                else:
-                    # print a newline on enter
-                    sys.stdout.write('\n\r')
-                    user_input.append(input_char)
-
-            elif keycode == 127:
-
-                # dont be able to remove prompt
-                if len(user_input) > 0:
-                    # space behind '\b' important to replace char with 'empty' one on terminal
-                    # '\b' is moving cursor 1 step back
-                    sys.stdout.write('\b \b')
-                    user_input.pop()
-
-            else:
-                sys.stdout.write(input_char)
-                user_input.append(input_char)
-
-            sys.stdout.flush()
-
-        after_input_func()
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
     return ''.join(user_input).strip()
 

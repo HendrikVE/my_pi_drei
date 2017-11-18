@@ -3,7 +3,6 @@
 
 from __future__ import print_function
 
-import cgi
 import hashlib
 import hmac
 import json
@@ -12,8 +11,6 @@ import os
 import sys
 
 # append root of the python code tree to sys.apth so that imports are working
-#   alternative: add path to riotam_backend to the PYTHONPATH environment variable, but this includes one more step
-#   which could be forget
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 WEBSERVER_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 
