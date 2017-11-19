@@ -29,8 +29,8 @@ REVERSE = '\033[;7m'
 RESET = '\033[0;0m'
 
 
-def styled_text(text, color):
-    return color + text + RESET
+def style_text(text, style):
+    return style + text + RESET
 
 
 def print_red(output_string):
