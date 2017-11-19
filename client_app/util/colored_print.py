@@ -41,5 +41,4 @@ def print_reverse(output_string):
 def _colored_print(output_string, style):
     sys.stdout.write(style)
     sys.stdout.write(output_string)
-    sys.stdout.write('\n')
     print(_RESET)
