@@ -25,6 +25,7 @@ from drivers.adafruit_22_display.Display import Display
 from drivers.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
 from config import config
+import util.colored_print as cp
 
 SCREENSAVER_TIMEOUT = 120.0
 
@@ -124,13 +125,13 @@ def set_display_intensity():
 
 def show_overview():
     print('########################################')
-    print('#                                      #')
+    cp.print_blue('#                                      #')
     print('# SYSTEM STATUS                        #')
     print('# ip                  192.168.2.114    #')
     print('# apache running      yes              #')
-    print('# cpu load            12%              #')
-    print('# free memory         954 MB           #')
-    print('# uptime              00:17:07         #')
+    cp.print_red('# cpu load            12%              #')
+    cp.print_bold('# free memory         954 MB           #')
+    cp.print_green('# uptime              00:17:07         #')
     print('#                                      #')
     print('#                                      #')
     print('#                                      #')
@@ -145,11 +146,11 @@ def show_overview():
     print('#                                      #')
     print('#                                      #')
     print('# DISPLAY                              #')
-    print('# intensity           700              #')
+    cp.print_cyan('# intensity           700              #')
     print('#                                      #')
     print('# SENSORS                              #')
     print('# temperature:        20 °C            #')
-    print('# humidity:           15 %             #')
+    cp.print_reverse('# humidity:           15 %             #')
     print('#                                      #')
     print('########################################')
 
