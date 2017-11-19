@@ -122,6 +122,38 @@ def set_display_intensity():
         print('not a valid number')
 
 
+def show_overview():
+    print('########################################')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#      hallo                           #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#               das ist                #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#        eine übersicht                #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                      wie htop        #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('#                                      #')
+    print('########################################')
+
+
 def get_user_input(after_input_func, prompt=''):
 
     allowed_keycodes = []
@@ -198,6 +230,7 @@ if __name__ == '__main__':
             MenuAction('set display intensity', set_display_intensity),
             MenuAction('print temperature', output_string=dht22.get_temperature()),
             MenuAction('print humidity', output_string=dht22.get_humidity()),
+            MenuAction('show overview', show_overview()),
             MenuAction('shutdown', shutdown_system),
             MenuAction('reboot', reboot_system),
             MenuAction('exit program', exit_program),
