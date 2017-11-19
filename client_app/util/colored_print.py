@@ -3,6 +3,8 @@
 
 from __future__ import print_function
 
+import sys
+
 _RED = "\033[1;31m"
 _BLUE = "\033[1;34m"
 _CYAN = "\033[1;36m"
@@ -37,6 +39,7 @@ def print_reverse(output_string):
 
 
 def _colored_print(output_string, style):
-    print(style)
-    print(output_string)
+    sys.stdout.write(style)
+    sys.stdout.write(output_string)
+    sys.stdout.write('\n')
     print(_RESET)
