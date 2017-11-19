@@ -129,7 +129,7 @@ def show_overview():
     print('# ' + cp.styled_text('SYSTEM STATUS', cp.BOLD) + '                        #')
     print('# ip                  192.168.2.114    #')
     print('# apache running      ' + cp.styled_text('yes', cp.GREEN) + '              #')
-    print('# cpu load            ' + cp.styled_text('32 %', cp.YELLOW) + '              #')
+    print('# cpu load            ' + cp.styled_text('32 %', cp.YELLOW) + '             #')
     print('# free memory         954 MB           #')
     print('# uptime              00:17:07         #')
     print('#                                      #')
@@ -150,7 +150,7 @@ def show_overview():
     print('#                                      #')
     print('# ' + cp.styled_text('SENSORS', cp.BOLD) + '                              #')
     print('# temperature:        ' + cp.styled_text('40 °C', cp.RED) + '            #')
-    print('# humidity:           ' + cp.styled_text('80 %', cp.BLUE) + '             #')
+    print('# humidity:           ' + cp.styled_text('80 %', cp.BLUE_LIGHT) + '             #')
     print('#                                      #')
     print('########################################')
 
