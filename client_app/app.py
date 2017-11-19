@@ -124,6 +124,7 @@ def set_display_intensity():
 
 def show_overview():
     print('########################################')
+    print('#                                      #')
     print('# SYSTEM STATUS                        #')
     print('# ip                  192.168.2.114    #')
     print('# apache running      yes              #')
@@ -143,14 +144,13 @@ def show_overview():
     print('#                                      #')
     print('#                                      #')
     print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
     print('# DISPLAY                              #')
     print('# intensity           700              #')
     print('#                                      #')
     print('# SENSORS                              #')
     print('# temperature:        20 °C            #')
     print('# humidity:           15 %             #')
+    print('#                                      #')
     print('########################################')
 
 
