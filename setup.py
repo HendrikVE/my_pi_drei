@@ -1,8 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+"""setup script"""
+
 """
-BASIC SYSTEM
+BASIC SYSTEM PRIVATE COMPUTER
+
+ARDUINO
+sudo apt-get install minicom python-serial
+http://kookye.com/2016/07/24/use-arduino-drive-fingerprint-sensor/
+unzip and copy to  <arduinosketchfolder>/libraries/
+
+cd <arduinosketchfolder>/libraries/ 
+git clone https://github.com/adafruit/DHT-sensor-library
+git clone https://github.com/adafruit/Adafruit_Sensor
+"""
+
+
+"""
+BASIC SYSTEM RASPBERRY PI
 enable SSH
 change lines in /etc/ssh/sshd_config
 ####################################################
@@ -31,6 +47,11 @@ wget http://apt.pm-codeworks.de/pm-codeworks.list -P /etc/apt/sources.list.d/
 
 apt-get update
 apt-get install python-fingerprint --yes
+
+
+SOUND
+sudo apt-get install python3-pygame
+sudo apt-get install python-pygame
 
 
 Dynamic DNS client with NoIP.com
