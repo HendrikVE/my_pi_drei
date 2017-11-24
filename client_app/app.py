@@ -25,7 +25,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.adafruit_22_display.Display import Display
-from hardware.dht22.DHT22 import DHT22
+from hardware.arduino_nano.ArduinoNano import ArduinoNano, TempScale
 from menu import Menu, MenuAction
 from config import config
 import util.colored_print as cp
@@ -38,10 +38,7 @@ display = Display()
 display.open()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
-gpio_dht22 = 4
-dht22 = DHT22(gpio_dht22)
-
-
+arduino_nano = ArduinoNano()
 
 
 def main(menu):
@@ -155,21 +152,10 @@ def show_overview():
 
     while True:
         try:
-            headers = {'X-Message-Signature': 'signature'}
 
-            post_data = {'action_key': 'get_temperature',
-                         'action_argument': 'celsius'}
-            requests.post('https://localhost', headers=headers)
-            temperature = 0.0
-
-            post_data = {'action_key': 'get_heat_index',
-                         'action_argument': 'celsius'}
-            requests.post('https://localhost', headers=headers)
-            heat_index = 0.0
-
-            post_data = {'action_key': 'get_humidity'}
-            requests.post('https://localhost', headers=headers)
-            humidity = 0.0
+            temperature = arduino_nano.get_temperature(TempScale.CELSIUS)
+            heat_index = arduino_nano.get_heat_index(TempScale.CELSIUS)
+            humidity = arduino_nano.get_humidity()
 
             temperature_string = styled_temperature_string(int(temperature))
             heat_index_string = styled_temperature_string(int(heat_index))
