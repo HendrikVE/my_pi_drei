@@ -25,6 +25,7 @@ void loop() {
 }
 
 void handle_call(String &methodName) {
+  
   if (methodName.equals("temp_cel")) {
     // Read temperature as Celsius (the default)
     float t = dht.readTemperature();

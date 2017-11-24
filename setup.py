@@ -33,24 +33,7 @@ PasswordAuthentication no
 banning ips trying to login with wrong credentials
 sudo apt-get install fail2ban
 
-
-DHT22
-sudo apt-get update
-sudo apt-get install build-essential python-dev python-openssl git
-
-git clone https://github.com/adafruit/Adafruit_Python_DHT.git && cd Adafruit_Python_DHT
-sudo python setup.py install
-
-
 DISPLAY
-
-
-FINGERPRINT
-wget -O - http://apt.pm-codeworks.de/pm-codeworks.de.gpg | apt-key add -
-wget http://apt.pm-codeworks.de/pm-codeworks.list -P /etc/apt/sources.list.d/
-
-apt-get update
-apt-get install python-fingerprint --yes
 
 
 SOUND
