@@ -1,7 +1,6 @@
 // shrinked version of DHTtester, written by ladyada
 
 #include "DHT.h"
-#include <ArduinoJson.h>
 
 #define DHTPIN 2     // what digital pin we're connected to
 
@@ -18,42 +17,76 @@ void setup() {
 }
 
 void loop() {
-  // Wait a few seconds between measurements.
-  delay(2000);
 
-  // Reading temperature or humidity takes about 250 milliseconds!
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-  float h = dht.readHumidity();
-  // Read temperature as Celsius (the default)
-  float t = dht.readTemperature();
-  // Read temperature as Fahrenheit (isFahrenheit = true)
-  float f = dht.readTemperature(true);
-
-  // Check if any reads failed and exit early (to try again).
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
+  while (Serial.available()) {
+    String received = Serial.readString();
+    handle_call(received);
   }
-
-  float hif = dht.computeHeatIndex(f, h);
-  float hic = dht.computeHeatIndex(t, h, false);
-
-  print_json_to_serial(h, t, f, hic, hif);
 }
 
-void print_json_to_serial(float humidity, float temp_cel, float temp_fah, float heat_index_cel, float heat_index_fah) {
-  
-  const size_t bufferSize = JSON_OBJECT_SIZE(5);
-  DynamicJsonBuffer jsonBuffer(bufferSize);
-  
-  JsonObject& root = jsonBuffer.createObject();
-  root["humidity"] = humidity;
-  root["temperature_celsius"] = temp_cel;
-  root["temperature_fahrenheit"] = temp_fah;
-  root["heat_index_celsius"] = heat_index_cel;
-  root["heat_index_fahrenheit"] = heat_index_fah;
-  
-  root.printTo(Serial);
-  Serial.print("\n");
+void handle_call(String &methodName) {
+  if (methodName.equals("temp_cel")) {
+    // Read temperature as Celsius (the default)
+    float t = dht.readTemperature();
+    if (isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+    else {
+      Serial.println(t);
+    }
+  }
+  else if (methodName.equals("temp_fah")) {
+    // Read temperature as Fahrenheit (isFahrenheit = true)
+    float f = dht.readTemperature(true);
+    if (isnan(f)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+    else {
+      Serial.println(f);
+    }
+  }
+  else if (methodName.equals("humidity")) {
+    float h = dht.readHumidity();
+    if (isnan(h)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+    else {
+      Serial.println(h);
+    }
+  }
+  else if (methodName.equals("heat_index_cel")) {
+    // Read temperature as Celsius (the default)
+    float t = dht.readTemperature();
+    float h = dht.readHumidity();
+
+    if (isnan(t) || isnan(h)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+    else {
+      float hic = dht.computeHeatIndex(t, h, false);
+      Serial.println(hic);
+    }
+  }
+  else if (methodName.equals("heat_index_fah")) {
+    // Read temperature as Fahrenheit (isFahrenheit = true)
+    float f = dht.readTemperature(true);
+    float h = dht.readHumidity();
+
+    if (isnan(f) || isnan(h)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+    }
+    else {
+      float hif = dht.computeHeatIndex(f, h);
+      Serial.println(hif);
+    }
+  }
+  else {
+    Serial.println("Unknown call: " + methodName);
+  }
 }
 
