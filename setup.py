@@ -14,6 +14,8 @@ unzip and copy to  <arduinosketchfolder>/libraries/
 cd <arduinosketchfolder>/libraries/ 
 git clone https://github.com/adafruit/DHT-sensor-library
 git clone https://github.com/adafruit/Adafruit_Sensor
+
+install ArduinoJson within Arduino IDE from Library Manager (Sketch -> Include Library -> Manage Libraries)
 """
 
 
