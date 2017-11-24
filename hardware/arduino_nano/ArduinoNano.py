@@ -26,11 +26,10 @@ class ArduinoNano(object):
             HEAT_INDEX_FAH = 'heat_index_fah',
             HUMIDITY = 'humidity'
 
-        usb_path = None
-        serial_connection = serial.Serial(usb_path)
+        serial_connection = None
 
         def __init__(self, usb_path):
-            self.usb_path = usb_path
+            self.serial_connection = serial.Serial(usb_path)
 
         def __delete__(self, instance):
             self.serial_connection.close()

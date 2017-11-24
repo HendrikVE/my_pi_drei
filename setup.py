@@ -7,7 +7,7 @@
 BASIC SYSTEM PRIVATE COMPUTER
 
 ARDUINO
-sudo apt-get install minicom python-serial
+sudo apt-get install minicom python3-serial
 
 Kookye FM-70
 http://kookye.com/2016/07/24/use-arduino-drive-fingerprint-sensor/
