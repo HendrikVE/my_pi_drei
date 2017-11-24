@@ -7,7 +7,6 @@ from __future__ import print_function
 
 import logging
 import os
-import requests
 import signal
 import sys
 import termios
