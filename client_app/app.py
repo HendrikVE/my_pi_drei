@@ -267,14 +267,25 @@ if __name__ == '__main__':
 
         actions = [
             MenuAction('print help', print_manual),
+
+            # DISPLAY
             MenuAction('turn on display', display.turn_on),
             MenuAction('turn off display', display.turn_off),
             MenuAction('set display intensity', set_display_intensity),
-            MenuAction('print temperature', output_string=dht22.get_temperature()),
-            MenuAction('print humidity', output_string=dht22.get_humidity()),
+
+            # TEMPERATURE SENSOR
+            MenuAction('print temperature', output_string=arduino_nano.get_temperature(TempScale.CELSIUS)),
+            MenuAction('print heat index', output_string=arduino_nano.get_heat_index(TempScale.CELSIUS)),
+            MenuAction('print humidity', output_string=arduino_nano.get_humidity()),
+
+            # OVERVIEW
             MenuAction('show overview', show_overview),
+
+            # SYSTEM ACTIONS
             MenuAction('shutdown', shutdown_system),
             MenuAction('reboot', reboot_system),
+
+            # EXIT PROGRAM
             MenuAction('exit program', exit_program),
         ]
 
