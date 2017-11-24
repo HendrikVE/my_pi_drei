@@ -9,7 +9,7 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from drivers.adafruit_22_display.Display import Display
+from hardware.adafruit_22_display.Display import Display
 import api_json_keys as jk
 
 
@@ -63,19 +63,23 @@ def set_display_state(request):
     display = Display()
 
     try:
-        arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
         return json_result
 
-    if arguments == 'on':
+    if argument == 'on':
         display.turn_on()
         json_result[jk.RESULT_KEY_RESULT] = 'turned on display'
 
-    elif arguments == 'off':
+    elif argument == 'off':
         display.turn_off()
         json_result[jk.RESULT_KEY_RESULT] = 'turned off display'
+
+    else:
+        json_result[jk.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        return json_result
 
     return json_result
 
@@ -95,14 +99,14 @@ def set_display_intensity(request):
     display = Display()
 
     try:
-        arguments = request[jk.REQUEST_KEY_ACTION_ARGUMENTS]
+        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENTS
+        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
         return json_result
 
     try:
-        intensity = int(arguments)
+        intensity = int(argument)
         display.set_intensity(intensity)
         json_result[jk.RESULT_KEY_RESULT] = 'set display intensity to %d' % intensity
 
@@ -115,8 +119,24 @@ def set_display_intensity(request):
 def get_temperature(request):
     json_result = __json_result_template__()
 
-    dummy_temperature = 42
-    json_result[jk.RESULT_KEY_RESULT] = dummy_temperature
+    try:
+        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
+
+    except KeyError:
+        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
+        return json_result
+
+    if argument == 'celsius':
+        temperature = 21.0
+
+    elif argument == 'fahrenheit':
+        temperature = 42.0
+
+    else:
+        json_result[jk.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        return json_result
+
+    json_result[jk.RESULT_KEY_RESULT] = temperature
 
     return json_result
 
@@ -124,7 +144,7 @@ def get_temperature(request):
 def get_humidity(request):
     json_result = __json_result_template__()
 
-    dummy_humidity = 25
-    json_result[jk.RESULT_KEY_RESULT] = dummy_humidity
+    humidity = 25
+    json_result[jk.RESULT_KEY_RESULT] = humidity
 
     return json_result

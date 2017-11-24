@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import logging
 import os
+import requests
 import signal
 import sys
 import termios
@@ -15,14 +16,16 @@ from getpass import getpass
 from subprocess import Popen
 
 # append root of the python code tree to sys.apth so that imports are working
+import time
+
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from drivers.adafruit_22_display.Display import Display
-from drivers.dht22.DHT22 import DHT22
+from hardware.adafruit_22_display.Display import Display
+from hardware.dht22.DHT22 import DHT22
 from menu import Menu, MenuAction
 from config import config
 import util.colored_print as cp
@@ -37,6 +40,8 @@ display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 gpio_dht22 = 4
 dht22 = DHT22(gpio_dht22)
+
+
 
 
 def main(menu):
@@ -124,35 +129,86 @@ def set_display_intensity():
 
 
 def show_overview():
-    print('########################################')
-    print('#                                      #')
-    print('# SYSTEM STATUS                        #')
-    print('# ip                  ' + cp.style_text('192.168.2.114', cp.WHITE) + '    #')
-    print('# apache running      ' + cp.style_text('yes', cp.GREEN) + '              #')
-    print('# cpu load            ' + cp.style_text('32 %', cp.YELLOW) + '             #')
-    print('# free memory         ' + cp.style_text('954 MB', cp.WHITE) + '           #')
-    print('# uptime              ' + cp.style_text('00:17:07', cp.WHITE) + '         #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('#                                      #')
-    print('# DISPLAY                              #')
-    print('# intensity           ' + cp.style_text('700', cp.WHITE) + '              #')
-    print('#                                      #')
-    print('# SENSORS                              #')
-    print('# temperature:        ' + cp.style_text('40 °C', cp.RED) + '            #')
-    print('# humidity:           ' + cp.style_text('80 %', cp.BLUE_LIGHT) + '             #')
-    print('#                                      #')
-    print('########################################')
+
+    def styled_temperature_string(temperature):
+
+        temperature_string = '%i °C' % temperature
+
+        if temperature <= 0:
+            return cp.style_text(temperature_string, cp.BLUE_LIGHT)
+
+        elif temperature <= 30:
+            return cp.style_text(temperature_string, cp.WHITE)
+
+        else:
+            return cp.style_text(temperature_string, cp.RED)
+
+    def styled_humidity_string(humidity):
+
+        humidity_string = '%i %%' % humidity
+
+        if humidity <= 55:
+            return cp.style_text(humidity_string, cp.WHITE)
+
+        else:
+            return cp.style_text(humidity_string, cp.BLUE_LIGHT)
+
+    while True:
+        try:
+            headers = {'X-Message-Signature': 'signature'}
+
+            post_data = {'action_key': 'get_temperature',
+                         'action_argument': 'celsius'}
+            requests.post('https://localhost', headers=headers)
+            temperature = 0.0
+
+            post_data = {'action_key': 'get_heat_index',
+                         'action_argument': 'celsius'}
+            requests.post('https://localhost', headers=headers)
+            heat_index = 0.0
+
+            post_data = {'action_key': 'get_humidity'}
+            requests.post('https://localhost', headers=headers)
+            humidity = 0.0
+
+            temperature_string = styled_temperature_string(int(temperature))
+            heat_index_string = styled_temperature_string(int(heat_index))
+            humidity_string = styled_humidity_string(int(humidity))
+
+            print('########################################')
+            print('#                                      #')
+            print('# SYSTEM STATUS                        #')
+            print('# ip                  ' + cp.style_text('192.168.2.114', cp.WHITE) + '    #')
+            print('# apache running      ' + cp.style_text('yes', cp.GREEN) + '              #')
+            print('# cpu load            ' + cp.style_text('32 %', cp.YELLOW) + '             #')
+            print('# free memory         ' + cp.style_text('954 MB', cp.WHITE) + '           #')
+            print('# uptime              ' + cp.style_text('00:17:07', cp.WHITE) + '         #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('#                                      #')
+            print('# DISPLAY                              #')
+            print('# intensity           ' + cp.style_text('700', cp.WHITE) + '              #')
+            print('#                                      #')
+            print('# SENSORS                              #')
+            print('# temperature:        ' + temperature_string + '            #')
+            print('# heat index          ' + heat_index_string + '                 #')
+            print('# humidity:           ' + humidity_string + '             #')
+            print('#                                      #')
+            print('########################################')
+
+            time.sleep(2)
+
+        except KeyboardInterrupt:
+            break
 
 
 def get_user_input(after_input_func, prompt=''):
