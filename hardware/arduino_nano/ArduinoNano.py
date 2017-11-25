@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 import serial
+import time
 
 
 class TempScale:
@@ -30,6 +31,7 @@ class ArduinoNano(object):
 
         def __init__(self, usb_path):
             self.serial_connection = serial.Serial(usb_path)
+            time.wait(5)  # wait for the arduino to reset after serial connection
 
         def __delete__(self, instance):
             self.serial_connection.close()
