@@ -195,6 +195,9 @@ def show_overview():
         except KeyboardInterrupt:
             break
 
+        except Exception as e:
+            logging.error(str(e), exc_info=True)
+
 
 def get_user_input(after_input_func, prompt=''):
 
