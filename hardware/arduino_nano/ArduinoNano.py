@@ -20,13 +20,6 @@ class ArduinoNano(object):
 
     class _SerialConnection(object):
 
-        class RequestMethod:
-            TEMP_CEL = 'temp_cel',
-            TEMP_FAH = 'temp_fah',
-            HEAT_INDEX_CEL = 'heat_index_cel',
-            HEAT_INDEX_FAH = 'heat_index_fah',
-            HUMIDITY = 'humidity'
-
         serial_connection = None
 
         def __init__(self, usb_path):
@@ -50,11 +43,11 @@ class ArduinoNano(object):
     def get_temperature(self, scale):
 
         if scale == TempScale.CELSIUS:
-            result = self.serialConnection.request(self._SerialConnection.RequestMethod.TEMP_CEL)
+            result = self.serialConnection.request(_RequestData.TEMP_CEL)
             return float(result)
 
         elif scale == TempScale.FAHRENHEIT:
-            result = self.serialConnection.request(self._SerialConnection.RequestMethod.TEMP_FAH)
+            result = self.serialConnection.request(_RequestData.TEMP_FAH)
             return float(result)
 
         else:
@@ -63,11 +56,11 @@ class ArduinoNano(object):
     def get_heat_index(self, scale):
 
         if scale == TempScale.CELSIUS:
-            result = self.serialConnection.request(self._SerialConnection.RequestMethod.HEAT_INDEX_CEL)
+            result = self.serialConnection.request(_RequestData.HEAT_INDEX_CEL)
             return float(result)
 
         elif scale == TempScale.FAHRENHEIT:
-            result = self.serialConnection.request(self._SerialConnection.RequestMethod.HEAT_INDEX_FAH)
+            result = self.serialConnection.request(_RequestData.HEAT_INDEX_FAH)
             return float(result)
 
         else:
@@ -75,5 +68,5 @@ class ArduinoNano(object):
 
     def get_humidity(self):
 
-        result = self.serialConnection.request(self._SerialConnection.RequestMethod.HUMIDITY)
+        result = self.serialConnection.request(_RequestData.HUMIDITY)
         return float(result)
