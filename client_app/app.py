@@ -186,7 +186,7 @@ def show_overview():
             print('# temperature:        ' + temperature_string + '            #')
             print('# humidity:           ' + humidity_string + '             #')
             print('#                                      #')
-            print('# heat index          ' + heat_index_string + '             #')
+            print('# heat index          ' + heat_index_string + '            #')
             print('#                                      #')
             print('########################################')
 
