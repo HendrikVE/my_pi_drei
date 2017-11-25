@@ -38,7 +38,7 @@ class ArduinoNano(object):
 
             if not self.serial_connection.is_open:
                 self.serial_connection.open()
-                
+
             self.serial_connection.write(method_name)
 
             return self.serial_connection.readline()

@@ -273,11 +273,6 @@ if __name__ == '__main__':
             MenuAction('turn off display', display.turn_off),
             MenuAction('set display intensity', set_display_intensity),
 
-            # TEMPERATURE SENSOR
-            MenuAction('print temperature', output_string=arduino_nano.get_temperature(TempScale.CELSIUS)),
-            MenuAction('print heat index', output_string=arduino_nano.get_heat_index(TempScale.CELSIUS)),
-            MenuAction('print humidity', output_string=arduino_nano.get_humidity()),
-
             # OVERVIEW
             MenuAction('show overview', show_overview),
 
