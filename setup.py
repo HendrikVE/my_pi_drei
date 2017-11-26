@@ -5,6 +5,8 @@
 
 """
 BASIC SYSTEM PRIVATE COMPUTER
+sudo apt-get install python3-pip
+sudo apt-get install python-pip
 
 ARDUINO
 sudo apt-get install minicom python3-serial

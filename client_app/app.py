@@ -23,8 +23,8 @@ CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.adafruit_22_display.Display import Display
-from hardware.arduino_nano.ArduinoNano import ArduinoNano, TempScale
+from adafruit_22_display.Display import Display
+from hardware.arduino_nano._ArduinoNano import ArduinoNano, TempScale
 from menu import Menu, MenuAction
 from config import config
 import util.colored_print as cp
@@ -36,8 +36,6 @@ LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 display = Display()
 display.open()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
-
-arduino_nano = ArduinoNano()
 
 
 def main(menu):
