@@ -150,9 +150,9 @@ def show_overview():
     while True:
         try:
 
-            temperature = arduino_nano.get_temperature(TempScale.CELSIUS)
-            heat_index = arduino_nano.get_heat_index(TempScale.CELSIUS)
-            humidity = arduino_nano.get_humidity()
+            temperature = 12#arduino_nano.get_temperature(TempScale.CELSIUS)
+            heat_index = 12#arduino_nano.get_heat_index(TempScale.CELSIUS)
+            humidity = 12#arduino_nano.get_humidity()
 
             temperature_string = styled_temperature_string(int(temperature))
             heat_index_string = styled_temperature_string(int(heat_index))
