@@ -3,7 +3,7 @@
 
 import zmq
 
-from _ArduinoNano import ArduinoNano, RequestData, TempScale
+from _ArduinoNano import ArduinoNano, RequestData, TempScale, DeviceUnconnectedException
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
@@ -33,12 +33,18 @@ def main():
             response['error'] = '"method" is missing'
 
         else:
-            response = handle_request(arduino_nano, response, method)
+            try:
+                response = request_arduino(arduino_nano, response, method)
+
+            except DeviceUnconnectedException as e:
+                response['error'] = 'cant access data: device not connected'
+                socket.send_json(response)
+                raise e
 
         socket.send_json(response)
 
 
-def handle_request(arduino_nano, response, method):
+def request_arduino(arduino_nano, response, method):
 
     if method == RequestData.TEMP_CEL:
         response['result'] = arduino_nano.get_temperature(TempScale.CELSIUS)
@@ -62,7 +68,7 @@ if __name__ == '__main__':
 
     print('starting arduino driver...')
     arduino_nano = ArduinoNano()
-    arduino_nano.start_driver()
+    arduino_nano.start_communication()
 
     print('binding socket...')
     context = zmq.Context()
@@ -77,6 +83,18 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             break
 
-        except Exception:
+        except DeviceUnconnectedException:
+            print('try to recover conection')
+            # try to recover
+            try:
+                arduino_nano.start_communication()
+
+            except Exception:
+                pass
+
+            continue
+
+        except Exception as e:
+            print(str(e))
             # retry
             continue

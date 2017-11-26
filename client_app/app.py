@@ -158,6 +158,7 @@ def show_overview():
             heat_index_string = styled_temperature_string(int(heat_index))
             humidity_string = styled_humidity_string(int(humidity))
 
+            print('')
             print('########################################')
             print('#                                      #')
             print('# SYSTEM STATUS                        #')

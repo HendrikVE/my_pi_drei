@@ -16,6 +16,10 @@ class RequestData:
     HUMIDITY = 'humidity'
 
 
+class DeviceUnconnectedException(Exception):
+    pass
+
+
 class ArduinoNano(object):
 
     class _SerialConnection(object):
@@ -38,16 +42,21 @@ class ArduinoNano(object):
 
         def request(self, method_name):
 
-            if not self.serial_connection.is_open:
-                self.serial_connection.open()
+            try:
 
-            self.serial_connection.write(method_name)
+                if not self.serial_connection.is_open:
+                    self.serial_connection.open()
 
-            return self.serial_connection.readline()
+                self.serial_connection.write(method_name)
+
+                return self.serial_connection.readline()
+
+            except Exception:
+                raise DeviceUnconnectedException()
 
     serialConnection = None
 
-    def start_driver(self):
+    def start_communication(self):
         try:
             self.serialConnection = self._SerialConnection('/dev/ttyUSB0')
             self.serialConnection.open()
@@ -55,7 +64,7 @@ class ArduinoNano(object):
         except Exception as e:
             raise e
 
-    def stop_driver(self):
+    def stop_communication(self):
         self.serialConnection.close()
 
     def get_temperature(self, scale):
