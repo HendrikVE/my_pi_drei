@@ -4,15 +4,15 @@ import logging
 
 import zmq
 
+import _ArduinoNano
 from _ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
-from _ArduinoNano import RequestData as rd
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
 
 # copy the RequestData class for accessing from Arduino
-class RequestData(rd):
+class RequestData(_ArduinoNano.RequestData):
     pass
 
 
