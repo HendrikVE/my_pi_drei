@@ -126,10 +126,7 @@ def show_overview():
 
     def styled_temperature_string(temperature):
 
-        temperature_string = '%s °C' % temperature
-
-        if temperature is None:
-            return cp.style_text(temperature_string, cp.RED)
+        temperature_string = '%i °C' % temperature
 
         if temperature <= 0:
             return cp.style_text(temperature_string, cp.BLUE_LIGHT)
@@ -142,10 +139,7 @@ def show_overview():
 
     def styled_humidity_string(humidity):
 
-        humidity_string = '%s %%' % humidity
-
-        if humidity is None:
-            return cp.style_text(humidity_string, cp.RED)
+        humidity_string = '%i %%' % humidity
 
         if humidity <= 55:
             return cp.style_text(humidity_string, cp.WHITE)
@@ -161,9 +155,9 @@ def show_overview():
             heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
             humidity = rdp.request(RequestData.HUMIDITY)
 
-            temperature_string = styled_temperature_string(temperature)
-            heat_index_string = styled_temperature_string(heat_index)
-            humidity_string = styled_humidity_string(humidity)
+            temperature_string = cp.style_text('NaN  ', cp.RED) if temperature is None else styled_temperature_string(int(temperature))
+            heat_index_string = cp.style_text('NaN  ', cp.RED) if temperature is None else styled_temperature_string(int(heat_index))
+            humidity_string = cp.style_text('NaN ', cp.RED) if temperature is None else styled_humidity_string(int(humidity))
 
             print('')
             print('########################################')
