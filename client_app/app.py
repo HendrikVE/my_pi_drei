@@ -24,7 +24,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from adafruit_22_display.Display import Display
-from hardware.arduino_nano._ArduinoNano import ArduinoNano, TempScale
+from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
 from menu import Menu, MenuAction
 from config import config
 import util.colored_print as cp
@@ -126,7 +126,10 @@ def show_overview():
 
     def styled_temperature_string(temperature):
 
-        temperature_string = '%i °C' % temperature
+        temperature_string = '%s °C' % temperature
+
+        if temperature is None:
+            return cp.style_text(temperature_string, cp.RED)
 
         if temperature <= 0:
             return cp.style_text(temperature_string, cp.BLUE_LIGHT)
@@ -139,7 +142,10 @@ def show_overview():
 
     def styled_humidity_string(humidity):
 
-        humidity_string = '%i %%' % humidity
+        humidity_string = '%s %%' % humidity
+
+        if humidity is None:
+            return cp.style_text(humidity_string, cp.RED)
 
         if humidity <= 55:
             return cp.style_text(humidity_string, cp.WHITE)
@@ -147,16 +153,17 @@ def show_overview():
         else:
             return cp.style_text(humidity_string, cp.BLUE_LIGHT)
 
+    rdp = RequestDriverProcess()
+
     while True:
         try:
+            temperature = rdp.request(RequestData.TEMP_CEL)
+            heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+            humidity = rdp.request(RequestData.HUMIDITY)
 
-            temperature = 12#arduino_nano.get_temperature(TempScale.CELSIUS)
-            heat_index = 12#arduino_nano.get_heat_index(TempScale.CELSIUS)
-            humidity = 12#arduino_nano.get_humidity()
-
-            temperature_string = styled_temperature_string(int(temperature))
-            heat_index_string = styled_temperature_string(int(heat_index))
-            humidity_string = styled_humidity_string(int(humidity))
+            temperature_string = styled_temperature_string(temperature)
+            heat_index_string = styled_temperature_string(heat_index)
+            humidity_string = styled_humidity_string(humidity)
 
             print('')
             print('########################################')

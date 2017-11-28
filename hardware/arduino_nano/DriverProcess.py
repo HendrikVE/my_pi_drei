@@ -3,26 +3,53 @@
 
 import zmq
 
-from _ArduinoNano import ArduinoNano, RequestData, TempScale, DeviceUnconnectedException
+from _ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
+from _ArduinoNano import RequestData as rd
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
 
+# copy the RequestData class for accessing from Arduino
+class RequestData(rd):
+    pass
+
+
+class RequestDriverProcess(object):
+
+    def request(self, method):
+        try:
+            context = zmq.Context()
+            client_socket = context.socket(zmq.REQ)
+            client_socket.connect(ADDRESS)
+
+            json = {'method': method}
+            client_socket.send_json(json)
+
+            response = client_socket.recv_json()
+
+            client_socket.disconnect(ADDRESS)
+
+            return response
+
+        except Exception:
+            return None
+
+
 def main():
 
-    global socket
+    global server_socket
 
     while True:
 
         response = {}
 
         try:
-            request = socket.recv_json()
+            request = server_socket.recv_json()
 
         except ValueError as e:
             response['error'] = str(e)
-            socket.send_json(response)
+            server_socket.send_json(response)
             continue
 
         method = request['method']
@@ -38,10 +65,10 @@ def main():
 
             except DeviceUnconnectedException as e:
                 response['error'] = 'cant access data: device not connected'
-                socket.send_json(response)
+                server_socket.send_json(response)
                 raise e
 
-        socket.send_json(response)
+        server_socket.send_json(response)
 
 
 def request_arduino(arduino_nano, response, method):
@@ -72,8 +99,8 @@ if __name__ == '__main__':
 
     print('binding socket...')
     context = zmq.Context()
-    socket = context.socket(zmq.REP)
-    socket.bind(ADDRESS)
+    server_socket = context.socket(zmq.REP)
+    server_socket.bind(ADDRESS)
 
     print('server running...')
     while True:
