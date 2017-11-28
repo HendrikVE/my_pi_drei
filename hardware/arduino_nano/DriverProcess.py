@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+import logging
 
 import zmq
 
@@ -30,9 +31,10 @@ class RequestDriverProcess(object):
 
             client_socket.disconnect(ADDRESS)
 
-            return response
+            return response['result']
 
-        except Exception:
+        except Exception as e:
+            logging.error(str(e), exc_info=True)
             return None
 
 
