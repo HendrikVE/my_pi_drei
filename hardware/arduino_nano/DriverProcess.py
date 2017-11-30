@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import logging
 
+import time
 import zmq
 
 import _ArduinoNano
@@ -104,7 +105,17 @@ if __name__ == '__main__':
 
     print('starting arduino driver...')
     arduino_nano = ArduinoNano()
-    arduino_nano.start_communication()
+
+    while True:
+        try:
+            arduino_nano.start_communication()
+            # established connection, break out of loop
+            break
+
+        except Exception:
+            # retry connection in 1 second
+            time.sleep(1)
+            continue
 
     print('binding socket...')
     context = zmq.Context()
