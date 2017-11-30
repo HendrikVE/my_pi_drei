@@ -10,6 +10,10 @@ from _ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
+_ERROR = 'error'
+_RESULT = 'result'
+_METHOD = 'method'
+
 
 # copy the RequestData class for accessing from Arduino
 class RequestData(_ArduinoNano.RequestData):
@@ -24,18 +28,21 @@ class RequestDriverProcess(object):
             client_socket = context.socket(zmq.REQ)
             client_socket.connect(ADDRESS)
 
-            json = {'method': method}
+            json = {_METHOD: method}
             client_socket.send_json(json)
 
             response = client_socket.recv_json()
 
             client_socket.disconnect(ADDRESS)
 
-            return response['result']
-
         except Exception as e:
             logging.error(str(e), exc_info=True)
             return None
+
+        if _ERROR in response:
+            raise Exception(response[_ERROR])
+
+        return response[_RESULT]
 
 
 def main():
@@ -50,23 +57,23 @@ def main():
             request = server_socket.recv_json()
 
         except ValueError as e:
-            response['error'] = str(e)
+            response[_ERROR] = str(e)
             server_socket.send_json(response)
             continue
 
-        method = request['method']
+        method = request[_METHOD]
 
         response = request.copy()
 
-        if not 'method' in request:
-            response['error'] = '"method" is missing'
+        if not _METHOD in request:
+            response[_ERROR] = '"method" is missing'
 
         else:
             try:
-                response['result'] = request_arduino(arduino_nano, method)
+                response[_RESULT] = request_arduino(arduino_nano, method)
 
             except DeviceUnconnectedException as e:
-                response['error'] = 'cant access data: device not connected'
+                response[_ERROR] = 'cant access data: device not connected'
                 server_socket.send_json(response)
                 raise e
 
@@ -113,7 +120,7 @@ if __name__ == '__main__':
             break
 
         except DeviceUnconnectedException:
-            print('try to recover conection')
+            print('try to recover connection')
             # try to recover
             try:
                 arduino_nano.start_communication()

@@ -151,13 +151,24 @@ def show_overview():
 
     while True:
         try:
-            temperature = rdp.request(RequestData.TEMP_CEL)
-            heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
-            humidity = rdp.request(RequestData.HUMIDITY)
+            try:
+                temperature = rdp.request(RequestData.TEMP_CEL)
+            except Exception:
+                temperature = None
+
+            try:
+                heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+            except Exception:
+                heat_index = None
+
+            try:
+                humidity = rdp.request(RequestData.HUMIDITY)
+            except Exception:
+                humidity = None
 
             temperature_string = cp.style_text('NaN  ', cp.RED) if temperature is None else styled_temperature_string(int(temperature))
-            heat_index_string = cp.style_text('NaN  ', cp.RED) if temperature is None else styled_temperature_string(int(heat_index))
-            humidity_string = cp.style_text('NaN ', cp.RED) if temperature is None else styled_humidity_string(int(humidity))
+            heat_index_string = cp.style_text('NaN  ', cp.RED) if heat_index is None else styled_temperature_string(int(heat_index))
+            humidity_string = cp.style_text('NaN ', cp.RED) if humidity is None else styled_humidity_string(int(humidity))
 
             print('')
             print('########################################')

@@ -52,62 +52,78 @@ def __json_result_template__():
 
 
 def get_temperature(request):
-    json_result = __json_result_template__()
+    json_dict = __json_result_template__()
     rdp = RequestDriverProcess()
 
     try:
         argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_result[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
-        return json_result
+        json_dict[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
+        return json_dict
 
     if argument == 'celsius':
-        temperature = rdp.request(RequestData.TEMP_CEL)
+        try:
+            temperature = rdp.request(RequestData.TEMP_CEL)
+        except Exception:
+            temperature = None
 
     elif argument == 'fahrenheit':
-        temperature = rdp.request(RequestData.TEMP_FAH)
+        try:
+            temperature = rdp.request(RequestData.TEMP_FAH)
+        except Exception:
+            temperature = None
 
     else:
-        json_result[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
-        return json_result
+        json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        return json_dict
 
-    json_result[keys.RESULT_KEY_RESULT] = temperature
+    json_dict[keys.RESULT_KEY_RESULT] = temperature
 
-    return json_result
+    return json_dict
 
 
 def get_heat_index(request):
-    json_result = __json_result_template__()
+    json_dict = __json_result_template__()
     rdp = RequestDriverProcess()
 
     try:
         argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_result[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
-        return json_result
+        json_dict[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
+        return json_dict
 
     if argument == 'celsius':
-        heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+        try:
+            heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+        except Exception:
+            heat_index = None
 
     elif argument == 'fahrenheit':
-        heat_index = rdp.request(RequestData.HEAT_INDEX_FAH)
+        try:
+            heat_index = rdp.request(RequestData.HEAT_INDEX_FAH)
+        except Exception:
+            heat_index = None
 
     else:
-        json_result[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
-        return json_result
+        json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        return json_dict
 
-    json_result[keys.RESULT_KEY_RESULT] = heat_index
+    json_dict[keys.RESULT_KEY_RESULT] = heat_index
 
-    return json_result
+    return json_dict
 
 
 def get_humidity(request):
-    json_result = __json_result_template__()
+    json_dict = __json_result_template__()
     rdp = RequestDriverProcess()
 
-    humidity = rdp.request(RequestData.HUMIDITY)
-    json_result[keys.RESULT_KEY_RESULT] = humidity
+    try:
+        humidity = rdp.request(RequestData.HUMIDITY)
+    except Exception:
+        humidity = None
 
-    return json_result
+    json_dict[keys.RESULT_KEY_RESULT] = humidity
+
+    return json_dict
