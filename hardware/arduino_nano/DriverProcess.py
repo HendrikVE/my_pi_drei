@@ -63,7 +63,7 @@ def main():
 
         else:
             try:
-                response = request_arduino(arduino_nano, response, method)
+                response['result'] = request_arduino(arduino_nano, method)
 
             except DeviceUnconnectedException as e:
                 response['error'] = 'cant access data: device not connected'
@@ -73,24 +73,24 @@ def main():
         server_socket.send_json(response)
 
 
-def request_arduino(arduino_nano, response, method):
+def request_arduino(arduino_nano, method):
 
     if method == RequestData.TEMP_CEL:
-        response['result'] = arduino_nano.get_temperature(TempScale.CELSIUS)
+        return arduino_nano.get_temperature(TempScale.CELSIUS)
 
     elif method == RequestData.TEMP_FAH:
-        response['result'] = arduino_nano.get_temperature(TempScale.FAHRENHEIT)
+        return arduino_nano.get_temperature(TempScale.FAHRENHEIT)
 
     elif method == RequestData.HEAT_INDEX_CEL:
-        response['result'] = arduino_nano.get_heat_index(TempScale.CELSIUS)
+        return arduino_nano.get_heat_index(TempScale.CELSIUS)
 
     elif method == RequestData.HEAT_INDEX_FAH:
-        response['result'] = arduino_nano.get_heat_index(TempScale.FAHRENHEIT)
+        return arduino_nano.get_heat_index(TempScale.FAHRENHEIT)
 
     elif method == RequestData.HUMIDITY:
-        response['result'] = arduino_nano.get_humidity()
+        return arduino_nano.get_humidity()
 
-    return response
+    return None
 
 
 if __name__ == '__main__':

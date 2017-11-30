@@ -9,16 +9,19 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.adafruit_22_display.Display import Display
-import api_json_keys as jk
+from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
+import api_json_keys as keys
+
+API_VERSION = '0.1'
 
 
 def __json_result_template__():
 
     # insert only mandatory attributes here
     json_result = {
-        jk.RESULT_KEY_RESULT: None,
-        jk.RESULT_KEY_ERROR: None,
+        keys.RESULT_KEY_API_VERSION: API_VERSION,
+        keys.RESULT_KEY_RESULT: None,
+        keys.RESULT_KEY_ERROR: None,
     }
 
     return json_result
@@ -48,103 +51,63 @@ def __json_result_template__():
 ########################################################################################################################
 
 
-def get_display_state(request):
-    json_result = __json_result_template__()
-
-    dummy_state = 'off'
-    json_result[jk.RESULT_KEY_RESULT] = dummy_state
-
-    return json_result
-
-
-def set_display_state(request):
-    json_result = __json_result_template__()
-
-    display = Display()
-
-    try:
-        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
-
-    except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
-        return json_result
-
-    if argument == 'on':
-        display.turn_on()
-        json_result[jk.RESULT_KEY_RESULT] = 'turned on display'
-
-    elif argument == 'off':
-        display.turn_off()
-        json_result[jk.RESULT_KEY_RESULT] = 'turned off display'
-
-    else:
-        json_result[jk.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
-        return json_result
-
-    return json_result
-
-
-def get_display_intensity(request):
-    json_result = __json_result_template__()
-
-    dummy_intensity = 1000
-    json_result[jk.RESULT_KEY_RESULT] = dummy_intensity
-
-    return json_result
-
-
-def set_display_intensity(request):
-    json_result = __json_result_template__()
-
-    display = Display()
-
-    try:
-        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
-
-    except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
-        return json_result
-
-    try:
-        intensity = int(argument)
-        display.set_intensity(intensity)
-        json_result[jk.RESULT_KEY_RESULT] = 'set display intensity to %d' % intensity
-
-    except ValueError as e:
-        json_result[jk.RESULT_KEY_ERROR] = str(e)
-
-    return json_result
-
-
 def get_temperature(request):
     json_result = __json_result_template__()
+    rdp = RequestDriverProcess()
 
     try:
-        argument = request[jk.REQUEST_KEY_ACTION_ARGUMENT]
+        argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_result[jk.RESULT_KEY_ERROR] = 'missing key %s' % jk.REQUEST_KEY_ACTION_ARGUMENT
+        json_result[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
         return json_result
 
     if argument == 'celsius':
-        temperature = 21.0
+        temperature = rdp.request(RequestData.TEMP_CEL)
 
     elif argument == 'fahrenheit':
-        temperature = 42.0
+        temperature = rdp.request(RequestData.TEMP_FAH)
 
     else:
-        json_result[jk.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        json_result[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
         return json_result
 
-    json_result[jk.RESULT_KEY_RESULT] = temperature
+    json_result[keys.RESULT_KEY_RESULT] = temperature
+
+    return json_result
+
+
+def get_heat_index(request):
+    json_result = __json_result_template__()
+    rdp = RequestDriverProcess()
+
+    try:
+        argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
+
+    except KeyError:
+        json_result[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
+        return json_result
+
+    if argument == 'celsius':
+        heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+
+    elif argument == 'fahrenheit':
+        heat_index = rdp.request(RequestData.HEAT_INDEX_FAH)
+
+    else:
+        json_result[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        return json_result
+
+    json_result[keys.RESULT_KEY_RESULT] = heat_index
 
     return json_result
 
 
 def get_humidity(request):
     json_result = __json_result_template__()
+    rdp = RequestDriverProcess()
 
-    humidity = 25
-    json_result[jk.RESULT_KEY_RESULT] = humidity
+    humidity = rdp.request(RequestData.HUMIDITY)
+    json_result[keys.RESULT_KEY_RESULT] = humidity
 
     return json_result

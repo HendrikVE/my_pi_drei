@@ -193,7 +193,6 @@ def show_overview():
             time.sleep(2)
 
         except KeyboardInterrupt:
-            print('halo i bims 1 error')
             break
 
         except Exception as e:

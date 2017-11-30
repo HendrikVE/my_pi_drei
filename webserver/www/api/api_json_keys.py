@@ -21,5 +21,6 @@ RESULT_KEY_SET_DISPLAY_INTENSITY = 'display_intensity'  # 0-1023
 RESULT_KEY_GET_TEMPERATURE = 'temperature'  # int
 RESULT_KEY_GET_HUMIDITY = 'humidity'  # int
 
+RESULT_KEY_API_VERSION = 'api_version'  # string
 RESULT_KEY_RESULT = 'result'  # string
 RESULT_KEY_ERROR = 'error'  # string
