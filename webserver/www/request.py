@@ -27,13 +27,8 @@ import api.api_json_keys as jk
 LOGFILE = os.path.join(WEBSERVER_ROOT_DIR, 'log', 'request.log')
 
 api_action_function_dict = {
-    jk.REQUEST_KEY_GET_DISPLAY_STATE: api.get_display_state,
-    jk.REQUEST_KEY_SET_DISPLAY_STATE: api.set_display_state,
-
-    jk.REQUEST_KEY_GET_DISPLAY_INTENSITY: api.get_display_intensity,
-    jk.REQUEST_KEY_SET_DISPLAY_INTENSITY: api.set_display_intensity,
-
     jk.REQUEST_KEY_GET_TEMPERATURE: api.get_temperature,
+    jk.REQUEST_KEY_GET_HEAT_INDEX: api.get_heat_index,
     jk.REQUEST_KEY_GET_HUMIDITY: api.get_humidity,
 }
 
