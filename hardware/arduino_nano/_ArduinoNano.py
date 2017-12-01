@@ -56,8 +56,7 @@ class ArduinoNano(object):
 
                 return self.serial_connection.readline()
 
-            except Exception as e:
-                logging.debug(str(e))
+            except Exception:
                 raise DeviceUnconnectedException()
 
     serialConnection = None

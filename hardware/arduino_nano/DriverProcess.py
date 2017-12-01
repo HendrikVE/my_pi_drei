@@ -39,7 +39,7 @@ class RequestDriverProcess(object):
 
         except Exception as e:
             logging.error(str(e), exc_info=True)
-            return None
+            raise e
 
         if _ERROR in response:
             raise Exception(response[_ERROR])

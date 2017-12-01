@@ -65,14 +65,16 @@ def get_temperature(request):
     if argument == 'celsius':
         try:
             temperature = rdp.request(RequestData.TEMP_CEL)
-        except Exception:
-            temperature = None
+        except Exception as e:
+            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            return json_dict
 
     elif argument == 'fahrenheit':
         try:
             temperature = rdp.request(RequestData.TEMP_FAH)
-        except Exception:
-            temperature = None
+        except Exception as e:
+            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            return json_dict
 
     else:
         json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
@@ -97,14 +99,16 @@ def get_heat_index(request):
     if argument == 'celsius':
         try:
             heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
-        except Exception:
-            heat_index = None
+        except Exception as e:
+            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            return json_dict
 
     elif argument == 'fahrenheit':
         try:
             heat_index = rdp.request(RequestData.HEAT_INDEX_FAH)
-        except Exception:
-            heat_index = None
+        except Exception as e:
+            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            return json_dict
 
     else:
         json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
@@ -121,8 +125,9 @@ def get_humidity(request):
 
     try:
         humidity = rdp.request(RequestData.HUMIDITY)
-    except Exception:
-        humidity = None
+    except Exception as e:
+        json_dict[keys.RESULT_KEY_ERROR] = str(e)
+        return json_dict
 
     json_dict[keys.RESULT_KEY_RESULT] = humidity
 
