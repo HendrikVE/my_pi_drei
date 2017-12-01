@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-
+import logging
 import serial
 import time
 
@@ -56,7 +56,8 @@ class ArduinoNano(object):
 
                 return self.serial_connection.readline()
 
-            except Exception:
+            except Exception as e:
+                logging.debug(str(e))
                 raise DeviceUnconnectedException()
 
     serialConnection = None

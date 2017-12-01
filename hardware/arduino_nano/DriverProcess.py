@@ -3,6 +3,7 @@
 import logging
 
 import time
+import sys
 import zmq
 
 import _ArduinoNano
@@ -111,6 +112,9 @@ if __name__ == '__main__':
             arduino_nano.start_communication()
             # established connection, break out of loop
             break
+
+        except KeyboardInterrupt:
+            sys.exit()
 
         except Exception:
             # retry connection in 1 second
