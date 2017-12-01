@@ -18,6 +18,10 @@ class RequestData:
 
 
 class DeviceUnconnectedException(Exception):
+
+    def __str__(self):
+        return 'device not connected'
+
     pass
 
 

@@ -73,8 +73,8 @@ def main():
             try:
                 response[_RESULT] = request_arduino(arduino_nano, method)
 
-            except DeviceUnconnectedException as e:
-                response[_ERROR] = 'cant access data: device not connected'
+            except Exception as e:
+                response[_ERROR] = str(e)
                 server_socket.send_json(response)
                 raise e
 
