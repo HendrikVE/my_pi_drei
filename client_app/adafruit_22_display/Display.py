@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+"""
+ * Copyright (C) 2017 Hendrik van Essen
+ *
+ * This file is subject to the terms and conditions of the MIT License
+ * See the file LICENSE in the top level directory for more details.
+"""
+
 from subprocess import Popen
 from threading import Timer
 
@@ -10,6 +17,24 @@ class DisplayAction:
 
 
 class Display(object):
+    """
+    Array with associated photographic information.
+
+    ...
+
+    Attributes
+    ----------
+    exposure : float
+    	Exposure in seconds.
+
+    Methods
+    -------
+    colorspace(c='rgb')
+    	Represent the photo in the given colorspace.
+    gamma(n=1.0)
+    	Change the photo's gamma exposure.
+
+    """
 
     _intensity = 700
     _last_display_action = DisplayAction.NONE

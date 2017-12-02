@@ -1,4 +1,9 @@
-// shrinked version of DHTtester, written by ladyada
+/*
+ * Copyright (C) 2017 Hendrik van Essen
+ *
+ * This file is subject to the terms and conditions of the MIT License
+ * See the file LICENSE in the top level directory for more details.
+*/
 
 #include "DHT.h"
 
