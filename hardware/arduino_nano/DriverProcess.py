@@ -27,12 +27,44 @@ _METHOD = 'method'
 
 # copy the RequestData class for accessing from Arduino
 class RequestData(_ArduinoNano.RequestData):
+    """
+    Exact copy of _ArduinoNano.RequestData
+
+    """
     pass
 
 
 class RequestDriverProcess(object):
+    """
+    Accessing the background driver process (operating as client)
+
+    Methods
+    -------
+    request(method)
+        Request the driver process
+
+    """
 
     def request(self, method):
+        """
+        Requesting driver process
+
+        Parameters
+        ----------
+        method : RequestData
+            String for identifying an action to be requested
+
+        Returns
+        -------
+        String
+            Result of requested method
+
+        Raises
+        ------
+        Exception
+            If response of request contains the error field or connection failed
+
+        """
         try:
             context = zmq.Context()
             client_socket = context.socket(zmq.REQ)
@@ -56,6 +88,10 @@ class RequestDriverProcess(object):
 
 
 def main():
+    """
+    Run the Driver Process (operating as server)
+
+    """
 
     global server_socket
 
@@ -91,6 +127,28 @@ def main():
 
 
 def request_arduino(arduino_nano, method):
+    """
+    Requesting driver process
+
+    Parameters
+    ----------
+    arduino_nano : ArduinoNano
+        Device to request
+
+    method : RequestData
+        String for identifying an action to be requested
+
+    Returns
+    -------
+    float or String
+        Result of requested method
+
+    Raises
+    ------
+    Exception
+        Raised if invalid method is requested
+
+    """
 
     if method == RequestData.TEMP_CEL:
         return arduino_nano.get_temperature(TempScale.CELSIUS)
@@ -107,7 +165,7 @@ def request_arduino(arduino_nano, method):
     elif method == RequestData.HUMIDITY:
         return arduino_nano.get_humidity()
 
-    return None
+    raise Exception('invalid method: %s' % method)
 
 
 if __name__ == '__main__':
