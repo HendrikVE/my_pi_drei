@@ -19,7 +19,7 @@ import sys
 import termios
 import tty
 from getpass import getpass
-from subprocess import Popen
+from subprocess import Popen, PIPE
 
 # append root of the python code tree to sys.apth so that imports are working
 import time
@@ -114,7 +114,7 @@ def shutdown_system():
 
 def update_system():
 
-    process = Popen(['apt-get', 'update', '&&', 'apt-get', 'dist-upgrade', '-y'])
+    process = Popen(['apt-get', 'update', '&&', 'apt-get', 'dist-upgrade', '-y'], stdout=PIPE)
 
     while True:
         output = process.stdout.readline()
