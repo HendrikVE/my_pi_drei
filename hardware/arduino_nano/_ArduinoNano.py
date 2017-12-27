@@ -64,41 +64,6 @@ class ArduinoNano(object):
     """
     _serialConnection = None
 
-    class _SerialConnection(object):
-        """
-        Handling serial connection on USB
-
-        """
-        usb_path = ''
-        serial_connection = None
-
-        def __init__(self, usb_path):
-            self.usb_path = usb_path
-
-        def __delete__(self, instance):
-            self.close()
-
-        def open(self):
-            self.serial_connection = Serial(self.usb_path)
-            time.sleep(5)  # wait for the arduino to reset after serial connection
-
-        def close(self):
-            self.serial_connection.close()
-
-        def request(self, method_name):
-
-            try:
-
-                if not self.serial_connection.is_open:
-                    self.serial_connection.open()
-
-                self.serial_connection.write(method_name)
-
-                return self.serial_connection.readline()
-
-            except Exception:
-                raise DeviceUnconnectedException()
-
     def start_communication(self):
         """
         Establish the serial connection to the device
@@ -110,7 +75,7 @@ class ArduinoNano(object):
 
         """
         try:
-            self._serialConnection = self._SerialConnection('/dev/ttyUSB0')
+            self._serialConnection = _SerialConnection('/dev/ttyUSB0')
             self._serialConnection.open()
 
         except SerialException as e:
@@ -207,3 +172,78 @@ class ArduinoNano(object):
         """
         result = self._serialConnection.request(RequestData.HUMIDITY)
         return float(result)
+
+
+class _SerialConnection(object):
+    """
+    Handling serial connection on USB
+
+    """
+    usb_path = ''
+    serial_connection = None
+
+    def __init__(self, usb_path):
+        self.usb_path = usb_path
+
+    def __delete__(self, instance):
+        self.close()
+
+    def open(self):
+        self.serial_connection = Serial(self.usb_path)
+        time.sleep(5)  # wait for the arduino to reset after serial connection
+
+    def close(self):
+        self.serial_connection.close()
+
+    def request(self, method_name):
+
+        try:
+
+            if not self.serial_connection.is_open:
+                self.serial_connection.open()
+
+            self.serial_connection.write(method_name)
+
+            return self.serial_connection.readline()
+
+        except Exception:
+            raise DeviceUnconnectedException()
+
+
+class _Cache(object):
+
+    class CacheEntry(object):
+
+        _key = None
+        _value = None
+        _creation_time = None
+        _validity_period = None
+
+        def __init__(self, key, value, validity_period=10):
+            """
+            Caching sensor data
+
+            Parameters
+            ----------
+            key : String
+                Key for the entry
+
+            value : String
+                Value of the entry
+
+            validity_period : int, optional
+                Amount of seconds, after which the entry is invalidated
+
+            """
+            self._key = key
+            self._value = value
+            self._creation_time = time.time()
+            self._validity_period = validity_period
+
+    _entries = []
+
+    def add_entry(self, entry):
+        self._entries.append(entry)
+
+    def remove_entry(self, key):
+        self._entries.remove(key)

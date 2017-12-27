@@ -112,6 +112,22 @@ def shutdown_system():
     Popen(['shutdown', '-h', '0'])
 
 
+def update_system():
+
+    process = Popen(['apt-get', 'update', '&&', 'apt-get', 'dist-upgrade', '-y'])
+
+    while True:
+        output = process.stdout.readline()
+
+        if output == '' and process.poll() is not None:
+            break
+
+        if output:
+            print(output.strip())
+
+        process.poll()
+
+
 def set_display_intensity():
 
     user_input = get_user_input(display.restart_screensaver_timer, 'Enter intensity (0-1023): ')
@@ -299,6 +315,7 @@ if __name__ == '__main__':
             MenuAction('show overview', show_overview),
 
             # SYSTEM ACTIONS
+            MenuAction('update', update_system),
             MenuAction('shutdown', shutdown_system),
             MenuAction('reboot', reboot_system),
 
