@@ -114,7 +114,7 @@ def shutdown_system():
 
 def update_system():
 
-    process = Popen(['apt-get', 'update', '&&', 'apt-get', 'dist-upgrade', '-y'], stdout=PIPE)
+    process = Popen(['apt-get update && apt-get dist-upgrade -y'], stdout=PIPE, shell=True)
 
     while True:
         output = process.stdout.readline()
