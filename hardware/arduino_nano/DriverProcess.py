@@ -15,7 +15,7 @@ import sys
 import zmq
 
 import _ArduinoNano
-from _ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
+from ._ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
