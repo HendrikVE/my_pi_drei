@@ -14,8 +14,7 @@ import time
 import sys
 import zmq
 
-import _ArduinoNano
-from ._ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException
+from ._ArduinoNano import ArduinoNano, TempScale, DeviceUnconnectedException, RequestData
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
@@ -23,15 +22,6 @@ ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 _ERROR = 'error'
 _RESULT = 'result'
 _METHOD = 'method'
-
-
-# copy the RequestData class for accessing from Arduino
-class RequestData(_ArduinoNano.RequestData):
-    """
-    Exact copy of _ArduinoNano.RequestData
-
-    """
-    pass
 
 
 class RequestDriverProcess:
