@@ -45,11 +45,38 @@ display.open()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 
-def main(menu):
+def main():
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    print_manual()
+    menu = Menu()
+
+    actions = [
+        MenuAction('print help', print_manual),
+
+        # DISPLAY
+        MenuAction('turn on display', display.turn_on),
+        MenuAction('turn off display', display.turn_off),
+        MenuAction('set display intensity', set_display_intensity),
+
+        # OVERVIEW
+        MenuAction('show overview', show_overview),
+
+        # SYSTEM ACTIONS SUBMENU
+        MenuAction('system submenu', open_system_submenu),
+
+        # EXIT PROGRAM
+        MenuAction('exit program', exit_program),
+    ]
+
+    menu.add_item_list(actions)
+
+    menu_handler(menu)
+
+
+def menu_handler(menu):
+
+    print_manual(menu)
 
     while True:
 
@@ -75,7 +102,7 @@ def main(menu):
                 exit_program()
 
             elif user_input == 'help':
-                print_manual()
+                print_manual(menu)
 
             else:
                 print('invalid action')
@@ -87,7 +114,7 @@ def signal_handler(signal_number, frame):
     pass
 
 
-def print_manual():
+def print_manual(menu):
     os.system('clear')
     print(menu)
 
@@ -126,6 +153,24 @@ def update_system():
             print(output.strip())
 
         process.poll()
+
+
+def open_system_submenu():
+
+    menu = Menu()
+
+    actions = [
+        MenuAction('print help', print_manual),
+
+        # SYSTEM ACTIONS
+        MenuAction('update', update_system),
+        MenuAction('shutdown', shutdown_system),
+        MenuAction('reboot', reboot_system),
+    ]
+
+    menu.add_item_list(actions)
+
+    menu_handler(menu)
 
 
 def set_display_intensity():
@@ -301,31 +346,7 @@ if __name__ == '__main__':
                         datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
     try:
-        menu = Menu()
-
-        actions = [
-            MenuAction('print help', print_manual),
-
-            # DISPLAY
-            MenuAction('turn on display', display.turn_on),
-            MenuAction('turn off display', display.turn_off),
-            MenuAction('set display intensity', set_display_intensity),
-
-            # OVERVIEW
-            MenuAction('show overview', show_overview),
-
-            # SYSTEM ACTIONS
-            MenuAction('update', update_system),
-            MenuAction('shutdown', shutdown_system),
-            MenuAction('reboot', reboot_system),
-
-            # EXIT PROGRAM
-            MenuAction('exit program', exit_program),
-        ]
-
-        menu.add_item_list(actions)
-
-        main(menu)
+        main()
 
     except Exception as e:
         logging.error(str(e), exc_info=True)
