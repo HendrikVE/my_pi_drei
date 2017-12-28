@@ -55,6 +55,16 @@ class Menu:
         return ''.join(menu_manual)
 
 
+class Submenu(Menu):
+
+    def __init__(self):
+        exit_action = MenuAction('exit submenu', self._exit_submenu())
+        self.add_item(exit_action)
+
+    def _exit_submenu(self):
+        raise ExitMenuException()
+
+
 class MenuAction:
 
     _action_name = None
