@@ -160,10 +160,10 @@ def update_system():
 
 def open_system_submenu():
 
-    menu = Menu()
+    submenu = Menu()
 
     def print_manual_wrapper():
-        print_manual(menu)
+        print_manual(submenu)
 
     actions = [
         MenuAction('print help', print_manual_wrapper),
@@ -174,9 +174,9 @@ def open_system_submenu():
         MenuAction('reboot', reboot_system),
     ]
 
-    menu.add_item_list(actions)
+    submenu.add_item_list(actions)
 
-    menu_handler(menu)
+    menu_handler(submenu)
 
 
 def set_display_intensity():
