@@ -15,7 +15,7 @@ class ExitMenuException(Exception):
     pass
 
 
-class Menu(object):
+class Menu:
 
     _menu_actions = []
 
@@ -55,7 +55,7 @@ class Menu(object):
         return ''.join(menu_manual)
 
 
-class MenuAction(object):
+class MenuAction:
 
     _action_name = None
     _output_string = None
