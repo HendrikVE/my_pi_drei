@@ -11,6 +11,10 @@
 from __future__ import print_function
 
 
+class ExitMenuException(Exception):
+    pass
+
+
 class Menu(object):
 
     _menu_actions = []

@@ -32,7 +32,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 
 from adafruit_22_display.Display import Display
 from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-from menu import Menu, MenuAction
+from menu import Menu, MenuAction, ExitMenuException
 from config import config
 import util.colored_print as cp
 
@@ -93,6 +93,10 @@ def menu_handler(menu):
 
                 try:
                     menu.execute_action(selected_action)
+
+                except ExitMenuException:
+                    # finish infinite loop
+                    break
 
                 except Exception as e:
                     print(str(e))
@@ -160,10 +164,13 @@ def update_system():
 
 def open_system_submenu():
 
-    submenu = Menu()
+    menu = Menu()
 
     def print_manual_wrapper():
-        print_manual(submenu)
+        print_manual(menu)
+
+    def exit_submenu():
+        raise ExitMenuException()
 
     actions = [
         MenuAction('print help', print_manual_wrapper),
@@ -172,11 +179,14 @@ def open_system_submenu():
         MenuAction('update', update_system),
         MenuAction('shutdown', shutdown_system),
         MenuAction('reboot', reboot_system),
+
+        # EXIT SUBMENU
+        MenuAction('exit submenu', exit_submenu),
     ]
 
-    submenu.add_item_list(actions)
+    menu.add_item_list(actions)
 
-    menu_handler(submenu)
+    menu_handler(menu)
 
 
 def set_display_intensity():
