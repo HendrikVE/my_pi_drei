@@ -51,8 +51,11 @@ def main():
 
     menu = Menu()
 
+    def print_manual_wrapper():
+        print_manual(menu)
+
     actions = [
-        MenuAction('print help', print_manual),
+        MenuAction('print help', print_manual_wrapper),
 
         # DISPLAY
         MenuAction('turn on display', display.turn_on),
@@ -159,8 +162,11 @@ def open_system_submenu():
 
     menu = Menu()
 
+    def print_manual_wrapper():
+        print_manual(menu)
+
     actions = [
-        MenuAction('print help', print_manual),
+        MenuAction('print help', print_manual_wrapper),
 
         # SYSTEM ACTIONS
         MenuAction('update', update_system),
