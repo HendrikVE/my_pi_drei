@@ -34,7 +34,7 @@ class RequestData(_ArduinoNano.RequestData):
     pass
 
 
-class RequestDriverProcess(object):
+class RequestDriverProcess:
     """
     Accessing the background driver process (operating as client)
 
