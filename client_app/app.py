@@ -61,16 +61,14 @@ def main():
         # MANUAL
         MenuAction('print help', print_manual_wrapper),
 
-        # DISPLAY
-        MenuAction('turn on display', display.turn_on),
-        MenuAction('turn off display', display.turn_off),
-        MenuAction('set display intensity', set_display_intensity),
-
         # OVERVIEW
-        MenuAction('show overview', show_overview),
+        MenuAction('Overview', show_overview),
+
+        # DISPLAY ACTIONS SUBMENU
+        MenuAction('Display', lambda previous_menu=menu: open_display_submenu(previous_menu)),
 
         # SYSTEM ACTIONS SUBMENU
-        MenuAction('system submenu', lambda previous_menu=menu: open_system_submenu(previous_menu)),
+        MenuAction('System', lambda previous_menu=menu: open_system_submenu(previous_menu)),
     ]
 
     menu.add_item_list(actions)
@@ -178,6 +176,25 @@ def open_system_submenu(current_menu):
         MenuAction('update', update_system),
         MenuAction('shutdown', shutdown_system),
         MenuAction('reboot', reboot_system),
+    ]
+
+    submenu.add_item_list(actions)
+
+    menu_handler(current_menu, submenu)
+
+
+def open_display_submenu(current_menu):
+
+    submenu = Submenu()
+
+    actions = [
+        # MANUAL
+        MenuAction('print help', lambda menu=submenu: print_manual(menu)),
+
+        # DISPLAY
+        MenuAction('turn on display', display.turn_on),
+        MenuAction('turn off display', display.turn_off),
+        MenuAction('set display intensity', set_display_intensity),
     ]
 
     submenu.add_item_list(actions)
