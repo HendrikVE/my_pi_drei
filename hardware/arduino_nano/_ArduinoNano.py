@@ -204,7 +204,7 @@ class _SerialConnection(object):
             if not self.serial_connection.is_open:
                 self.serial_connection.open()
 
-            self.serial_connection.write(method_name)
+            self.serial_connection.write(method_name.encode('utf-8'))
 
             return self.serial_connection.readline()
 
