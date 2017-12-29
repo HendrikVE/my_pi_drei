@@ -17,7 +17,10 @@ class ExitMenuException(Exception):
 
 class Menu(object):
 
-    _menu_actions = []
+    _menu_actions = None
+
+    def __init__(self):
+        self._menu_actions = []
 
     def add_item(self, action):
 

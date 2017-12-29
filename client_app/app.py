@@ -70,15 +70,15 @@ def main():
         MenuAction('show overview', show_overview),
 
         # SYSTEM ACTIONS SUBMENU
-        MenuAction('system submenu', open_system_submenu),
+        MenuAction('system submenu', lambda menu: open_system_submenu),
     ]
 
     menu.add_item_list(actions)
 
-    menu_handler(menu)
+    menu_handler(None, menu)
 
 
-def menu_handler(menu):
+def menu_handler(previous_menu, menu):
 
     print_manual(menu)
 
@@ -96,6 +96,9 @@ def menu_handler(menu):
                     menu.execute_action(selected_action)
 
                 except ExitMenuException:
+                    if previous_menu is not None:
+                        # reprint manual (entering previous menu)
+                        print_manual(previous_menu)
                     # finish infinite loop
                     break
 
@@ -163,16 +166,13 @@ def update_system():
         process.poll()
 
 
-def open_system_submenu():
+def open_system_submenu(current_menu):
 
     submenu = Submenu()
 
-    def print_manual_wrapper():
-        print_manual(submenu)
-
     actions = [
         # MANUAL
-        MenuAction('print help', print_manual_wrapper),
+        MenuAction('print help', lambda submenu: print_manual),
 
         # SYSTEM ACTIONS
         MenuAction('update', update_system),
@@ -182,7 +182,7 @@ def open_system_submenu():
 
     submenu.add_item_list(actions)
 
-    menu_handler(submenu)
+    menu_handler(current_menu, submenu)
 
 
 def set_display_intensity():
