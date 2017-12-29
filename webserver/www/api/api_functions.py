@@ -19,7 +19,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-import .api_json_keys as keys
+from .api_json_keys import *
 
 API_VERSION = '0.1'
 
@@ -28,9 +28,9 @@ def __json_result_template__():
 
     # insert only mandatory attributes here
     json_result = {
-        keys.RESULT_KEY_API_VERSION: API_VERSION,
-        keys.RESULT_KEY_RESULT: None,
-        keys.RESULT_KEY_ERROR: None,
+        RESULT_KEY_API_VERSION: API_VERSION,
+        RESULT_KEY_RESULT: None,
+        RESULT_KEY_ERROR: None,
     }
 
     return json_result
@@ -65,31 +65,31 @@ def get_temperature(request):
     rdp = RequestDriverProcess()
 
     try:
-        argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
+        argument = request[REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_dict[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
+        json_dict[RESULT_KEY_ERROR] = 'missing key %s' % REQUEST_KEY_ACTION_ARGUMENT
         return json_dict
 
     if argument == 'celsius':
         try:
             temperature = rdp.request(RequestData.TEMP_CEL)
         except Exception as e:
-            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
             temperature = rdp.request(RequestData.TEMP_FAH)
         except Exception as e:
-            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     else:
-        json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        json_dict[RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
         return json_dict
 
-    json_dict[keys.RESULT_KEY_RESULT] = temperature
+    json_dict[RESULT_KEY_RESULT] = temperature
 
     return json_dict
 
@@ -99,31 +99,31 @@ def get_heat_index(request):
     rdp = RequestDriverProcess()
 
     try:
-        argument = request[keys.REQUEST_KEY_ACTION_ARGUMENT]
+        argument = request[REQUEST_KEY_ACTION_ARGUMENT]
 
     except KeyError:
-        json_dict[keys.RESULT_KEY_ERROR] = 'missing key %s' % keys.REQUEST_KEY_ACTION_ARGUMENT
+        json_dict[RESULT_KEY_ERROR] = 'missing key %s' % REQUEST_KEY_ACTION_ARGUMENT
         return json_dict
 
     if argument == 'celsius':
         try:
             heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
         except Exception as e:
-            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
             heat_index = rdp.request(RequestData.HEAT_INDEX_FAH)
         except Exception as e:
-            json_dict[keys.RESULT_KEY_ERROR] = str(e)
+            json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     else:
-        json_dict[keys.RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
+        json_dict[RESULT_KEY_ERROR] = 'invalid argument: %s' % argument
         return json_dict
 
-    json_dict[keys.RESULT_KEY_RESULT] = heat_index
+    json_dict[RESULT_KEY_RESULT] = heat_index
 
     return json_dict
 
@@ -135,9 +135,9 @@ def get_humidity(request):
     try:
         humidity = rdp.request(RequestData.HUMIDITY)
     except Exception as e:
-        json_dict[keys.RESULT_KEY_ERROR] = str(e)
+        json_dict[RESULT_KEY_ERROR] = str(e)
         return json_dict
 
-    json_dict[keys.RESULT_KEY_RESULT] = humidity
+    json_dict[RESULT_KEY_RESULT] = humidity
 
     return json_dict
