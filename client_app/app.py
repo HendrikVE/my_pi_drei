@@ -172,7 +172,7 @@ def open_system_submenu(current_menu):
 
     actions = [
         # MANUAL
-        MenuAction('print help', lambda submenu: print_manual(submenu)),
+        MenuAction('print help', lambda menu=submenu: print_manual(menu)),
 
         # SYSTEM ACTIONS
         MenuAction('update', update_system),
