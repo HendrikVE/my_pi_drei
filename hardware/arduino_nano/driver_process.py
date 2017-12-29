@@ -22,7 +22,7 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from ._arduino_nano import ArduinoNano, TempScale, DeviceUnconnectedException, RequestData
+from hardware.arduino_nano._arduino_nano import ArduinoNano, TempScale, DeviceUnconnectedException, RequestData
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
