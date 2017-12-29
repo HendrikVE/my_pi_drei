@@ -8,6 +8,8 @@
  * See the file LICENSE in the top level directory for more details.
 """
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os
 import sys
 

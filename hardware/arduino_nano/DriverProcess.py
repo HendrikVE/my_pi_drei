@@ -8,8 +8,9 @@
  * See the file LICENSE in the top level directory for more details.
 """
 
-import logging
+from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import time
 import sys
 import zmq

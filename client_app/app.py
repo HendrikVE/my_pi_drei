@@ -10,7 +10,7 @@
 
 # needs to be run as sudo to enable reboot and shutdown commands
 
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
