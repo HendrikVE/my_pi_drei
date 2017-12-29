@@ -19,7 +19,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-import api_json_keys as keys
+import .api_json_keys as keys
 
 API_VERSION = '0.1'
 

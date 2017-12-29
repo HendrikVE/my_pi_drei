@@ -32,7 +32,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 
 from adafruit_22_display.Display import Display
 from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-from menu import Menu, MenuAction, ExitMenuException, Submenu
+from .menu import Menu, MenuAction, ExitMenuException, Submenu
 from config import config
 import util.colored_print as cp
 

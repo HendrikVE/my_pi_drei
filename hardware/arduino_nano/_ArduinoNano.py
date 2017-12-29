@@ -42,7 +42,7 @@ class DeviceUnconnectedException(Exception):
     pass
 
 
-class ArduinoNano:
+class ArduinoNano(object):
     """
     Abstraction for a connected Arduino Nano
 
@@ -176,7 +176,7 @@ class ArduinoNano:
         return float(result)
 
 
-class _SerialConnection:
+class _SerialConnection(object):
     """
     Handling serial connection on USB
 
@@ -212,9 +212,9 @@ class _SerialConnection:
             raise DeviceUnconnectedException()
 
 
-class _Cache:
+class _Cache(object):
 
-    class CacheEntry:
+    class CacheEntry(object):
 
         _key = None
         _value = None

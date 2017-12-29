@@ -18,7 +18,7 @@ class DisplayAction:
     NONE, MANUAL_ON, MANUAL_OFF, SCREENSAVER_OFF = range(4)
 
 
-class Display:
+class Display(object):
     """
     Array with associated photographic information.
 

@@ -15,7 +15,7 @@ class ExitMenuException(Exception):
     pass
 
 
-class Menu:
+class Menu(object):
 
     _menu_actions = []
 
@@ -65,7 +65,7 @@ class Submenu(Menu):
         raise ExitMenuException()
 
 
-class MenuAction:
+class MenuAction(object):
 
     _action_name = None
     _output_string = None

@@ -25,7 +25,7 @@ _RESULT = 'result'
 _METHOD = 'method'
 
 
-class RequestDriverProcess:
+class RequestDriverProcess(object):
     """
     Accessing the background driver process (operating as client)
 
