@@ -25,10 +25,10 @@ sys.path.append(PROJECT_ROOT_DIR)
 
 from config import config
 from webserver.config import config as webserver_config
-from .http_prints import *
+from http_prints import *
 
-from .api import api_functions as api
-from .api import api_json_keys as jk
+from api import api_functions as api
+from api import api_json_keys as jk
 
 LOGFILE = os.path.join(WEBSERVER_ROOT_DIR, 'log', 'request.log')
 

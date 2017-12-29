@@ -15,6 +15,7 @@ import sys
 
 # append root of the python code tree to sys.apth so that imports are working
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
+
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
