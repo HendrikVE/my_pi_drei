@@ -10,4 +10,4 @@
 
 LOGGING_FORMAT = '[%(levelname)s]: %(asctime)s\n'\
                  + 'in %(filename)s in %(funcName)s on line %(lineno)d\n'\
-                 + '%(message)s\n'
+                 + '%(message)s\n\n'
