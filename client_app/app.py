@@ -32,7 +32,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 
 from adafruit_22_display.Display import Display
 from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-from menu import Menu, MenuAction, ExitMenuException, Submenu
+from Menu import Menu, MenuAction, ExitMenuException, Submenu
 from config import config
 import util.colored_print as cp
 
@@ -70,7 +70,7 @@ def main():
         MenuAction('show overview', show_overview),
 
         # SYSTEM ACTIONS SUBMENU
-        MenuAction('system submenu', lambda menu: open_system_submenu),
+        MenuAction('system submenu', lambda previous_menu=menu: open_system_submenu(previous_menu)),
     ]
 
     menu.add_item_list(actions)
@@ -172,7 +172,7 @@ def open_system_submenu(current_menu):
 
     actions = [
         # MANUAL
-        MenuAction('print help', lambda submenu: print_manual),
+        MenuAction('print help', lambda submenu: print_manual(submenu)),
 
         # SYSTEM ACTIONS
         MenuAction('update', update_system),
