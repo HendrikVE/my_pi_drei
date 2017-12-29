@@ -30,9 +30,9 @@ CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from adafruit_22_display.Display import Display
-from hardware.arduino_nano.DriverProcess import RequestDriverProcess, RequestData
-from Menu import Menu, MenuAction, ExitMenuException, Submenu
+from adafruit_22_display.display import Display
+from hardware.arduino_nano.driver_process import RequestDriverProcess, RequestData
+from menu import Menu, MenuAction, ExitMenuException, Submenu
 from config import config
 import util.colored_print as cp
 
