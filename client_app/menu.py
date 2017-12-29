@@ -58,6 +58,7 @@ class Menu(object):
 class Submenu(Menu):
 
     def __init__(self):
+        super(Submenu, self).__init__()
         exit_action = MenuAction('exit submenu', self._exit_submenu())
         self.add_item(exit_action)
 
