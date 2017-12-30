@@ -114,6 +114,13 @@ def menu_handler(previous_menu, menu):
                 print_manual(menu)
 
             else:
+
+                for action in menu.get_actions():
+                    if user_input == action.get_name():
+                        action.execute()
+                        continue
+
+                # no match found
                 print('invalid action')
                 continue
 
