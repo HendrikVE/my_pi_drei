@@ -20,21 +20,21 @@ import termios
 import tty
 from getpass import getpass
 from subprocess import Popen, PIPE
-
-# append root of the python code tree to sys.apth so that imports are working
 import time
 
+# append root of the python code tree to sys.apth so that imports are working
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from adafruit_22_display.display import Display
-from hardware.arduino_nano.driver_process import RequestDriverProcess, RequestData
-from menu import Menu, MenuAction, ExitMenuException, Submenu
+from hardware.arduino_nano.driver_process import RequestDriverProcess
+from arduino.dht22.dht22_interface import RequestData
 from config import config
-import util.colored_print as cp
+from client_app.adafruit_22_display.display import Display
+from client_app.menu import Menu, MenuAction, ExitMenuException, Submenu
+import client_app.util.colored_print as cp
 
 SCREENSAVER_TIMEOUT = 120.0
 
