@@ -55,6 +55,10 @@ class ArduinoNano(object):
 
     """
     _serialConnection = None
+    _cache = None
+
+    def __init__(self):
+        _cache = Cache()
 
     def start_communication(self):
         """
@@ -102,21 +106,34 @@ class ArduinoNano(object):
             Raised if invalid method is requested
 
         """
+        cached_value = self._cache.get(method)
+        if cached_value is not None:
+            return cached_value
 
         if method == RequestData.TEMP_CEL:
-            return self.get_temperature(TempScale.CELSIUS)
+            result = self.get_temperature(TempScale.CELSIUS)
+            self._cache.add(Cache.CacheEntry(method, result, 4))
+            return
 
         elif method == RequestData.TEMP_FAH:
-            return self.get_temperature(TempScale.FAHRENHEIT)
+            result = self.get_temperature(TempScale.FAHRENHEIT)
+            self._cache.add(Cache.CacheEntry(method, result, 4))
+            return result
 
         elif method == RequestData.HEAT_INDEX_CEL:
-            return self.get_heat_index(TempScale.CELSIUS)
+            result = self.get_heat_index(TempScale.CELSIUS)
+            self._cache.add(Cache.CacheEntry(method, result, 4))
+            return result
 
         elif method == RequestData.HEAT_INDEX_FAH:
-            return self.get_heat_index(TempScale.FAHRENHEIT)
+            result = self.get_heat_index(TempScale.FAHRENHEIT)
+            self._cache.add(Cache.CacheEntry(method, result, 4))
+            return result
 
         elif method == RequestData.HUMIDITY:
-            return self.get_humidity()
+            result = self.get_humidity()
+            self._cache.add(Cache.CacheEntry(method, result, 4))
+            return result
 
         raise Exception('invalid method: %s' % method)
 
@@ -243,7 +260,7 @@ class _SerialConnection(object):
             raise DeviceUnconnectedException()
 
 
-class _Cache(object):
+class Cache(object):
 
     class CacheEntry(object):
 
@@ -273,10 +290,31 @@ class _Cache(object):
             self._creation_time = time.time()
             self._validity_period = validity_period
 
-    _entries = []
+    _entries = None
 
-    def add_entry(self, entry):
-        self._entries.append(entry)
+    def __init__(self):
+        self._entries = {}
 
-    def remove_entry(self, key):
-        self._entries.remove(key)
+    def add(self, entry):
+        self._entries[entry._key] = entry
+
+    def remove(self, key):
+        try:
+            del self._entries[key]
+
+        except KeyError:
+            pass
+
+    def get(self, key):
+        try:
+            entry = self._entries[key]
+            now = time.time()
+            if now - entry._creation_time > entry._validity_period:
+                self.remove(entry._key)
+                return None
+
+            else:
+                return entry._value
+
+        except KeyError:
+            return None
