@@ -62,13 +62,13 @@ def main():
         MenuAction('print help', print_manual_wrapper),
 
         # OVERVIEW
-        MenuAction('Overview', show_overview),
+        MenuAction('overview', show_overview),
 
         # DISPLAY ACTIONS SUBMENU
-        MenuAction('Display', lambda previous_menu=menu: open_display_submenu(previous_menu)),
+        MenuAction('display', lambda previous_menu=menu: open_display_submenu(previous_menu)),
 
         # SYSTEM ACTIONS SUBMENU
-        MenuAction('System', lambda previous_menu=menu: open_system_submenu(previous_menu)),
+        MenuAction('system', lambda previous_menu=menu: open_system_submenu(previous_menu)),
     ]
 
     menu.add_item_list(actions)
@@ -214,9 +214,9 @@ def open_display_submenu(current_menu):
         MenuAction('print help', lambda menu=submenu: print_manual(menu)),
 
         # DISPLAY
-        MenuAction('turn on display', display.turn_on),
-        MenuAction('turn off display', display.turn_off),
-        MenuAction('set display intensity', set_display_intensity),
+        MenuAction('turn on', display.turn_on),
+        MenuAction('turn off', display.turn_off),
+        MenuAction('set intensity', set_display_intensity),
     ]
 
     submenu.add_item_list(actions)
