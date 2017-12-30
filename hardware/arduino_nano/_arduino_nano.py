@@ -58,7 +58,7 @@ class ArduinoNano(object):
     _cache = None
 
     def __init__(self):
-        _cache = Cache()
+        self._cache = Cache()
 
     def start_communication(self):
         """
