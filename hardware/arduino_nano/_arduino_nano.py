@@ -113,7 +113,7 @@ class ArduinoNano(object):
         if method == RequestData.TEMP_CEL:
             result = self.get_temperature(TempScale.CELSIUS)
             self._cache.add(Cache.CacheEntry(method, result, 4))
-            return
+            return result
 
         elif method == RequestData.TEMP_FAH:
             result = self.get_temperature(TempScale.FAHRENHEIT)
