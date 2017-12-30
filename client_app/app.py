@@ -106,6 +106,7 @@ def menu_handler(previous_menu, menu):
             else:
                 print('invalid action')
 
+        # 'text' area
         except ValueError:
             if user_input == 'exit':
                 exit_program()
@@ -115,21 +116,28 @@ def menu_handler(previous_menu, menu):
 
             else:
 
+                matched_action = None
+
                 for action in menu.get_actions():
                     if user_input == action.get_name():
-                        try:
-                            action.execute()
+                        matched_action = action
+                        break
 
-                        except ExitMenuException:
-                            if previous_menu is not None:
-                                # reprint manual (entering previous menu)
-                                print_manual(previous_menu)
-                            # finish infinite loop
-                            break
+                if matched_action is not None:
+                    try:
+                        matched_action.execute()
 
-                # no match found
-                print('invalid action')
-                continue
+                    except ExitMenuException:
+                        if previous_menu is not None:
+                            # reprint manual (entering previous menu)
+                            print_manual(previous_menu)
+                        # finish infinite loop
+                        break
+
+                else:
+                    # no match found
+                    print('invalid action')
+                    continue
 
 
 def signal_handler(signal_number, frame):
