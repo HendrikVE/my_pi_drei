@@ -12,26 +12,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from serial import Serial, SerialException
 import time
+import os
+import sys
 
+# append root of the python code tree to sys.apth so that imports are working
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 
-class TempScale:
-    """
-    Possible scale types for requesting temperatures
+PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
+sys.path.append(PROJECT_ROOT_DIR)
 
-    """
-    CELSIUS, FAHRENHEIT = range(2)
-
-
-class RequestData:
-    """
-    Serial requests for the device (dependant on code of the arduino)
-
-    """
-    TEMP_CEL = 'temp_cel'
-    TEMP_FAH = 'temp_fah'
-    HEAT_INDEX_CEL = 'heat_index_cel'
-    HEAT_INDEX_FAH = 'heat_index_fah'
-    HUMIDITY = 'humidity'
+from arduino.dht22.dht22_interface import TempScale, RequestData
 
 
 class DeviceUnconnectedException(Exception):
