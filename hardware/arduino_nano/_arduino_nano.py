@@ -79,6 +79,47 @@ class ArduinoNano(object):
         """
         self._serialConnection.close()
 
+    def request(self, method):
+        """
+        Requesting driver process
+
+        Parameters
+        ----------
+        arduino_nano : ArduinoNano
+            Device to request
+
+        method : RequestData
+            String for identifying an action to be requested
+
+        Returns
+        -------
+        float or String
+            Result of requested method
+
+        Raises
+        ------
+        Exception
+            Raised if invalid method is requested
+
+        """
+
+        if method == RequestData.TEMP_CEL:
+            return self.get_temperature(TempScale.CELSIUS)
+
+        elif method == RequestData.TEMP_FAH:
+            return self.get_temperature(TempScale.FAHRENHEIT)
+
+        elif method == RequestData.HEAT_INDEX_CEL:
+            return self.get_heat_index(TempScale.CELSIUS)
+
+        elif method == RequestData.HEAT_INDEX_FAH:
+            return self.get_heat_index(TempScale.FAHRENHEIT)
+
+        elif method == RequestData.HUMIDITY:
+            return self.get_humidity()
+
+        raise Exception('invalid method: %s' % method)
+
     def get_temperature(self, scale=TempScale.CELSIUS):
         """
         Read temperature from device

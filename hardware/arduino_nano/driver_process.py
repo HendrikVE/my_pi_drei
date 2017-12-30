@@ -23,7 +23,6 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.arduino_nano._arduino_nano import ArduinoNano, DeviceUnconnectedException
-from arduino.dht22.dht22_interface import TempScale, RequestData
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
@@ -115,7 +114,7 @@ def main():
 
         else:
             try:
-                response[_RESULT] = request_arduino(arduino_nano, method)
+                response[_RESULT] = arduino_nano.request(method)
 
             except Exception as e:
                 response[_ERROR] = str(e)
@@ -123,48 +122,6 @@ def main():
                 raise e
 
         server_socket.send_json(response)
-
-
-def request_arduino(arduino_nano, method):
-    """
-    Requesting driver process
-
-    Parameters
-    ----------
-    arduino_nano : ArduinoNano
-        Device to request
-
-    method : RequestData
-        String for identifying an action to be requested
-
-    Returns
-    -------
-    float or String
-        Result of requested method
-
-    Raises
-    ------
-    Exception
-        Raised if invalid method is requested
-
-    """
-
-    if method == RequestData.TEMP_CEL:
-        return arduino_nano.get_temperature(TempScale.CELSIUS)
-
-    elif method == RequestData.TEMP_FAH:
-        return arduino_nano.get_temperature(TempScale.FAHRENHEIT)
-
-    elif method == RequestData.HEAT_INDEX_CEL:
-        return arduino_nano.get_heat_index(TempScale.CELSIUS)
-
-    elif method == RequestData.HEAT_INDEX_FAH:
-        return arduino_nano.get_heat_index(TempScale.FAHRENHEIT)
-
-    elif method == RequestData.HUMIDITY:
-        return arduino_nano.get_humidity()
-
-    raise Exception('invalid method: %s' % method)
 
 
 if __name__ == '__main__':
