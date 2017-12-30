@@ -117,8 +117,15 @@ def menu_handler(previous_menu, menu):
 
                 for action in menu.get_actions():
                     if user_input == action.get_name():
-                        action.execute()
-                        continue
+                        try:
+                            action.execute()
+
+                        except ExitMenuException:
+                            if previous_menu is not None:
+                                # reprint manual (entering previous menu)
+                                print_manual(previous_menu)
+                            # finish infinite loop
+                            break
 
                 # no match found
                 print('invalid action')
