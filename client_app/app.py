@@ -29,10 +29,9 @@ CLIENT_APP_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.arduino_nano.driver_process import RequestDriverProcess
+from hardware.driver_process import RequestDriverProcess
 from arduino.dht22.dht22_interface import RequestData
 from config import config
-from client_app.adafruit_22_display.display import Display
 from client_app.menu import Menu, MenuAction, ExitMenuException, Submenu
 import client_app.util.colored_print as cp
 
@@ -266,7 +265,9 @@ def show_overview():
         else:
             return cp.style_text(humidity_string, cp.BLUE_LIGHT)
 
-    rdp = RequestDriverProcess()
+    port = 7000
+    address = 'tcp://127.0.0.1:%i' % port
+    rdp = RequestDriverProcess(address)
 
     while True:
         try:

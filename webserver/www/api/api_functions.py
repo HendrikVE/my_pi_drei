@@ -19,7 +19,7 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.arduino_nano.driver_process import RequestDriverProcess
+from hardware.driver_process import RequestDriverProcess
 from arduino.dht22.dht22_interface import RequestData
 from .api_json_keys import *
 
@@ -64,7 +64,10 @@ def __json_result_template__():
 
 def get_temperature(request):
     json_dict = __json_result_template__()
-    rdp = RequestDriverProcess()
+
+    port = 7000
+    address = 'tcp://127.0.0.1:%i' % port
+    rdp = RequestDriverProcess(address)
 
     try:
         argument = request[REQUEST_KEY_ACTION_ARGUMENT]
@@ -98,7 +101,10 @@ def get_temperature(request):
 
 def get_heat_index(request):
     json_dict = __json_result_template__()
-    rdp = RequestDriverProcess()
+
+    port = 7000
+    address = 'tcp://127.0.0.1:%i' % port
+    rdp = RequestDriverProcess(address)
 
     try:
         argument = request[REQUEST_KEY_ACTION_ARGUMENT]
@@ -132,7 +138,10 @@ def get_heat_index(request):
 
 def get_humidity(request):
     json_dict = __json_result_template__()
-    rdp = RequestDriverProcess()
+
+    port = 7000
+    address = 'tcp://127.0.0.1:%i' % port
+    rdp = RequestDriverProcess(address)
 
     try:
         humidity = rdp.request(RequestData.HUMIDITY)

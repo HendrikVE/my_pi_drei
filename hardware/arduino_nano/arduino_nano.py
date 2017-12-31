@@ -22,17 +22,11 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from arduino.dht22.dht22_interface import TempScale, RequestData
+from hardware.device import Device
+from hardware.driver_process import DeviceUnconnectedException
 
 
-class DeviceUnconnectedException(Exception):
-
-    def __str__(self):
-        return 'device not connected'
-
-    pass
-
-
-class ArduinoNano(object):
+class ArduinoNano(Device):
     """
     Abstraction for a connected Arduino Nano
 
@@ -60,6 +54,7 @@ class ArduinoNano(object):
     def __init__(self):
         self._cache = Cache()
 
+    # @override
     def start_communication(self):
         """
         Establish the serial connection to the device
@@ -77,12 +72,14 @@ class ArduinoNano(object):
         except SerialException as e:
             raise e
 
+    # @override
     def stop_communication(self):
         """
         Close the serial connection to the device
         """
         self._serialConnection.close()
 
+    # @override
     def request(self, method):
         """
         Requesting driver process

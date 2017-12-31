@@ -22,7 +22,8 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.arduino_nano._arduino_nano import ArduinoNano, DeviceUnconnectedException
+from hardware.arduino_nano.arduino_nano import ArduinoNano
+from hardware.driver_process import DriverProcess
 
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
@@ -32,59 +33,6 @@ _RESULT = 'result'
 _METHOD = 'method'
 
 
-class RequestDriverProcess(object):
-    """
-    Accessing the background driver process (operating as client)
-
-    Methods
-    -------
-    request(method)
-        Request the driver process
-
-    """
-
-    def request(self, method):
-        """
-        Requesting driver process
-
-        Parameters
-        ----------
-        method : RequestData
-            String for identifying an action to be requested
-
-        Returns
-        -------
-        String
-            Result of requested method
-
-        Raises
-        ------
-        Exception
-            If response of request contains the error field or connection failed
-
-        """
-        try:
-            context = zmq.Context()
-            client_socket = context.socket(zmq.REQ)
-            client_socket.connect(ADDRESS)
-
-            json = {_METHOD: method}
-            client_socket.send_json(json)
-
-            response = client_socket.recv_json()
-
-            client_socket.disconnect(ADDRESS)
-
-        except Exception as e:
-            logging.error(str(e), exc_info=True)
-            raise e
-
-        if _ERROR in response:
-            raise Exception(response[_ERROR])
-
-        return response[_RESULT]
-
-
 def main():
     """
     Run the Driver Process (operating as server)
@@ -92,6 +40,7 @@ def main():
     """
     print('starting arduino driver...')
     arduino_nano = ArduinoNano()
+    driver_process = DriverProcess(ADDRESS, arduino_nano)
 
     while True:
         try:
@@ -107,67 +56,7 @@ def main():
             time.sleep(1)
             continue
 
-    print('binding socket...')
-    context = zmq.Context()
-    server_socket = context.socket(zmq.REP)
-    server_socket.bind(ADDRESS)
-
-    print('server running...')
-    while True:
-        try:
-            handle_requests(arduino_nano, server_socket)
-
-        except KeyboardInterrupt:
-            break
-
-        except DeviceUnconnectedException:
-            print('try to recover connection')
-            # try to recover
-            try:
-                arduino_nano.start_communication()
-
-            except Exception:
-                pass
-
-            continue
-
-        except Exception as e:
-            print(str(e))
-            # retry
-            continue
-
-
-def handle_requests(arduino_nano, server_socket):
-
-    while True:
-
-        response = {}
-
-        try:
-            request = server_socket.recv_json()
-
-        except ValueError as e:
-            response[_ERROR] = str(e)
-            server_socket.send_json(response)
-            continue
-
-        method = request[_METHOD]
-
-        response = request.copy()
-
-        if not _METHOD in request:
-            response[_ERROR] = '"method" is missing'
-
-        else:
-            try:
-                response[_RESULT] = arduino_nano.request(method)
-
-            except Exception as e:
-                response[_ERROR] = str(e)
-                server_socket.send_json(response)
-                raise e
-
-        server_socket.send_json(response)
+    driver_process.run()
 
 
 if __name__ == '__main__':
