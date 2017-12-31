@@ -139,14 +139,14 @@ class RequestDriverProcess(object):
         try:
             context = zmq.Context()
             client_socket = context.socket(zmq.REQ)
-            client_socket.connect(self.address)
+            client_socket.connect(self._address)
 
             json = {_METHOD: method}
             client_socket.send_json(json)
 
             response = client_socket.recv_json()
 
-            client_socket.disconnect(self.address)
+            client_socket.disconnect(self._address)
 
         except Exception as e:
             logging.error(str(e), exc_info=True)
