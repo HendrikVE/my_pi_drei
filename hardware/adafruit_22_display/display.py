@@ -67,8 +67,11 @@ class Display(Device):
         ----------
         method : RequestData
             String for identifying an action to be requested
-        """
 
+        argument : String
+            String argument for given method
+
+        """
         if method == RequestData.TURN_ON:
             self.turn_on()
             return None
@@ -78,6 +81,7 @@ class Display(Device):
             return None
 
         elif method == RequestData.SET_INTENSITY:
+            self.set_intensity(argument)
             return None
 
         elif method == RequestData.START_SCREENSAVER_TIMER:
@@ -85,6 +89,7 @@ class Display(Device):
             return None
 
         elif method == RequestData.SET_SCREENSAVER_TIMEOUT:
+            self.set_screensaver_timeout(argument)
             return None
 
         elif method == RequestData.RESTART_SCREENSAVER_TIMER:
@@ -92,6 +97,7 @@ class Display(Device):
             return None
 
         elif method == RequestData.SHOW_IMAGE:
+            self.show_image(argument)
             return None
 
         raise Exception('invalid method: %s' % method)

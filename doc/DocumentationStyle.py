@@ -1,6 +1,8 @@
+"""
 https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
+"""
 
-FOR METHODS/ FUNCTIONS
+# FOR METHODS/ FUNCTIONS
 """
 shortDescription
 
@@ -21,7 +23,7 @@ ExceptionType
 
 """
 
-FOR CLASSES
+# FOR CLASSES
 """
 Array with associated photographic information.
 

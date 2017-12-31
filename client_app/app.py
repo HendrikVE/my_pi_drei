@@ -30,7 +30,8 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.driver_process import RequestDriverProcess
-from arduino.dht22.dht22_interface import RequestData
+from arduino.dht22.dht22_interface import RequestData as RequestDataDHT22
+from hardware.adafruit_22_display.display import RequestData as RequestDataDisplay
 from config import config
 from client_app.menu import Menu, MenuAction, ExitMenuException, Submenu
 import client_app.util.colored_print as cp
@@ -39,6 +40,11 @@ LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 
 PORT_DHT22 = 7000
 ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
+
+PORT_DISPLAY = 7001
+ADDRESS_DISPLAY = 'tcp://127.0.0.1:%i' % PORT_DISPLAY
+
+rdp_display = RequestDriverProcess(ADDRESS_DISPLAY)
 
 
 def main():
@@ -78,7 +84,7 @@ def menu_handler(previous_menu, menu):
 
     while True:
 
-        user_input = get_user_input(display.restart_screensaver_timer, '> ')
+        user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER, None), '> ')
 
         try:
             selected_action = int(user_input)
@@ -151,7 +157,9 @@ def exit_program():
     user_input = getpass('Enter password: ')
 
     if user_input == password:
-        display.close()
+        # disable screensaver
+        rdp_display.request(RequestDataDisplay.SET_SCREENSAVER_TIMEOUT, '0')
+
         sys.exit()
 
     else:
@@ -210,8 +218,8 @@ def open_display_submenu(current_menu):
         MenuAction('print help', lambda menu=submenu: print_manual(menu)),
 
         # DISPLAY
-        MenuAction('turn on', display.turn_on),
-        MenuAction('turn off', display.turn_off),
+        MenuAction('turn on', lambda: rdp_display.request(RequestDataDisplay.TURN_ON, None)),
+        MenuAction('turn off', lambda: rdp_display.request(RequestDataDisplay.TURN_OFF, None)),
         MenuAction('set intensity', set_display_intensity),
     ]
 
@@ -222,13 +230,13 @@ def open_display_submenu(current_menu):
 
 def set_display_intensity():
 
-    user_input = get_user_input(display.restart_screensaver_timer, 'Enter intensity (0-1023): ')
+    user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER, None), 'Enter intensity (0-1023): ')
 
     try:
         intensity = int(user_input)
 
         try:
-            display.set_intensity(intensity)
+            rdp_display.request(RequestDataDisplay.SET_INTENSITY, intensity)
 
         except Exception as e:
             print(str(e))
@@ -262,22 +270,22 @@ def show_overview():
         else:
             return cp.style_text(humidity_string, cp.BLUE_LIGHT)
 
-    rdp = RequestDriverProcess(ADDRESS_DHT22)
+    rdp_dht22 = RequestDriverProcess(ADDRESS_DHT22)
 
     while True:
         try:
             try:
-                temperature = rdp.request(RequestData.TEMP_CEL, None)
+                temperature = rdp_dht22.request(RequestDataDHT22.TEMP_CEL, None)
             except Exception:
                 temperature = None
 
             try:
-                heat_index = rdp.request(RequestData.HEAT_INDEX_CEL, None)
+                heat_index = rdp_dht22.request(RequestDataDHT22.HEAT_INDEX_CEL, None)
             except Exception:
                 heat_index = None
 
             try:
-                humidity = rdp.request(RequestData.HUMIDITY, None)
+                humidity = rdp_dht22.request(RequestDataDHT22.HUMIDITY, None)
             except Exception:
                 humidity = None
 

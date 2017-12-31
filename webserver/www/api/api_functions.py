@@ -31,6 +31,7 @@ ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
 PORT_DISPLAY = 7001
 ADDRESS_DISPLAY = 'tcp://127.0.0.1:%i' % PORT_DISPLAY
 
+
 def __json_result_template__():
 
     # insert only mandatory attributes here

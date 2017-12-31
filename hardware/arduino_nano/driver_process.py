@@ -26,10 +26,6 @@ from hardware.driver_process import DriverProcess
 PORT = 7000
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
-_ERROR = 'error'
-_RESULT = 'result'
-_METHOD = 'method'
-
 
 def main():
     """

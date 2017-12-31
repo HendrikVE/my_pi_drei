@@ -89,6 +89,9 @@ class ArduinoNano(Device):
         method : RequestData
             String for identifying an action to be requested
 
+        argument : String
+            String argument for given method
+
         Returns
         -------
         float or String

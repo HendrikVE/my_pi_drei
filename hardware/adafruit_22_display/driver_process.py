@@ -26,10 +26,6 @@ from hardware.driver_process import DriverProcess
 PORT = 7001
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
-_ERROR = 'error'
-_RESULT = 'result'
-_METHOD = 'method'
-
 SCREENSAVER_TIMEOUT = 120.0
 
 
