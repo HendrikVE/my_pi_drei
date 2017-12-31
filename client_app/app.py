@@ -39,6 +39,9 @@ SCREENSAVER_TIMEOUT = 120.0
 
 LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 
+PORT_DHT22 = 7000
+ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
+
 display = Display()
 display.open()
 display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
@@ -265,9 +268,7 @@ def show_overview():
         else:
             return cp.style_text(humidity_string, cp.BLUE_LIGHT)
 
-    port = 7000
-    address = 'tcp://127.0.0.1:%i' % port
-    rdp = RequestDriverProcess(address)
+    rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     while True:
         try:

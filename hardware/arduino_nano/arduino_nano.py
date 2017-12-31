@@ -10,10 +10,10 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from serial import Serial, SerialException
-import time
 import os
 import sys
+import time
+from serial import Serial, SerialException
 
 # append root of the python code tree to sys.apth so that imports are working
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -86,9 +86,6 @@ class ArduinoNano(Device):
 
         Parameters
         ----------
-        arduino_nano : ArduinoNano
-            Device to request
-
         method : RequestData
             String for identifying an action to be requested
 

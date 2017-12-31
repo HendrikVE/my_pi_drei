@@ -25,6 +25,11 @@ from .api_json_keys import *
 
 API_VERSION = '0.1'
 
+PORT_DHT22 = 7000
+ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
+
+PORT_DISPLAY = 7001
+ADDRESS_DISPLAY = 'tcp://127.0.0.1:%i' % PORT_DISPLAY
 
 def __json_result_template__():
 
@@ -64,10 +69,7 @@ def __json_result_template__():
 
 def get_temperature(request):
     json_dict = __json_result_template__()
-
-    port = 7000
-    address = 'tcp://127.0.0.1:%i' % port
-    rdp = RequestDriverProcess(address)
+    rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     try:
         argument = request[REQUEST_KEY_ACTION_ARGUMENT]
@@ -101,10 +103,7 @@ def get_temperature(request):
 
 def get_heat_index(request):
     json_dict = __json_result_template__()
-
-    port = 7000
-    address = 'tcp://127.0.0.1:%i' % port
-    rdp = RequestDriverProcess(address)
+    rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     try:
         argument = request[REQUEST_KEY_ACTION_ARGUMENT]
@@ -138,10 +137,7 @@ def get_heat_index(request):
 
 def get_humidity(request):
     json_dict = __json_result_template__()
-
-    port = 7000
-    address = 'tcp://127.0.0.1:%i' % port
-    rdp = RequestDriverProcess(address)
+    rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     try:
         humidity = rdp.request(RequestData.HUMIDITY)

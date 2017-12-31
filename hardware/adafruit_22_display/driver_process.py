@@ -20,10 +20,10 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from hardware.arduino_nano.arduino_nano import ArduinoNano
+from hardware.adafruit_22_display.display import Display
 from hardware.driver_process import DriverProcess
 
-PORT = 7000
+PORT = 7001
 ADDRESS = 'tcp://127.0.0.1:%i' % PORT
 
 _ERROR = 'error'
@@ -37,12 +37,12 @@ def main():
 
     """
     print('starting arduino driver...')
-    arduino_nano = ArduinoNano()
-    driver_process = DriverProcess(ADDRESS, arduino_nano)
+    display = Display()
+    driver_process = DriverProcess(ADDRESS, display)
 
     while True:
         try:
-            arduino_nano.start_communication()
+            display.start_communication()
             # established connection, break out of loop
             break
 

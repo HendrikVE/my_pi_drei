@@ -10,39 +10,94 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import os
+import sys
 from subprocess import Popen
 from threading import Timer
+
+# append root of the python code tree to sys.apth so that imports are working
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))
+
+PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
+sys.path.append(PROJECT_ROOT_DIR)
+
+from hardware.device import Device
 
 
 class DisplayAction:
     NONE, MANUAL_ON, MANUAL_OFF, SCREENSAVER_OFF = range(4)
 
 
-class Display(object):
+class RequestData:
     """
-    Array with associated photographic information.
-
-    ...
-
-    Attributes
-    ----------
-    exposure : float
-    	Exposure in seconds.
-
-    Methods
-    -------
-    colorspace(c='rgb')
-    	Represent the photo in the given colorspace.
-    gamma(n=1.0)
-    	Change the photo's gamma exposure.
+    Requests for the device
 
     """
+    TURN_ON = 'turn_on'
+    TURN_OFF = 'turn_off'
+    SET_INTENSITY = 'set_intensity'
+    START_SCREENSAVER_TIMER = 'start_screensaver_timer'
+    SET_SCREENSAVER_TIMEOUT = 'set_screensaver_timeout'
+    RESTART_SCREENSAVER_TIMER = 'restart_screensaver_timer'
+    SHOW_IMAGE = 'show_image'
+
+
+class Display(Device):
 
     _intensity = 700
     _last_display_action = DisplayAction.NONE
 
     _screensaver_timeout = 0.0
     _screensaver_timer = None
+
+    # @override
+    def start_communication(self):
+        pass
+
+    # @override
+    def stop_communication(self):
+        pass
+
+    # @override
+    def request(self, method):
+        """
+        Requesting driver process
+
+        Parameters
+        ----------
+        method : RequestData
+            String for identifying an action to be requested
+        """
+        cached_value = self._cache.get(method)
+        if cached_value is not None:
+            return cached_value
+
+        if method == RequestData.TEMP_CEL:
+            result = self.get_temperature(TempScale.CELSIUS)
+            self._cache.add(Cache.CacheEntry(method, result, 10))
+            return result
+
+        elif method == RequestData.TEMP_FAH:
+            result = self.get_temperature(TempScale.FAHRENHEIT)
+            self._cache.add(Cache.CacheEntry(method, result, 10))
+            return result
+
+        elif method == RequestData.HEAT_INDEX_CEL:
+            result = self.get_heat_index(TempScale.CELSIUS)
+            self._cache.add(Cache.CacheEntry(method, result, 10))
+            return result
+
+        elif method == RequestData.HEAT_INDEX_FAH:
+            result = self.get_heat_index(TempScale.FAHRENHEIT)
+            self._cache.add(Cache.CacheEntry(method, result, 10))
+            return result
+
+        elif method == RequestData.HUMIDITY:
+            result = self.get_humidity()
+            self._cache.add(Cache.CacheEntry(method, result, 10))
+            return result
+
+        raise Exception('invalid method: %s' % method)
 
     def open(self):
         Popen(['gpio', '-g', 'mode', '18', 'pwm'])
@@ -110,3 +165,6 @@ class Display(object):
 
         self.turn_on()
         self.set_screensaver_timeout(self._screensaver_timeout)
+
+    def show_image(self, path):
+        pass
