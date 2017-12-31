@@ -90,8 +90,54 @@ def main():
     Run the Driver Process (operating as server)
 
     """
+    print('starting arduino driver...')
+    arduino_nano = ArduinoNano()
 
-    global server_socket
+    while True:
+        try:
+            arduino_nano.start_communication()
+            # established connection, break out of loop
+            break
+
+        except KeyboardInterrupt:
+            sys.exit()
+
+        except Exception:
+            # retry connection in 1 second
+            time.sleep(1)
+            continue
+
+    print('binding socket...')
+    context = zmq.Context()
+    server_socket = context.socket(zmq.REP)
+    server_socket.bind(ADDRESS)
+
+    print('server running...')
+    while True:
+        try:
+            handle_requests(arduino_nano, server_socket)
+
+        except KeyboardInterrupt:
+            break
+
+        except DeviceUnconnectedException:
+            print('try to recover connection')
+            # try to recover
+            try:
+                arduino_nano.start_communication()
+
+            except Exception:
+                pass
+
+            continue
+
+        except Exception as e:
+            print(str(e))
+            # retry
+            continue
+
+
+def handle_requests(arduino_nano, server_socket):
 
     while True:
 
@@ -125,49 +171,4 @@ def main():
 
 
 if __name__ == '__main__':
-
-    print('starting arduino driver...')
-    arduino_nano = ArduinoNano()
-
-    while True:
-        try:
-            arduino_nano.start_communication()
-            # established connection, break out of loop
-            break
-
-        except KeyboardInterrupt:
-            sys.exit()
-
-        except Exception:
-            # retry connection in 1 second
-            time.sleep(1)
-            continue
-
-    print('binding socket...')
-    context = zmq.Context()
-    server_socket = context.socket(zmq.REP)
-    server_socket.bind(ADDRESS)
-
-    print('server running...')
-    while True:
-        try:
-            main()
-
-        except KeyboardInterrupt:
-            break
-
-        except DeviceUnconnectedException:
-            print('try to recover connection')
-            # try to recover
-            try:
-                arduino_nano.start_communication()
-
-            except Exception:
-                pass
-
-            continue
-
-        except Exception as e:
-            print(str(e))
-            # retry
-            continue
+    main()
