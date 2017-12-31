@@ -30,7 +30,7 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.driver_process import RequestDriverProcess
-from arduino.dht22.dht22_interface import RequestData as RequestDataDHT22
+from arduino.dht22.dht22_interface import RequestDataDHT22 as RequestDataDHT22
 from hardware.adafruit_22_display.display import RequestData as RequestDataDisplay
 from config import config
 from client_app.menu import Menu, MenuAction, ExitMenuException, Submenu

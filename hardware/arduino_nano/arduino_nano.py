@@ -21,7 +21,7 @@ CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
-from arduino.dht22.dht22_interface import TempScale, RequestData
+from arduino.dht22.dht22_interface import TempScale, RequestDataDHT22
 from hardware.device import Device
 from hardware.driver_process import DeviceUnconnectedException
 
@@ -86,7 +86,7 @@ class ArduinoNano(Device):
 
         Parameters
         ----------
-        method : RequestData
+        method : RequestDataDHT22
             String for identifying an action to be requested
 
         argument : String
@@ -107,27 +107,27 @@ class ArduinoNano(Device):
         if cached_value is not None:
             return cached_value
 
-        if method == RequestData.TEMP_CEL:
+        if method == RequestDataDHT22.TEMP_CEL:
             result = self.get_temperature(TempScale.CELSIUS)
             self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
-        elif method == RequestData.TEMP_FAH:
+        elif method == RequestDataDHT22.TEMP_FAH:
             result = self.get_temperature(TempScale.FAHRENHEIT)
             self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
-        elif method == RequestData.HEAT_INDEX_CEL:
+        elif method == RequestDataDHT22.HEAT_INDEX_CEL:
             result = self.get_heat_index(TempScale.CELSIUS)
             self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
-        elif method == RequestData.HEAT_INDEX_FAH:
+        elif method == RequestDataDHT22.HEAT_INDEX_FAH:
             result = self.get_heat_index(TempScale.FAHRENHEIT)
             self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
-        elif method == RequestData.HUMIDITY:
+        elif method == RequestDataDHT22.HUMIDITY:
             result = self.get_humidity()
             self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
@@ -158,11 +158,11 @@ class ArduinoNano(Device):
 
         """
         if scale == TempScale.CELSIUS:
-            result = self._serialConnection.request(RequestData.TEMP_CEL)
+            result = self._serialConnection.request(RequestDataDHT22.TEMP_CEL)
             return float(result)
 
         elif scale == TempScale.FAHRENHEIT:
-            result = self._serialConnection.request(RequestData.TEMP_FAH)
+            result = self._serialConnection.request(RequestDataDHT22.TEMP_FAH)
             return float(result)
 
         else:
@@ -192,11 +192,11 @@ class ArduinoNano(Device):
 
         """
         if scale == TempScale.CELSIUS:
-            result = self._serialConnection.request(RequestData.HEAT_INDEX_CEL)
+            result = self._serialConnection.request(RequestDataDHT22.HEAT_INDEX_CEL)
             return float(result)
 
         elif scale == TempScale.FAHRENHEIT:
-            result = self._serialConnection.request(RequestData.HEAT_INDEX_FAH)
+            result = self._serialConnection.request(RequestDataDHT22.HEAT_INDEX_FAH)
             return float(result)
 
         else:
@@ -217,7 +217,7 @@ class ArduinoNano(Device):
             Value could not be read, because device is not connected
 
         """
-        result = self._serialConnection.request(RequestData.HUMIDITY)
+        result = self._serialConnection.request(RequestDataDHT22.HUMIDITY)
         return float(result)
 
 

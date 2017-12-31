@@ -20,7 +20,8 @@ PROJECT_ROOT_DIR = os.path.normpath(os.path.join(CUR_DIR, os.pardir, os.pardir))
 sys.path.append(PROJECT_ROOT_DIR)
 
 from hardware.driver_process import RequestDriverProcess
-from arduino.dht22.dht22_interface import RequestData
+from arduino.dht22.dht22_interface import RequestDataDHT22
+from hardware.adafruit_22_display.display import RequestData as RequestDataDisplay
 from .api_json_keys import *
 
 API_VERSION = '0.1'
@@ -81,14 +82,14 @@ def get_temperature(request):
 
     if argument == 'celsius':
         try:
-            temperature = rdp.request(RequestData.TEMP_CEL, None)
+            temperature = rdp.request(RequestDataDHT22.TEMP_CEL, None)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
-            temperature = rdp.request(RequestData.TEMP_FAH, None)
+            temperature = rdp.request(RequestDataDHT22.TEMP_FAH, None)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
@@ -115,14 +116,14 @@ def get_heat_index(request):
 
     if argument == 'celsius':
         try:
-            heat_index = rdp.request(RequestData.HEAT_INDEX_CEL, None)
+            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_CEL, None)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
-            heat_index = rdp.request(RequestData.HEAT_INDEX_FAH, None)
+            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_FAH, None)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
@@ -141,7 +142,7 @@ def get_humidity(request):
     rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     try:
-        humidity = rdp.request(RequestData.HUMIDITY, None)
+        humidity = rdp.request(RequestDataDHT22.HUMIDITY, None)
     except Exception as e:
         json_dict[RESULT_KEY_ERROR] = str(e)
         return json_dict

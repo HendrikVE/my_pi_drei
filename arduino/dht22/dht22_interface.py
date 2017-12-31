@@ -18,7 +18,7 @@ class TempScale:
     CELSIUS, FAHRENHEIT = range(2)
 
 
-class RequestData:
+class RequestDataDHT22:
     """
     Serial requests for the device (dependant on code of the arduino)
 
