@@ -80,7 +80,7 @@ class ArduinoNano(Device):
         self._serialConnection.close()
 
     # @override
-    def request(self, method):
+    def request(self, method, argument):
         """
         Requesting driver process
 

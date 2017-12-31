@@ -30,6 +30,8 @@ _ERROR = 'error'
 _RESULT = 'result'
 _METHOD = 'method'
 
+SCREENSAVER_TIMEOUT = 120.0
+
 
 def main():
     """
@@ -53,6 +55,8 @@ def main():
             # retry connection in 1 second
             time.sleep(1)
             continue
+
+    display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
     driver_process.run()
 

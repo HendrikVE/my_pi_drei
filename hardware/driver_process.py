@@ -16,6 +16,7 @@ import zmq
 _ERROR = 'error'
 _RESULT = 'result'
 _METHOD = 'method'
+_ARGUMENT = 'argument'
 
 
 class DeviceUnconnectedException(Exception):
@@ -82,6 +83,7 @@ class DriverProcess(object):
                 continue
 
             method = request[_METHOD]
+            argument = request[_ARGUMENT]
 
             response = request.copy()
 
@@ -90,7 +92,7 @@ class DriverProcess(object):
 
             else:
                 try:
-                    response[_RESULT] = device.request(method)
+                    response[_RESULT] = device.request(method, argument)
 
                 except Exception as e:
                     response[_ERROR] = str(e)
@@ -116,7 +118,7 @@ class RequestDriverProcess(object):
     def __init__(self, address):
         self._address = address
 
-    def request(self, method):
+    def request(self, method, argument):
         """
         Requesting driver process
 
@@ -141,7 +143,10 @@ class RequestDriverProcess(object):
             client_socket = context.socket(zmq.REQ)
             client_socket.connect(self._address)
 
-            json = {_METHOD: method}
+            json = {
+                _METHOD: method,
+                _ARGUMENT: argument,
+            }
             client_socket.send_json(json)
 
             response = client_socket.recv_json()

@@ -35,16 +35,10 @@ from config import config
 from client_app.menu import Menu, MenuAction, ExitMenuException, Submenu
 import client_app.util.colored_print as cp
 
-SCREENSAVER_TIMEOUT = 120.0
-
 LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 
 PORT_DHT22 = 7000
 ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
-
-display = Display()
-display.open()
-display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
 
 def main():
@@ -273,17 +267,17 @@ def show_overview():
     while True:
         try:
             try:
-                temperature = rdp.request(RequestData.TEMP_CEL)
+                temperature = rdp.request(RequestData.TEMP_CEL, None)
             except Exception:
                 temperature = None
 
             try:
-                heat_index = rdp.request(RequestData.HEAT_INDEX_CEL)
+                heat_index = rdp.request(RequestData.HEAT_INDEX_CEL, None)
             except Exception:
                 heat_index = None
 
             try:
-                humidity = rdp.request(RequestData.HUMIDITY)
+                humidity = rdp.request(RequestData.HUMIDITY, None)
             except Exception:
                 humidity = None
 

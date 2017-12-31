@@ -44,7 +44,7 @@ banning ips trying to login with wrong credentials
 sudo apt-get install fail2ban
 
 DISPLAY
-
+https://learn.adafruit.com/adafruit-2-2-pitft-hat-320-240-primary-display-for-raspberry-pi/detailed-installation
 
 SOUND
 sudo apt-get install python3-pygame

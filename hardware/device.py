@@ -23,5 +23,5 @@ class Device(ABC):
         pass
 
     @abstractmethod
-    def request(self, method):
+    def request(self, method, argument):
         pass

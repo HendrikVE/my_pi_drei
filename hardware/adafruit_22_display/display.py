@@ -52,14 +52,14 @@ class Display(Device):
 
     # @override
     def start_communication(self):
-        pass
+        self.open()
 
     # @override
     def stop_communication(self):
         pass
 
     # @override
-    def request(self, method):
+    def request(self, method, argument):
         """
         Requesting driver process
 
@@ -68,34 +68,31 @@ class Display(Device):
         method : RequestData
             String for identifying an action to be requested
         """
-        cached_value = self._cache.get(method)
-        if cached_value is not None:
-            return cached_value
 
-        if method == RequestData.TEMP_CEL:
-            result = self.get_temperature(TempScale.CELSIUS)
-            self._cache.add(Cache.CacheEntry(method, result, 10))
-            return result
+        if method == RequestData.TURN_ON:
+            self.turn_on()
+            return None
 
-        elif method == RequestData.TEMP_FAH:
-            result = self.get_temperature(TempScale.FAHRENHEIT)
-            self._cache.add(Cache.CacheEntry(method, result, 10))
-            return result
+        elif method == RequestData.TURN_OFF:
+            self.turn_off()
+            return None
 
-        elif method == RequestData.HEAT_INDEX_CEL:
-            result = self.get_heat_index(TempScale.CELSIUS)
-            self._cache.add(Cache.CacheEntry(method, result, 10))
-            return result
+        elif method == RequestData.SET_INTENSITY:
+            return None
 
-        elif method == RequestData.HEAT_INDEX_FAH:
-            result = self.get_heat_index(TempScale.FAHRENHEIT)
-            self._cache.add(Cache.CacheEntry(method, result, 10))
-            return result
+        elif method == RequestData.START_SCREENSAVER_TIMER:
+            self.start_screensaver_timer()
+            return None
 
-        elif method == RequestData.HUMIDITY:
-            result = self.get_humidity()
-            self._cache.add(Cache.CacheEntry(method, result, 10))
-            return result
+        elif method == RequestData.SET_SCREENSAVER_TIMEOUT:
+            return None
+
+        elif method == RequestData.RESTART_SCREENSAVER_TIMER:
+            self.restart_screensaver_timer()
+            return None
+
+        elif method == RequestData.SHOW_IMAGE:
+            return None
 
         raise Exception('invalid method: %s' % method)
 
@@ -166,5 +163,6 @@ class Display(Device):
         self.turn_on()
         self.set_screensaver_timeout(self._screensaver_timeout)
 
-    def show_image(self, path):
-        pass
+    def show_image(self, image_path):
+        command = 'fbi -T 2 -d /dev/fb1 -noverbose -a %s' % os.path.abspath(image_path)
+        Popen(command, shell=True)
