@@ -112,27 +112,27 @@ class ArduinoNano(object):
 
         if method == RequestData.TEMP_CEL:
             result = self.get_temperature(TempScale.CELSIUS)
-            self._cache.add(Cache.CacheEntry(method, result, 4))
+            self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
         elif method == RequestData.TEMP_FAH:
             result = self.get_temperature(TempScale.FAHRENHEIT)
-            self._cache.add(Cache.CacheEntry(method, result, 4))
+            self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
         elif method == RequestData.HEAT_INDEX_CEL:
             result = self.get_heat_index(TempScale.CELSIUS)
-            self._cache.add(Cache.CacheEntry(method, result, 4))
+            self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
         elif method == RequestData.HEAT_INDEX_FAH:
             result = self.get_heat_index(TempScale.FAHRENHEIT)
-            self._cache.add(Cache.CacheEntry(method, result, 4))
+            self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
         elif method == RequestData.HUMIDITY:
             result = self.get_humidity()
-            self._cache.add(Cache.CacheEntry(method, result, 4))
+            self._cache.add(Cache.CacheEntry(method, result, 10))
             return result
 
         raise Exception('invalid method: %s' % method)
@@ -269,7 +269,7 @@ class Cache(object):
         _creation_time = None
         _validity_period = None
 
-        def __init__(self, key, value, validity_period=10):
+        def __init__(self, key, value, validity_period):
             """
             Caching sensor data
 
