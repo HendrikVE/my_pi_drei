@@ -37,6 +37,8 @@ def main():
 
     display = Display()
     display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
+    
+    display.start_communication()
 
     driver_process = DriverProcess(ADDRESS, display)
     driver_process.run()
