@@ -84,7 +84,7 @@ def menu_handler(previous_menu, menu):
 
     while True:
 
-        user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER, None), '> ')
+        user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER), '> ')
 
         try:
             selected_action = int(user_input)
@@ -218,8 +218,8 @@ def open_display_submenu(current_menu):
         MenuAction('print help', lambda menu=submenu: print_manual(menu)),
 
         # DISPLAY
-        MenuAction('turn on', lambda: rdp_display.request(RequestDataDisplay.TURN_ON, None)),
-        MenuAction('turn off', lambda: rdp_display.request(RequestDataDisplay.TURN_OFF, None)),
+        MenuAction('turn on', lambda: rdp_display.request(RequestDataDisplay.TURN_ON)),
+        MenuAction('turn off', lambda: rdp_display.request(RequestDataDisplay.TURN_OFF)),
         MenuAction('set intensity', set_display_intensity),
     ]
 
@@ -230,7 +230,7 @@ def open_display_submenu(current_menu):
 
 def set_display_intensity():
 
-    user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER, None), 'Enter intensity (0-1023): ')
+    user_input = get_user_input(lambda: rdp_display.request(RequestDataDisplay.RESTART_SCREENSAVER_TIMER), 'Enter intensity (0-1023): ')
 
     try:
         intensity = int(user_input)
@@ -275,17 +275,17 @@ def show_overview():
     while True:
         try:
             try:
-                temperature = rdp_dht22.request(RequestDataDHT22.TEMP_CEL, None)
+                temperature = rdp_dht22.request(RequestDataDHT22.TEMP_CEL)
             except Exception:
                 temperature = None
 
             try:
-                heat_index = rdp_dht22.request(RequestDataDHT22.HEAT_INDEX_CEL, None)
+                heat_index = rdp_dht22.request(RequestDataDHT22.HEAT_INDEX_CEL)
             except Exception:
                 heat_index = None
 
             try:
-                humidity = rdp_dht22.request(RequestDataDHT22.HUMIDITY, None)
+                humidity = rdp_dht22.request(RequestDataDHT22.HUMIDITY)
             except Exception:
                 humidity = None
 

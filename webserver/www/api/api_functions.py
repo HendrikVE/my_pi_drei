@@ -82,14 +82,14 @@ def get_temperature(request):
 
     if argument == 'celsius':
         try:
-            temperature = rdp.request(RequestDataDHT22.TEMP_CEL, None)
+            temperature = rdp.request(RequestDataDHT22.TEMP_CEL)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
-            temperature = rdp.request(RequestDataDHT22.TEMP_FAH, None)
+            temperature = rdp.request(RequestDataDHT22.TEMP_FAH)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
@@ -116,14 +116,14 @@ def get_heat_index(request):
 
     if argument == 'celsius':
         try:
-            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_CEL, None)
+            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_CEL)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
 
     elif argument == 'fahrenheit':
         try:
-            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_FAH, None)
+            heat_index = rdp.request(RequestDataDHT22.HEAT_INDEX_FAH)
         except Exception as e:
             json_dict[RESULT_KEY_ERROR] = str(e)
             return json_dict
@@ -142,7 +142,7 @@ def get_humidity(request):
     rdp = RequestDriverProcess(ADDRESS_DHT22)
 
     try:
-        humidity = rdp.request(RequestDataDHT22.HUMIDITY, None)
+        humidity = rdp.request(RequestDataDHT22.HUMIDITY)
     except Exception as e:
         json_dict[RESULT_KEY_ERROR] = str(e)
         return json_dict

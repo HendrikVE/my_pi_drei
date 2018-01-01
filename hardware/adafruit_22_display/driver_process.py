@@ -12,7 +12,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 import sys
-import time
 
 # append root of the python code tree to sys.apth so that imports are working
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -34,26 +33,12 @@ def main():
     Run the Driver Process (operating as server)
 
     """
-    print('starting arduino driver...')
+    print('starting display driver...')
+
     display = Display()
-    driver_process = DriverProcess(ADDRESS, display)
-
-    while True:
-        try:
-            display.start_communication()
-            # established connection, break out of loop
-            break
-
-        except KeyboardInterrupt:
-            sys.exit()
-
-        except Exception:
-            # retry connection in 1 second
-            time.sleep(1)
-            continue
-
     display.set_screensaver_timeout(SCREENSAVER_TIMEOUT)
 
+    driver_process = DriverProcess(ADDRESS, display)
     driver_process.run()
 
 

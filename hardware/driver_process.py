@@ -118,7 +118,7 @@ class RequestDriverProcess(object):
     def __init__(self, address):
         self._address = address
 
-    def request(self, method, argument):
+    def request(self, method, argument=None):
         """
         Requesting driver process
 

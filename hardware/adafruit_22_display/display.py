@@ -40,6 +40,7 @@ class RequestData:
     SET_SCREENSAVER_TIMEOUT = 'set_screensaver_timeout'
     RESTART_SCREENSAVER_TIMER = 'restart_screensaver_timer'
     SHOW_IMAGE = 'show_image'
+    IS_TURNED_ON = 'is_turned_on'
 
 
 class Display(Device):
@@ -99,6 +100,9 @@ class Display(Device):
         elif method == RequestData.SHOW_IMAGE:
             self.show_image(argument)
             return None
+
+        elif method == RequestData.IS_TURNED_ON:
+            return self.is_turned_on()
 
         raise Exception('invalid method: %s' % method)
 
@@ -172,3 +176,6 @@ class Display(Device):
     def show_image(self, image_path):
         command = 'fbi -T 2 -d /dev/fb1 -noverbose -a %s' % os.path.abspath(image_path)
         Popen(command, shell=True)
+
+    def is_turned_on(self):
+        return self._last_display_action == DisplayAction.MANUAL_ON
