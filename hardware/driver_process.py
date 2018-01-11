@@ -151,7 +151,7 @@ class RequestDriverProcess(object):
         """
         try:
             conn = Client(self._address, authkey='secret password')
-            
+
             json_dict = {
                 _METHOD: method,
                 _ARGUMENT: argument,
