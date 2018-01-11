@@ -41,7 +41,7 @@ class DriverProcess(object):
     def run(self):
 
         print('binding socket...')
-        listener = Listener(self._address, authkey=b'secret password')
+        listener = Listener(self._address)
 
         print('server running...')
         while True:
@@ -85,12 +85,11 @@ class DriverProcess(object):
             response = {}
 
             try:
-                request_string = conn.recv()
-                request = json.loads(request_string)
+                request = json.loads(conn.recv())
 
             except ValueError as e:
                 response[_ERROR] = str(e)
-                conn.send_json(response)
+                conn.send(json.dumps(response))
                 continue
 
             method = request[_METHOD]
@@ -150,7 +149,7 @@ class RequestDriverProcess(object):
 
         """
         try:
-            conn = Client(self._address, authkey='secret password')
+            conn = Client(self._address)
 
             json_dict = {
                 _METHOD: method,
