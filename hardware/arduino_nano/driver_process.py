@@ -23,8 +23,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 from hardware.arduino_nano.arduino_nano import ArduinoNano
 from hardware.driver_process import DriverProcess
 
-PORT = 7000
-ADDRESS = 'tcp://127.0.0.1:%i' % PORT
+ADDRESS = ('localhost', 7000)
 
 
 def main():

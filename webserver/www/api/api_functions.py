@@ -26,11 +26,8 @@ from .api_json_keys import *
 
 API_VERSION = '0.1'
 
-PORT_DHT22 = 7000
-ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
-
-PORT_DISPLAY = 7001
-ADDRESS_DISPLAY = 'tcp://127.0.0.1:%i' % PORT_DISPLAY
+ADDRESS_DHT22 = ('localhost', 7000)
+ADDRESS_DISPLAY = ('localhost', 7001)
 
 
 def __json_result_template__():

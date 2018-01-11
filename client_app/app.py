@@ -38,11 +38,8 @@ import client_app.util.colored_print as cp
 
 LOGFILE = os.path.join(CLIENT_APP_ROOT_DIR, 'log', 'app.log')
 
-PORT_DHT22 = 7000
-ADDRESS_DHT22 = 'tcp://127.0.0.1:%i' % PORT_DHT22
-
-PORT_DISPLAY = 7001
-ADDRESS_DISPLAY = 'tcp://127.0.0.1:%i' % PORT_DISPLAY
+ADDRESS_DHT22 = ('localhost', 7000)
+ADDRESS_DISPLAY = ('localhost', 7001)
 
 rdp_display = RequestDriverProcess(ADDRESS_DISPLAY)
 

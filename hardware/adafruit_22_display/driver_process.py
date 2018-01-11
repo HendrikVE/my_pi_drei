@@ -22,8 +22,7 @@ sys.path.append(PROJECT_ROOT_DIR)
 from hardware.adafruit_22_display.display import Display
 from hardware.driver_process import DriverProcess
 
-PORT = 7001
-ADDRESS = 'tcp://127.0.0.1:%i' % PORT
+ADDRESS = ('localhost', 7001)
 
 SCREENSAVER_TIMEOUT = 120.0
 

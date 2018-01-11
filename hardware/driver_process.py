@@ -10,8 +10,9 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import json
 import logging
-import zmq
+from multiprocessing.connection import Client, Listener
 
 _ERROR = 'error'
 _RESULT = 'result'
@@ -40,14 +41,12 @@ class DriverProcess(object):
     def run(self):
 
         print('binding socket...')
-        context = zmq.Context()
-        server_socket = context.socket(zmq.REP)
-        server_socket.bind(self._address)
+        listener = Listener(self._address, authkey=b'secret password')
 
         print('server running...')
         while True:
             try:
-                self.handle_requests(self._device, server_socket)
+                self.handle_requests(self._device, listener)
 
             except KeyboardInterrupt:
                 break
@@ -68,18 +67,30 @@ class DriverProcess(object):
                 # retry
                 continue
 
-    def handle_requests(self, device, server_socket):
+        listener.close()
+
+    def handle_requests(self, device, listener):
 
         while True:
+
+            conn = None
+            try:
+                conn.close()
+
+            except Exception:
+                pass
+
+            conn = listener.accept()
 
             response = {}
 
             try:
-                request = server_socket.recv_json()
+                request_string = conn.recv()
+                request = json.loads(request_string)
 
             except ValueError as e:
                 response[_ERROR] = str(e)
-                server_socket.send_json(response)
+                conn.send_json(response)
                 continue
 
             method = request[_METHOD]
@@ -96,10 +107,10 @@ class DriverProcess(object):
 
                 except Exception as e:
                     response[_ERROR] = str(e)
-                    server_socket.send_json(response)
+                    conn.send(json.dumps(response))
                     raise e
 
-            server_socket.send_json(response)
+            conn.send(json.dumps(response))
 
 
 class RequestDriverProcess(object):
@@ -139,19 +150,17 @@ class RequestDriverProcess(object):
 
         """
         try:
-            context = zmq.Context()
-            client_socket = context.socket(zmq.REQ)
-            client_socket.connect(self._address)
-
-            json = {
+            conn = Client(self._address, authkey='secret password')
+            
+            json_dict = {
                 _METHOD: method,
                 _ARGUMENT: argument,
             }
-            client_socket.send_json(json)
+            conn.send(json.dumps(json_dict))
 
-            response = client_socket.recv_json()
+            response = json.loads(conn.recv())
 
-            client_socket.disconnect(self._address)
+            conn.close()
 
         except Exception as e:
             logging.error(str(e), exc_info=True)
